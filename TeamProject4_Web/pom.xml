@@ -7,6 +7,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<properties>
+      <m2eclipse.wtp.contextRoot>/</m2eclipse.wtp.contextRoot>
+    </properties>
+	
 	<!-- 프로젝트에서 사용할 의존성 목록 -->
 	<dependencies>
 		<!-- MySQL 데이터베이스 연결을 위한 MySQL Connector 라이브러리 -->
