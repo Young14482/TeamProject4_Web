@@ -31,15 +31,17 @@ public class MainHtmlServlet extends HttpServlet {
             HttpSession session = req.getSession();
             
             for (Image image : allImage) {
-				if (image.getImg_num() == 1) {
+				if (image.getImg_num() == 2) {
 					session.setAttribute("image1", image.getImg_64());
+				} else if (image.getImg_num() == 3) {
+					session.setAttribute("image2", image.getImg_64());
+				} else if (image.getImg_num() == 4) {
+					session.setAttribute("image3", image.getImg_64());
 				}
 			}
     		req.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 	}
-
 }

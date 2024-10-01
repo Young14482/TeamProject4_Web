@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -46,12 +46,6 @@ nav ul li a {
 	padding: 10px;
 }
 
-main {
-	display: flex;
-	justify-content: space-around;
-	padding: 20px;
-}
-
 section {
 	flex: 1;
 	margin: 10px;
@@ -80,48 +74,109 @@ footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 0 700px;
+	padding: 0 500px;
+}
+
+.swiper-container {
+	width: 600px;
+	height: 400px;
+	margin: 0 auto;
+}
+
+.swiper-slide {
+	text-align: center;
+	font-size: 18px;
+	background: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.slick-prev, .slick-next {
+    font-size: 40px !important;
+    color: black !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 1 !important;
+}
+
+.slick-prev:hover, .slick-next:hover {
+    color: black !important;
+}
+
+
+.slider img {
+    max-width: 100%; /* Adjust the width as needed */
+    height: auto;
+    margin: 0 auto; /* Center the images */
 }
 
 </style>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 </head>
 <body>
 	<header>
 		<nav>
-
 			<div class="logo">
-				<h1>회사명 정하면 변경</h1>
+				<h1>Web Project 홈페이지</h1>
 			</div>
 			<ul class="link">
-				<li><a href="#">로그인</a></li>
-				<li><a href="#">회원가입</a></li>
-				<li><a href="#">내게 맞는 옷 찾기</a></li>
+				<c:if test="${not empty sessionScope.userId}">
+					<p>환영합니다, ${ userId }님!</p>
+				</c:if>
+				<c:if test="${empty sessionScope.userId}">
+					<li><a href="/TeamProject4_Web/Login">로그인</a></li>
+					<li><a href="#">회원가입</a></li>
+				</c:if>
+				<li><a href="./search">내게 맞는 옷 찾기</a></li>
 				<li><a href="#">신상품</a></li>
 				<li><a href="#">메뉴</a></li>
 			</ul>
-
-			<div class="search">
-				<input type="text" placeholder="Search...">
-			</div>
 		</nav>
 	</header>
 	<main>
-		<section class="left">
-			<img src="model.jpg" alt="Model">
-		</section>
+	
 		<section class="middle">
-			<h2>피피스&세트</h2>
-			<img src="data:image/png;base64,<%= session.getAttribute("image1") %>" alt="Base64 Image">
-
+			<div class="slider">
+				<div>
+					<img src="data:image/png;base64,<%=session.getAttribute("image1")%>" alt="Slide 1">
+				</div>
+				<div>
+					<img src="data:image/png;base64,<%=session.getAttribute("image2")%>" alt="Slide 2">
+				</div>
+				<div>
+					<img src="data:image/png;base64,<%=session.getAttribute("image3")%>" alt="Slide 3">
+				</div>
+			</div>
 		</section>
-		<section class="right">
-			<h2>SALE 50%</h2>
-			<img src="discount_item.jpg" alt="Discount Item">
-		</section>
+		
 	</main>
-	<footer class=info>
+	<footer class="info">
 		<p>전화번호 : 010 - 1234 - 1234</p>
 		<p>이메일 : angus1208@naver.com</p>
+		<p>홈페이지의 모든 자료는 상업적으로 이용되지 않습니다.</p>
 	</footer>
+	<script>
+		$(document).ready(function() {
+			$('.slider').slick({
+				autoplay: true,
+				autoplaySpeed: 2000,
+				dots: true,
+				prevArrow: '<button type="button" class="slick-prev"><</button>',
+				nextArrow: '<button type="button" class="slick-next">></button>'
+			});
+		});
+	</script>
 </body>
 </html>
