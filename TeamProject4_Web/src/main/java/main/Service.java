@@ -2,8 +2,12 @@ package main;
 
 import java.util.List;
 
+import image.Image;
+
 public interface Service {
 
-	List<String> findImag();
 
+	boolean insertImage(String imageName, String base64Str);
+	
+	List<Image> findAllImage();
 }

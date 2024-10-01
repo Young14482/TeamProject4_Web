@@ -111,7 +111,7 @@ footer {
 		</section>
 		<section class="middle">
 			<h2>피피스&세트</h2>
-			<img src="data:image/png;base64,<%= session.getAttribute("base64Image") %>" alt="Base64 Image">
+			<img src="data:image/png;base64,<%= session.getAttribute("image1") %>" alt="Base64 Image">
 
 		</section>
 		<section class="right">
