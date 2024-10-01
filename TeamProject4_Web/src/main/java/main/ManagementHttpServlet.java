@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import material.AppContextListener;
 
+// 작성자 : 이나겸
+
 @WebServlet("/management")
 public class ManagementHttpServlet extends HttpServlet {
 	AppContextListener app;
