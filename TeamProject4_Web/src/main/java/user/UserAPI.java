@@ -21,6 +21,16 @@ import lombok.extern.slf4j.Slf4j;
 public class UserAPI extends HttpServlet {
 	UserService service = new UserServiceImple();
 
+	
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.getRequestDispatcher("/WEB-INF/views/Login.jsp")
+		.forward(req, resp);
+	}
+
+
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
@@ -55,7 +65,6 @@ public class UserAPI extends HttpServlet {
 			
 			System.out.println("회원가입이 필요함");
 		}
-		
 		
 	}
 }

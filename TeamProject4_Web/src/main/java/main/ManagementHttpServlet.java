@@ -20,9 +20,7 @@ public class ManagementHttpServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			
 			req.getRequestDispatcher("/WEB-INF/views/management.jsp").forward(req, resp);
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
