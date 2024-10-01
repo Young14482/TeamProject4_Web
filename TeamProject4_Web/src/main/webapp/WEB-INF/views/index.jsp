@@ -95,7 +95,7 @@ footer {
 			<ul class="link">
 				<li><a href="#">로그인</a></li>
 				<li><a href="#">회원가입</a></li>
-				<li><a href="#">내게 맞는 옷 찾기</a></li>
+				<li><a href="./search">내게 맞는 옷 찾기</a></li>
 				<li><a href="#">신상품</a></li>
 				<li><a href="#">메뉴</a></li>
 			</ul>

@@ -1,0 +1,27 @@
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f0f8ff;
+	text-align: center;
+}
+
+.season-container, .element-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 50px;
+}
+
+.season, .element {
+	margin: 0 20px;
+	text-align: center;
+}
+
+.season img, .element img {
+	width: 150px;
+	height: 150px;
+	cursor: pointer;
+	border: 3px solid transparent;
+}
+
+.selected {
+	border-color: red;
+}
