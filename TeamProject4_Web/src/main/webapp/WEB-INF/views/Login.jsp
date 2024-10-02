@@ -18,10 +18,9 @@
 
 			<div class="login">
 				<label for="Password">비밀번호</label> <input type="password"
-					id="Password" name="Password" required>
+					id="Pw" name="Pw" required>
 			</div>
-
-			<button class="login-btn" type="button" onclick="submitForm()">로그인</button>
+			<button class="login-btn" type="submit">로그인</button>
 		</form>
 
 		<div class="login-modify">
@@ -30,6 +29,5 @@
 			<button>취소</button>
 		</div>
 	</div>
-
 </body>
 </html>

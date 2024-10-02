@@ -1,5 +1,7 @@
 package user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +12,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class User {
-	private String id;
-	private String pw;
-	private String phone;
-	private int birth;
-	private int gender;
-	private String grade;
+	@JsonProperty(value = "username")
+	private String Id;
+	private String Pw;
+	private String Phone;
+	private String Birth; // int 
+	private String Gender; // int 
+	private String Grade;
 }

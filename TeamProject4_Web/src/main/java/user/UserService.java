@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface UserService {
 	
-	String Pw(String Id);
+	String Pw(String userId);
 	
+	int InsertUser(User user);
 }
