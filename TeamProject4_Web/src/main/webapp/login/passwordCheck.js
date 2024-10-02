@@ -86,11 +86,7 @@ function signupCheck() {
 	}
 	
 	
-	form으로 만들어서 Json으로 만든다
-	객체들을 모아서 로 만들어서 json으로 변환
-	Json변환한걸 전송 >> 
-	
-	받은걸 읽어서 User로 만들고 회원가입 DB에 insert
+
 	
 	
 	

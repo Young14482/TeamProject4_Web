@@ -49,7 +49,6 @@
 		List<Cloth> list = (List<Cloth>) session.getAttribute("allCloth");
 		// 세션에 저장된 모든 속성 이름을 가져옵니다.
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(12333312);
 			Cloth cloth = list.get(i);
 			String base64 = cloth.getBase64Data();
 			String explanation = cloth.getCloth_explanation().replace("\\n", "\n");

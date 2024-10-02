@@ -137,7 +137,7 @@ footer {
 				</c:if>
 				<c:if test="${empty sessionScope.userId}">
 					<li><a href="./user">로그인</a></li>
-					<li><a href="#">회원가입</a></li>
+					<li><a href="./signup">회원가입</a></li>
 				</c:if>
 				<li><a href="./search">내게 맞는 옷 찾기</a></li>
 				<li><a href="#">신상품</a></li>
