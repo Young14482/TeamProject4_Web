@@ -1,6 +1,8 @@
 package search;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -26,19 +28,14 @@ public class SearchServlet extends HttpServlet {
 			List<Image> allImage = serviceImpl.findAllImage();
 			HttpSession session = req.getSession();
 
-			for (Image image : allImage) {
-				if (image.getImg_num() == 5) {
-					session.setAttribute("봄", image.getImg_64());
-					System.out.println("들어감5");
-				} else if (image.getImg_num() == 6) {
-					session.setAttribute("여름", image.getImg_64());
-					System.out.println("들어감6");
-				} else if (image.getImg_num() == 7) {
-					session.setAttribute("가을", image.getImg_64());
-					System.out.println("들어감7");
-				} else if (image.getImg_num() == 8) {
-					session.setAttribute("겨울", image.getImg_64());
-					System.out.println("들어감8");
+			List<String> attNameList = Arrays.asList("봄", "여름", "가을", "겨울", "빨강", "노랑", "파랑", "초록", "갈색", "무채색");
+
+			for (int i = 0; i < attNameList.size(); i++) {
+				for (Image image : allImage) {
+					if (image.getImg_num() == i + 5) {
+						session.setAttribute(attNameList.get(i), image.getImg_64());
+						break;
+					} 
 				}
 			}
 		}
