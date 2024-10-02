@@ -21,8 +21,30 @@ public class UserServiceImple implements UserService {
 	public String Pw(String Id) {
 		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
 			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-			String Pw = mapper.Pw(Id);
-			return Pw;
+			String list = mapper.Pw(Id);
+			if(list != null) {
+				return list;
+			}
 		}
+		return null;
 	}
+	
+	// 회원가입
+	@Override
+	public int InsertUser(User user) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+			
+			if(user != null) {
+				int result = mapper.insertUser(user);
+				if(result >= 0) {
+					sqlSession.commit();
+				}
+				return result;
+			}
+		}
+		return 0;
+		
+	}
+	
 }
