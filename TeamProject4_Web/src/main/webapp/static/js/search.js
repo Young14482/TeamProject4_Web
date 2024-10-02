@@ -2,6 +2,7 @@ function selectSeason(season) {
 	document.getElementById('seasonInput').value = season;
 	clearSelection('season');
 	document.getElementById('season' + season).classList.add('selected');
+	console.log("동작중임");
 }
 
 function selectElement(element) {
