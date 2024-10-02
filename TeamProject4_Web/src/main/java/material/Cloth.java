@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class cloth {
+public class Cloth {
 	 private int cloth_num;
 	 private String cloth_name;
 	 private String cloth_brand;
@@ -17,7 +17,10 @@ public class cloth {
 	 private int cloth_image;
 	 private int cloth_season_category;
 	 private int cloth_color_category;
-	 private int cloth_b_category;
 	 private int cloth_s_category1;
 	 private int cloth_s_category2;
+	 private int cloth_min_size;
+	 private int cloth_max_size;
+	 private String cloth_explanation;
+	 private String base64Data;
 }

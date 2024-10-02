@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import image.Image;
+import material.Cloth;
 
 public interface Mapper {
 
@@ -16,5 +17,7 @@ public interface Mapper {
 	
 	@Select("select * from img")
 	List<Image> findAllImage();
-	
+
+	@Select("select * from cloth")
+	List<Cloth> findAllCloth();
 }

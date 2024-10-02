@@ -162,6 +162,7 @@ footer {
 		</section>
 		
 	</main>
+	<jsp:include page="/WEB-INF/views/clothList.jsp"></jsp:include>
 	<footer class="info">
 		<p>전화번호 : 010 - 1234 - 1234</p>
 		<p>이메일 : angus1208@naver.com</p>

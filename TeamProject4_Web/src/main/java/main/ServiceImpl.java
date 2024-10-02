@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import image.Image;
 import material.AppContextListener;
+import material.Cloth;
 
 public class ServiceImpl implements Service {
 
@@ -46,6 +47,21 @@ public class ServiceImpl implements Service {
 				return allImage;
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public List<Cloth> findAllCloth() {
+		
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			List<Cloth> allCloth = mapper.findAllCloth();
+			
+			if (allCloth != null) {
+				return allCloth;
+			}
+		}
+		
 		return null;
 	}
 
