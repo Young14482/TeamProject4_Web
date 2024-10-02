@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>검색?</title>
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/static/css/search.css">
+	href="./static/css/search.css">
 <script src="${pageContext.request.contextPath}/static/js/search.js"></script>
 </head>
 <body>
