@@ -1,0 +1,184 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>검색 창</title>
+<style>
+body {
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+}
+
+.form {
+	flex-direction: row;
+	align-items: center;
+	display: flex;
+	align-content: space-around;
+	justify-content: center;
+	margin: 50px;
+}
+
+#userInput {
+	width: 500px;
+}
+
+input[type="text"] {
+	width: 300px;
+	height: 40px;
+	font-size: 16px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-right: 20px;
+}
+
+button {
+	width: 150px;
+	height: 46px;
+	font-size: 16px;
+}
+
+.radio-group {
+	display: flex;
+	align-items: center;
+	margin-left: 650px;
+}
+
+.radio-group label {
+	margin-right: 20px;
+}
+
+header {
+	background-color: #333;
+	color: #fff;
+	padding: 10px 0;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+.logo {
+	text-align: center;
+	color: white;
+	font-family: Arial, sans-serif;
+}
+
+.info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 500px;
+	font-family: Arial, sans-serif;
+	margin: 0;
+	background-color: #f4f4f4;
+}
+
+.link {
+	display: flex;
+	justify-content: center;
+	list-style: none;
+	padding: 0;
+	height: 25px;
+}
+
+.link li {
+	margin-left: 150px;
+	margin-right: 150px;
+}
+
+.link a {
+	color: white;
+	text-decoration: none;
+	font-family: Arial, sans-serif;
+	font-size: 30px;
+}
+
+.search {
+	padding-top: 200px; /* 헤더 높이만큼 패딩 추가 */
+}
+
+.hyperLink {
+	color: white;
+	text-decoration-line: none;
+}
+</style>
+<script>
+function toggleCheckbox(checkbox) {
+    checkbox.checked = !checkbox.checked;
+}
+</script>
+</head>
+<body>
+
+	<header>
+		<nav>
+			<div class="logo">
+				<a href="./main" class="hyperLink"><h1>Web Project 홈페이지</h1></a>
+			</div>
+			<ul class="link">
+				<c:if test="${not empty sessionScope.userId}">
+					<p>환영합니다, ${ userId }님!</p>
+				</c:if>
+				<c:if test="${empty sessionScope.userId}">
+					<li><a href="./user">로그인</a></li>
+					<li><a href="./signup">회원가입</a></li>
+				</c:if>
+				<li><a href="./search">내게 맞는 옷 찾기</a></li>
+				<li><a href="#">신상품</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="search">
+		<form method="post">
+			<div class="form">
+				<input type="text" id="userInput" name="userInput"
+					value="<c:out value='${userInputDetail}' default=''/>">
+				<button type="submit">검색</button>
+			</div>
+
+			<div class="radio-group">
+				<label><input type="radio" name="sortOption"
+					value="highPrice"
+					<c:if test="${sessionScope.sortOption == 'highPrice'}">checked</c:if>>
+					높은 가격순으로 정렬</label> <label><input type="radio" name="sortOption"
+					value="lowPrice"
+					<c:if test="${sessionScope.sortOption == 'lowPrice'}">checked</c:if>>
+					낮은 가격순으로 정렬</label> <label><input type="radio" name="sortOption"
+					value="name"
+					<c:if test="${sessionScope.sortOption == 'name'}">checked</c:if>>
+					이름순으로 정렬</label> <label><input type="button"
+					onclick="clearRadioButtons()" value="선택 해제"></label>
+			</div>
+
+		</form>
+	</div>
+
+	<jsp:include page="/WEB-INF/views/clothList.jsp"></jsp:include>
+
+	<footer class="info">
+		<p>전화번호 : 010 - 1234 - 1234</p>
+		<p>이메일 : angus1208@naver.com</p>
+		<p>홈페이지의 모든 자료는 상업적으로 이용되지 않습니다.</p>
+	</footer>
+</body>
+
+<script>
+function toggleCheckbox(checkbox) {
+    checkbox.checked = !checkbox.checked;
+}
+
+function clearRadioButtons() {
+    const radioButtons = document.querySelectorAll('input[name="sortOption"]');
+    radioButtons.forEach(radio => radio.checked = false);
+}
+</script>
+</html>
+
+
