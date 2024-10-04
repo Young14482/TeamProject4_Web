@@ -17,6 +17,10 @@ header {
 	background-color: #333;
 	color: #fff;
 	padding: 10px 0;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 1000;
 }
 
 nav ul {
@@ -25,6 +29,7 @@ nav ul {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
+	margin: 0;
 }
 
 nav ul li {
@@ -37,13 +42,13 @@ nav ul li a {
 	padding: 10px 20px;
 }
 
-.logo {
-	text-align: center;
-}
-
 .search {
 	text-align: right;
 	padding: 10px;
+}
+
+main {
+	margin-top: 150px; /* 헤더 높이만큼 마진 추가 */
 }
 
 section {
@@ -68,13 +73,6 @@ footer {
 
 .link {
 	font-size: 30px;
-}
-
-.info {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0 500px;
 }
 
 .swiper-container {
@@ -109,11 +107,21 @@ footer {
     color: black !important;
 }
 
-
 .slider img {
     max-width: 100%; /* Adjust the width as needed */
     height: auto;
     margin: 0 auto; /* Center the images */
+}
+
+.logo {
+	text-align: center;
+}
+
+.info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 500px;
 }
 
 </style>
@@ -141,12 +149,11 @@ footer {
 				</c:if>
 				<li><a href="./search">내게 맞는 옷 찾기</a></li>
 				<li><a href="#">신상품</a></li>
-				<li><a href="#">메뉴</a></li>
+				<li><a href="/TeamProject4_Web/softSearch">검색</a></li>
 			</ul>
 		</nav>
 	</header>
 	<main>
-	
 		<section class="middle">
 			<div class="slider">
 				<div>
@@ -160,7 +167,6 @@ footer {
 				</div>
 			</div>
 		</section>
-		
 	</main>
 	<jsp:include page="/WEB-INF/views/clothList.jsp"></jsp:include>
 	<footer class="info">

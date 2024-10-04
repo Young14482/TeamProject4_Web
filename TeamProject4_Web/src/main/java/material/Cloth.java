@@ -23,4 +23,5 @@ public class Cloth {
 	 private int cloth_max_size;
 	 private String cloth_explanation;
 	 private String base64Data;
+	 private int cloth_sold;
 }

@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -47,6 +48,7 @@ public class MainHtmlServlet extends HttpServlet {
 
 			}
 
+			session.removeAttribute("searchCloth");
 			session.setAttribute("allCloth", allCloth);
 
 			req.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
