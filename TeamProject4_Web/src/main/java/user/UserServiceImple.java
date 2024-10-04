@@ -43,7 +43,7 @@ public class UserServiceImple implements UserService {
 				return result;
 			}
 		}
-		return 0;
+		return -1;
 		
 	}
 	
