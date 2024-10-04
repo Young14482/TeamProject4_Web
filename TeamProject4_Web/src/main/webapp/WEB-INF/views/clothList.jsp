@@ -67,8 +67,9 @@
 		for (int i = 0; i < list.size(); i++) {
 			Cloth cloth = list.get(i);
 			String base64 = cloth.getBase64Data();
-			String explanation = cloth.getCloth_explanation().replace("\\n", "\n");
-			String[] arrStr = explanation.split("\n");
+			if (cloth.getCloth_explanation() != null) {
+				String explanation = cloth.getCloth_explanation().replace("\\n", "\n");
+				String[] arrStr = explanation.split("\n");
 		%>
 		<div class="card">
 			<img class="image" src="data:image/png;base64,<%=base64%>"
@@ -85,11 +86,11 @@
 		</div>
 		<%
 		}
-		
+		}
 		if (count == 0) {
-			%>
-			<h2>검색 결과가 없습니다</h2>
-			<% 
+		%>
+		<h2>검색 결과가 없습니다</h2>
+		<%
 		}
 		%>
 	</div>

@@ -18,6 +18,7 @@ public interface Mapper {
 	@Select("select * from img")
 	List<Image> findAllImage();
 
-	@Select("select * from cloth")
+	@Select("SELECT * FROM lp.cloth as a \r\n"
+			+ "join categorys as b on a.cloth_categorys = b.categorys_num;")
 	List<Cloth> findAllCloth();
 }

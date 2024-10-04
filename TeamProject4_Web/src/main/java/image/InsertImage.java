@@ -31,6 +31,7 @@ public class InsertImage {
     	// imagePath에 자신이 넣고싶은 이미지의 경로를 작성합니다.
     	// 해당 클래스를 따로 실행시키면 db에 변환된 데이터가 저장됩니다.
 
+
     	int count = 1;
     	
     	while (count < 10) {
@@ -47,6 +48,7 @@ public class InsertImage {
             }
             count++;
     	}
+
     }
 }
 
