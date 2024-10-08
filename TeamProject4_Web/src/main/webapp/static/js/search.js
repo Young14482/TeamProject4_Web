@@ -1,4 +1,4 @@
-// 각각 계절, 색깔, 활동이 클릭되었을 때 작동하는 함수들
+// 각각 계절, 색깔, 활동, 성별이 클릭되었을 때 작동하는 함수들
 function selectSeason(season) {
 	document.getElementById('seasonInput').value = season;
 	clearSelection('season');
@@ -16,6 +16,13 @@ function selectUsage(usage) {
 	clearSelection('usage');
 	document.getElementById('usage' + usage).classList.add('selected');
 }
+
+function selectGender(gender) {
+	document.getElementById('genderInput').value = gender;
+	clearSelection('gender');
+	document.getElementById('gender' + gender).classList.add('selected');
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // 클릭 해제시 작동하는 함수
 function clearSelection(type) {
@@ -35,6 +42,7 @@ function submitForms() {
 	if (document.getElementById('seasonInput').value === "" ||
 		document.getElementById('colorInput').value === "" ||
 		document.getElementById('usageInput').value === "" ||
+		document.getElementById('genderInput').value === "" ||
 		(!selectedPrice && !allPriceSelected && (minPrice === "" || maxPrice === ""))) {
 		alert("모든 항목을 선택해주세요.");
 		return false; // 폼 제출 중단
