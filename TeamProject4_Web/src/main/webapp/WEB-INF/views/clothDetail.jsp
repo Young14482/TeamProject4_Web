@@ -1,6 +1,9 @@
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.nio.file.Files, java.nio.file.Paths, java.nio.file.Path, material.Cloth" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +17,7 @@
 	height: 700px;
 	overflow: hidden;
 	border-radius: 10px;
-	margin-top: -122px; /* margin: 200px auto; 상단 여백을 200px로 설정하고, 중앙 정렬 */
+	margin-top: -122px; 
 	margin-left: 100px;
 }
 
@@ -60,8 +63,8 @@
 .review {
 	display: flex;
 	gap: 20px;
-	border-top: 1px solid #000; /* 위쪽 테두리 */
-	border-bottom: 1px solid #000; /* 아래쪽 테두리 */
+	border-top: 1px solid #000; 
+	border-bottom: 1px solid #000;
 	margin-bottom: 10px;
 	margin-top: 10px
 }
@@ -74,8 +77,8 @@ footer {
 }
 
 .button-container button {
-	z-index: 10; /* 버튼이 다른 요소 위에 있도록 설정 */
-	pointer-events: auto; /* 클릭 이벤트를 받을 수 있도록 설정 */
+	z-index: 10;
+	pointer-events: auto; 
 }
 
 button {
@@ -105,61 +108,62 @@ button:hover {
 
 .detail {
 	margin-top: 100px;
-    text-align: center; /* 가운데 정렬 */
+	text-align: center;
 }
 
 .detailimage {
-    display: block;
-    margin: 0 auto; /* 이미지를 가운데 정렬 */
+	display: block;
+	margin: 0 auto; 
 }
 </style>
 
 
 </head>
 <body>
-<div class="image-container">
-    <button class="arrow arrow-left">&lt;</button>
-    <c:if test="${not empty chooseCloth.main_image1}">
-        <img class="image active" src="data:image/png;base64,${chooseCloth.main_image1}" alt="${chooseCloth.cloth_name}">
-    </c:if>
-    <c:if test="${not empty chooseCloth.main_image2}">
-        <img class="image" src="data:image/png;base64,${chooseCloth.main_image2}" alt="${chooseCloth.cloth_name}">
-    </c:if>
-    <c:if test="${not empty chooseCloth.main_image3}">
-        <img class="image" src="data:image/png;base64,${chooseCloth.main_image3}" alt="${chooseCloth.cloth_name}">
-    </c:if>
-    <button class="arrow arrow-right">&gt;</button>
-</div>
+	<div class="image-container">
+		<button class="arrow arrow-left">&lt;</button>
+		<%
+			
+		Cloth cloth = (Cloth) session.getAttribute("chooseCloth");
+		String folderPath = application.getRealPath("/static/image/cloth/cloth" + cloth.getCloth_num()); // 폴더 경로를 여기에 작성하세요
+		
+		for (int i = 1; i <= 3; i++) {
+		    String fileName = i + ".png"; // 파일 이름
+		    Path filePath = Paths.get(folderPath, fileName);
+		    String className = (i == 1) ? "image active" : "image";
+
+		    if (Files.exists(filePath)) {
+		        %>
+		        <img class="<%= className %>" src="/static/image/cloth/cloth${ chooseCloth.cloth_num }/<%= fileName %>" alt="<%= cloth.getCloth_name() %>">
+		        <%
+		    }
+		}
+
+		%>
+		
+		<button class="arrow arrow-right">&gt;</button>
+	</div>
 
 
 	<div class="detail">
-		<c:if test="${not empty chooseCloth.explanation_image1}">
-        <img class="detailimage" src="data:image/png;base64,${chooseCloth.explanation_image1}" alt="${chooseCloth.cloth_name}">
-   		</c:if>
-   		<c:if test="${not empty chooseCloth.explanation_image2}">
-        <img class="detailimage" src="data:image/png;base64,${chooseCloth.explanation_image2}" alt="${chooseCloth.cloth_name}">
-   		</c:if>
-   		<c:if test="${not empty chooseCloth.explanation_image3}">
-        <img class="detailimage" src="data:image/png;base64,${chooseCloth.explanation_image3}" alt="${chooseCloth.cloth_name}">
-   		</c:if>
-   		<c:if test="${not empty chooseCloth.explanation_image4}">
-        <img class="detailimage" src="data:image/png;base64,${chooseCloth.explanation_image4}" alt="${chooseCloth.cloth_name}">
-   		</c:if>
-   		<c:if test="${not empty chooseCloth.explanation_image5}">
-        <img class="detailimage" src="data:image/png;base64,${chooseCloth.explanation_image5}" alt="${chooseCloth.cloth_name}">
-   		</c:if>
+	
+		<%
+		for (int i = 1; i <= 5; i++) {
+		    String fileName = "1-" + i + ".png"; // 파일 이름
+		    Path filePath = Paths.get(folderPath, fileName);
+
+		    if (Files.exists(filePath)) {
+		        %>
+		        <img class="detailimage" src="/static/image/cloth/cloth${ chooseCloth.cloth_num }/<%= fileName %>" alt="<%= cloth.getCloth_name() %>">
+		        <%
+		    }
+		}
+		%>
+		
 		<p>설명: ${chooseCloth.cloth_explanation}</p>
 		<p>설명: ${chooseCloth.cloth_explanation}</p>
 		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
+		
 	</div>
 
 	<footer>

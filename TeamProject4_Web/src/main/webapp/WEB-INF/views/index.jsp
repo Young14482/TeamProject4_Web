@@ -97,24 +97,20 @@ footer {
 	src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 </head>
 <body>
+	
 	<jsp:include page="/WEB-INF/views/mainBar.jsp"></jsp:include>
 	<main>
 		<section class="middle">
 			<div class="slider">
+				
 				<div>
-					<img
-						src="data:image/png;base64,<%=session.getAttribute("image1")%>"
-						alt="Slide 1">
+				<img src="/static/image/메인이미지1.PNG" alt="Slide 1">
 				</div>
 				<div>
-					<img
-						src="data:image/png;base64,<%=session.getAttribute("image2")%>"
-						alt="Slide 2">
+					<img src="/static/image/메인이미지2.PNG" alt="Slide 2">
 				</div>
 				<div>
-					<img
-						src="data:image/png;base64,<%=session.getAttribute("image3")%>"
-						alt="Slide 3">
+				<img src="/static/image/메인이미지3.PNG" alt="Slide 3">
 				</div>
 			</div>
 		</section>
