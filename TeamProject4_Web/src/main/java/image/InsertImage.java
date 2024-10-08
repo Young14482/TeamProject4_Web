@@ -31,8 +31,8 @@ public class InsertImage {
     	// imagePath에 자신이 넣고싶은 이미지의 경로를 작성합니다.
     	// 해당 클래스를 따로 실행시키면 db에 변환된 데이터가 저장됩니다.
 
-    	String imageName = "실내";
-        String imagePath = "C:\\Users\\GGG\\Desktop\\실내.png";
+    	String imageName = "사계절";
+        String imagePath = "C:\\Users\\GGG\\Desktop\\사계절.jpg";
         String base64Image = encodeImageToBase64(imagePath);
         
         boolean result = ServiceImpl.getInstance().insertImage(imageName, base64Image);
