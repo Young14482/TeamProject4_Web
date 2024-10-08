@@ -4,11 +4,32 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>검색?</title>
+<title>내게 맞는 옷 찾기</title>
 <link rel="stylesheet" type="text/css" href="./static/css/search.css">
 <script src="./static/js/search.js"></script>
 </head>
 <body>
+	<h1>어느 성별의 옷을 찾으시나요?</h1>
+	<div class="gender-container">
+		<div id="gender1" class="gender" onclick="selectGender('1')">
+			<img src="data:image/png;base64,<%=session.getAttribute("남자")%>"
+				alt="남자">
+			<p>남자</p>
+		</div>
+		<div id="gender2" class="gender" onclick="selectGender('2')">
+			<img src="data:image/png;base64,<%=session.getAttribute("여자")%>"
+				alt="여자">
+			<p>여자</p>
+		</div>
+		<div id="gender3" class="gender" onclick="selectGender('3')">
+			<img src="data:image/png;base64,<%=session.getAttribute("공용")%>"
+				alt="공용">
+			<p>공용</p>
+		</div>
+		<div id="gender4" class="gender" onclick="selectGender('4')">
+			<p>상관없음</p>
+		</div>
+	</div>
 	<h1>어느 계절에 입으시나요?</h1>
 	<div class="season-container">
 		<div id="season1" class="season" onclick="selectSeason('1')">
@@ -160,10 +181,11 @@
 
 	<form id="combinedForm"
 		action="${pageContext.request.contextPath}/search" method="post">
+		<input type="hidden" id="genderInput" name="gender" value="">
 		<input type="hidden" id="seasonInput" name="season" value="">
-		<input type="hidden" id="colorInput" name="color" value=""> <input
-			type="hidden" id="usageInput" name="usage" value=""> <input
-			type="hidden" id="priceInput" name="price" value="">
+		<input type="hidden" id="colorInput" name="color" value=""> 
+		<input type="hidden" id="usageInput" name="usage" value=""> 
+		<input type="hidden" id="priceInput" name="price" value="">
 		<button type="button" id="submitBtn" onclick="submitForms()">제출</button>
 	</form>
 </body>

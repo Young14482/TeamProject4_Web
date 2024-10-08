@@ -1,3 +1,6 @@
+@charset "UTF-8";
+
+
 body {
 	font-family: Arial, sans-serif;
 	background-color: #f0f8ff;
@@ -5,18 +8,18 @@ body {
 	font-size: 20px;
 }
 
-.season-container, .color-container, .usage-container {
+.season-container, .color-container, .usage-container, .gender-container {
 	display: flex;
 	justify-content: center;
 	margin-top: 50px;
 }
 
-.season, .color, .usage {
+.season, .color, .usage, .gender {
 	margin: 0 20px;
 	text-align: center;
 }
 
-.season img, .color img, .usage img {
+.season img, .color img, .usage img, .gender img {
 	width: 150px;
 	height: 150px;
 	cursor: pointer;

@@ -12,14 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import image.ClothImage;
 import image.Image;
 import main.ServiceImpl;
 import material.AppContextListener;
+import material.Cloth;
+import material.ClothSorter;
 
 @WebServlet("/search")
 public class SearchServlet extends HttpServlet {
 	AppContextListener app;
 	ServiceImpl serviceImpl = ServiceImpl.getInstance();
+	List<Cloth> clothList = null;
+	private List<Image> allImage;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,7 +57,16 @@ public class SearchServlet extends HttpServlet {
 			for (Image image : allImage) {
 				if (image.getImg_num() == 31) {
 					session.setAttribute("사계절", image.getImg_64());
-				} 
+				}
+				if (image.getImg_num() == 32) {
+					session.setAttribute("남자", image.getImg_64());
+				}
+				if (image.getImg_num() == 33) {
+					session.setAttribute("여자", image.getImg_64());
+				}
+				if (image.getImg_num() == 34) {
+					session.setAttribute("공용", image.getImg_64());
+				}
 			}
 		}
 		req.getRequestDispatcher("/WEB-INF/views/search.jsp").forward(req, resp);
@@ -61,25 +75,82 @@ public class SearchServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 확인용 출력중
-		String season = req.getParameter("season");
-		int parsedSeason = Integer.valueOf(season);
-		System.out.println("계절:" + parsedSeason);
 
-		String color = req.getParameter("color");
-		int parsedColor = Integer.valueOf(color);
-		System.out.println("색:" + parsedColor);
+//		if (clothList == null) {
+			try {
+				String season = req.getParameter("season");
+				int parsedSeason = Integer.valueOf(season);
 
-		String usage = req.getParameter("usage");
-		int parsedUsage = Integer.valueOf(usage);
-		System.out.println("활동:" + parsedUsage);
+				String color = req.getParameter("color");
+				int parsedColor = Integer.valueOf(color);
 
-		String price = req.getParameter("price");
-		String arr[] = price.split("~");
-		String minPrice = arr[0];
-		int parsedMinPrice = Integer.valueOf(minPrice);
-		String maxPrice = arr[1];
-		int parsedMaxPrice = Integer.valueOf(maxPrice);
+				String usage = req.getParameter("usage");
+				int parsedUsage = Integer.valueOf(usage);
+				
+				String gender = req.getParameter("gender");
+				int parsedGender = Integer.valueOf(gender);
+				String sqlGender = null;
+				if (parsedGender == 1) {
+					sqlGender = "남자";
+				} else if (parsedGender == 2) {
+					sqlGender = "여자";
+				} else if (parsedGender == 3) {
+					sqlGender = "공용";
+				} else if (parsedGender == 4) {
+					sqlGender = "다줘";
+				}
+					
+				if (sqlGender == null ) {
+					req.getRequestDispatcher("/WEB-INF/views/search.jsp").forward(req, resp);
+				}
+				
+				String price = req.getParameter("price");
+				String arr[] = price.split("~");
+				String minPrice = arr[0];
+				int parsedMinPrice = Integer.valueOf(minPrice);
+				String maxPrice = arr[1];
+				int parsedMaxPrice = Integer.valueOf(maxPrice);
+			
+				allImage = serviceImpl.findAllImage();
+				List<Cloth> allCloth = serviceImpl.findSearchCloth(sqlGender, parsedSeason, parsedColor, parsedUsage, parsedMinPrice, parsedMaxPrice);
+				clothList = allCloth;
+								
+				HttpSession session = req.getSession();
 
-		System.out.printf("최소값: %d, 최대값: %d\n", parsedMinPrice, parsedMaxPrice);
+				session.setAttribute("searchCloth", clothList);
+
+				req.getRequestDispatcher("/WEB-INF/views/surveySearch.jsp").forward(req, resp);
+			} catch (Exception e) {
+				resp.sendRedirect("/main");
+			}
+		/* } 
+			 * else { req.setCharacterEncoding("utf-8");
+			 * 
+			 * String userInput = req.getParameter("userInput"); String sortOption =
+			 * req.getParameter("sortOption");
+			 * 
+			 * if (userInput != null) { HttpSession session = req.getSession();
+			 * session.setAttribute("userInputDetail", userInput);
+			 * 
+			 * SoftSearchAlgorithm algorithm = new SoftSearchAlgorithm(); List<Cloth>
+			 * researchClothList = algorithm.searchCloth(userInput, clothList);
+			 * 
+			 * if (sortOption != null) { if (sortOption.equals("lowPrice")) {
+			 * ClothSorter.getInstance().sortLowPrice(researchClothList); } else if
+			 * (sortOption.equals("highPrice")) {
+			 * ClothSorter.getInstance().sortHighPrice(researchClothList); } else if
+			 * (sortOption.equals("name")) {
+			 * ClothSorter.getInstance().sortByName(researchClothList); }
+			 * session.setAttribute("sortOption", sortOption); } else {
+			 * session.removeAttribute("sortOption"); }
+			 * 
+			 * session.setAttribute("searchCloth", researchClothList);
+			 * 
+			 * } req.getRequestDispatcher("/WEB-INF/views/surveySearch.jsp").forward(req,
+			 * resp);
+			 * 
+			 * }
+			 */
+
 	}
 }
