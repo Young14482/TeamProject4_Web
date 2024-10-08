@@ -49,6 +49,7 @@ header {
 			<div class="link">
 				<c:if test="${not empty sessionScope.userId}">
 					<p>환영합니다, ${ userId }님!</p>
+					<a href="./modify?userId=${ userId }">내 정보 보기</a>
 				</c:if>
 				<c:if test="${empty sessionScope.userId}">
 					<a href="./user">로그인</a>

@@ -17,6 +17,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
+import clothdetail.ClothReviewMapper;
 import lombok.extern.slf4j.Slf4j;
 import main.Mapper;
 import search.SoftSearchMapper;
@@ -44,6 +45,8 @@ public class AppContextListener implements ServletContextListener {
 		configuration.addMapper(Mapper.class);
 		configuration.addMapper(UserMapper.class);
 		configuration.addMapper(SoftSearchMapper.class);
+		configuration.addMapper(ClothReviewMapper.class);
+		
 		sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 	}
 

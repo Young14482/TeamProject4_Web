@@ -37,14 +37,17 @@ public class ClothDetailServlet extends HttpServlet {
 			if (chooseCloth == null) {
 				resp.sendRedirect("/TeamProject4_Web/main");
 			} else {
+				
+				List<Review> reviewList = ReviewService.getInstance().findReview(chooseCloth.getCloth_num());
 				HttpSession session = req.getSession();
 				resp.setCharacterEncoding("UTF-8");
 				session.setAttribute("chooseCloth", chooseCloth);
+				session.setAttribute("reviewList", reviewList);
 				req.getRequestDispatcher("/WEB-INF/views/detailPage.jsp").forward(req, resp);
 			}
 
 		} catch (Exception e) {
-			resp.sendRedirect("/TeamProject4_Web/main");
+			resp.sendRedirect("/main");
 		}
 
 	}

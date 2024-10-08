@@ -47,7 +47,7 @@ public class InsertImage {
 //            count++;
 //    	}
 
-		String imagePath = "C:\\Users\\GGG\\Desktop\\옷1내용\\메인2.PNG";
+		String imagePath = "C:\\Users\\GGG\\Desktop\\옷1내용\\설명5.PNG";
 		String base64Image = encodeImageToBase64(imagePath);
 
 		boolean result = ServiceImpl.getInstance().insertImageDetail(base64Image, 1);

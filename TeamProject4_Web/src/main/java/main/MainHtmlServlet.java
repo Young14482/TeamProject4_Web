@@ -42,6 +42,10 @@ public class MainHtmlServlet extends HttpServlet {
 					session.setAttribute("image2", allImage.get(i).getImg_64());
 				} else if (allImage.get(i).getImg_num() == 4) {
 					session.setAttribute("image3", allImage.get(i).getImg_64());
+				} else if (allImage.get(i).getImg_num() == 35) {
+					session.setAttribute("good", allImage.get(i).getImg_64());
+				} else if (allImage.get(i).getImg_num() == 36) {
+					session.setAttribute("bad", allImage.get(i).getImg_64());
 				}
 			}
 			

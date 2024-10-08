@@ -31,7 +31,7 @@ public interface Mapper {
 	//main_image1
 	//explanation_image1
 	@Update("UPDATE cloth_img\r\n"
-			+ "SET main_image2 = #{ base64Str }\r\n"
+			+ "SET explanation_image5 = #{ base64Str }\r\n"
 			+ "WHERE cloth_num = #{ cloth_num };")
 	int insertClothDetailImg(@Param("base64Str") String base64Str, @Param("cloth_num") int cloth_num);
 	
