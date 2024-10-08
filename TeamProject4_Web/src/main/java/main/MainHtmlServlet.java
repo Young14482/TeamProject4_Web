@@ -1,7 +1,6 @@
 package main;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import image.ClothImage;
 import image.Image;
 import material.AppContextListener;
 import material.Cloth;
+import material.DataManager;
 
 @WebServlet("/main")
 public class MainHtmlServlet extends HttpServlet {
@@ -26,18 +27,15 @@ public class MainHtmlServlet extends HttpServlet {
 		app.contextInitialized(null);
 		try {
 
-			List<Image> allImage = serviceImpl.findAllImage();
-			List<Cloth> allCloth = serviceImpl.findAllCloth();
-
 			HttpSession session = req.getSession();
-
+			
+			List<Image> allImage = serviceImpl.findAllImage();
+			
+			List<Cloth> allCloth = serviceImpl.findAllCloth();
+			
+			DataManager.inputData("allCloth", allCloth);
+			
 			for (int i = 0; i < allImage.size(); i++) {
-				for (int j = 0; j < allCloth.size(); j++) {
-					if (allCloth.get(j).getCloth_image() == allImage.get(i).getImg_num()) {
-						allCloth.get(j).setBase64Data(allImage.get(i).getImg_64());
-					}
-				}
-
 				if (allImage.get(i).getImg_num() == 2) {
 					session.setAttribute("image1", allImage.get(i).getImg_64());
 				} else if (allImage.get(i).getImg_num() == 3) {
@@ -45,9 +43,9 @@ public class MainHtmlServlet extends HttpServlet {
 				} else if (allImage.get(i).getImg_num() == 4) {
 					session.setAttribute("image3", allImage.get(i).getImg_64());
 				}
-
 			}
-
+			
+			session.removeAttribute("userInputDetail");
 			session.removeAttribute("searchCloth");
 			session.setAttribute("allCloth", allCloth);
 

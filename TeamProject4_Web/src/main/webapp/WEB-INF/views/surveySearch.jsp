@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>검색 창</title>
+<title>설문 결과 페이지</title>
 <style>
 body {
 	justify-content: center;
@@ -126,7 +126,7 @@ header {
 					<li><a href="./user">로그인</a></li>
 					<li><a href="./signup">회원가입</a></li>
 				</c:if>
-				<li><a href="./search">☆내게 맞는 옷 찾기☆</a></li>
+				<li><a href="./search">내게 맞는 옷 찾기</a></li>
 				<li><a href="#">신상품</a></li>
 			</ul>
 		</nav>
@@ -134,10 +134,14 @@ header {
 
 	<div class="search">
 		<form method="post">
+			<div>
+			<h1>설문 조사를 바탕으로 나열한 결과 리스트</h1>
+			
+			</div>
 			<div class="form">
 				<input type="text" id="userInput" name="userInput"
 					value="<c:out value='${userInputDetail}' default=''/>">
-				<button type="submit">검색</button>
+				<button type="submit">결과 내 재검색</button>
 			</div>
 
 			<div class="radio-group">

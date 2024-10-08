@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import image.ClothImage;
 import image.Image;
 import main.ServiceImpl;
 import material.Cloth;
@@ -31,19 +32,9 @@ public class SoftSearchServlet extends HttpServlet {
 		
 		
 		SoftSearchAlgorithm algorithm = new SoftSearchAlgorithm();
-		ServiceImpl serviceImpl = ServiceImpl.getInstance();
-		List<Cloth> searchCloth = algorithm.searchCloth(null, userInput);
-		List<Image> allImage = serviceImpl.findAllImage();
-
+		List<Cloth> searchCloth = algorithm.searchCloth(userInput, null);
 		HttpSession session = req.getSession();
 
-		for (int i = 0; i < allImage.size(); i++) {
-			for (int j = 0; j < searchCloth.size(); j++) {
-				if (searchCloth.get(j).getCloth_image() == allImage.get(i).getImg_num()) {
-					searchCloth.get(j).setBase64Data(allImage.get(i).getImg_64());
-				}
-			}
-		}
 		session.setAttribute("userInputDetail", userInput);
 		
 		if (sortOption != null) {

@@ -13,34 +13,6 @@ body {
 	background-color: #f4f4f4;
 }
 
-header {
-	background-color: #333;
-	color: #fff;
-	padding: 10px 0;
-	position: fixed;
-	width: 100%;
-	top: 0;
-	z-index: 1000;
-}
-
-nav ul {
-	list-style: none;
-	padding: 0;
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	margin: 0;
-}
-
-nav ul li {
-	display: inline;
-}
-
-nav ul li a {
-	color: #fff;
-	text-decoration: none;
-	padding: 10px 20px;
-}
 
 .search {
 	text-align: right;
@@ -71,9 +43,6 @@ footer {
 	color: #fff;
 }
 
-.link {
-	font-size: 30px;
-}
 
 .swiper-container {
 	width: 600px;
@@ -113,9 +82,6 @@ footer {
     margin: 0 auto; /* Center the images */
 }
 
-.logo {
-	text-align: center;
-}
 
 .info {
 	display: flex;
@@ -134,25 +100,7 @@ footer {
 	src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 </head>
 <body>
-	<header>
-		<nav>
-			<div class="logo">
-				<h1>Web Project 홈페이지</h1>
-			</div>
-			<ul class="link">
-				<c:if test="${not empty sessionScope.userId}">
-					<p>환영합니다, ${ userId }님!</p>
-				</c:if>
-				<c:if test="${empty sessionScope.userId}">
-					<li><a href="./user">로그인</a></li>
-					<li><a href="./signup">회원가입</a></li>
-				</c:if>
-				<li><a href="./search">내게 맞는 옷 찾기</a></li>
-				<li><a href="#">신상품</a></li>
-				<li><a href="/TeamProject4_Web/softSearch">검색</a></li>
-			</ul>
-		</nav>
-	</header>
+	<jsp:include page="/WEB-INF/views/mainBar.jsp"></jsp:include>
 	<main>
 		<section class="middle">
 			<div class="slider">

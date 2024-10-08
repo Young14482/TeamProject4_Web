@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import image.ClothImage;
 import image.Image;
 import material.AppContextListener;
 import material.Cloth;
@@ -63,6 +64,33 @@ public class ServiceImpl implements Service {
 		}
 		
 		return null;
+	}
+
+	public List<ClothImage> findAllClothImage() {
+		
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			List<ClothImage> clothImgList = mapper.findAllClothImage();
+			
+			if (clothImgList != null) {
+				return clothImgList;
+			}
+		}
+		
+		return null;
+	}
+
+	public boolean insertImageDetail(String base64Image, int cloth_num) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			int result = mapper.insertClothDetailImg(base64Image, cloth_num);
+			
+			if (result == 1) {
+				sqlSession.commit();
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
