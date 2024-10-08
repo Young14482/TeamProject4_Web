@@ -16,7 +16,6 @@ function selectUsage(usage) {
 	clearSelection('usage');
 	document.getElementById('usage' + usage).classList.add('selected');
 }
-
 ///////////////////////////////////////////////////////////////////////////////
 // 클릭 해제시 작동하는 함수
 function clearSelection(type) {

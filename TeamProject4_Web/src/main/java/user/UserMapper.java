@@ -25,7 +25,23 @@ public interface UserMapper {
 
 	@Select("Select user_ID from user where user_name = #{userName} AND user_birth = #{userBrith}")
 	String UserId(@Param("userName") String userName, @Param("userBrith") String userBrith);
-	
+
 	@Update("update user Set user_pw = #{userPw} where user_id = #{userId} And user_name = #{userName}")
-	int userChangePw(@Param("userName") String userName ,@Param("userId") String userId ,@Param("userPw") String userPw);
+	int userChangePw(@Param("userName") String userName, @Param("userId") String userId,
+			@Param("userPw") String userPw);
+
+	@Select("Select user_name, user_address, user_phone ,user_grade from user where user_ID = #{userId}")
+	@Results(value = { @Result(column = "user_name", property = "name"),
+			@Result(column = "user_address", property = "address"), @Result(column = "user_phone", property = "phone"),
+			@Result(column = "user_grade", property = "grade") })
+	User userModify(@Param("userId") String userId);
+
+	@Update("update user Set user_name = #{userName}, user_phone = #{userPhone}, user_address = #{userAddress} where user_Id = #{userId}")
+	int userChangeModify(@Param("userName") String userName, @Param("userPhone") String userPhone,
+			@Param("userAddress") String userAddress, @Param("userId") String userId);
+	
+	@Select("Select count(user_Id) from user where user_Id = #{userId}")
+	int userIdCheck(@Param("userId") String userId);
+	
+	
 }

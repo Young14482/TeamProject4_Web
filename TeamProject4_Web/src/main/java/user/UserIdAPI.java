@@ -34,7 +34,6 @@ public class UserIdAPI extends HttpServlet {
 			sb.append(line);
 		}
 		String json = sb.toString();
-		System.out.println(json);
 		User user = mapper.readValue(json, User.class);
 
 		String Id = service.UserId(user.getName(), user.getBirth());

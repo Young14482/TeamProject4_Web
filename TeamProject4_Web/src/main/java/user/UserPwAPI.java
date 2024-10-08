@@ -34,11 +34,9 @@ public class UserPwAPI extends HttpServlet {
 			sb.append(line);
 		}
 		String json = sb.toString();
-		System.out.println(json);
 		User user = mapper.readValue(json, User.class);
 
 		if (user.getPw() == null) {
-			System.out.println("여기??");
 			String pw = service.UserPw(user.getName(), user.getId());
 
 			// 정해진게 있다 .. 표준 > 아닌헤더도 쓸순있다.
@@ -49,10 +47,6 @@ public class UserPwAPI extends HttpServlet {
 				resp.setStatus(416);
 			}
 		} else {
-			System.out.println("아니면 여기??");
-			System.out.println(user.getName());
-			System.out.println(user.getId());
-			System.out.println(user.getPw());
 			
 			int pw = service.userChangePw(user.getName(), user.getId(), user.getPw());
 				System.out.println(pw);
