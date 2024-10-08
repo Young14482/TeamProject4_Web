@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.type.JdbcType;
 
 public interface UserMapper {
@@ -18,4 +19,13 @@ public interface UserMapper {
 			+ "values (#{user.id} , #{user.pw} ,#{user.phone} , #{user.name}, #{user.birth},"
 			+ "#{user.address},#{user.gender}, #{user.grade}, #{user.useMoney} )")
 	int insertUser(@Param("user") User user);
+
+	@Select("Select count(user_pw) from user where user_ID = #{userId} AND user_name = #{userName}")
+	String UserPw(@Param("userId") String userId, @Param("userName") String userName);
+
+	@Select("Select user_ID from user where user_name = #{userName} AND user_birth = #{userBrith}")
+	String UserId(@Param("userName") String userName, @Param("userBrith") String userBrith);
+	
+	@Update("update user Set user_pw = #{userPw} where user_id = #{userId} And user_name = #{userName}")
+	int userChangePw(@Param("userName") String userName ,@Param("userId") String userId ,@Param("userPw") String userPw);
 }

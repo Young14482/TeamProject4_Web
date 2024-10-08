@@ -101,6 +101,21 @@ function signupCheck() {
 		alert("성별은 선택해 주세요");
 		return;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// 유저 주소
 	let postcode = document.getElementById("postcode");
 	let address = document.getElementById("address");
@@ -131,7 +146,6 @@ function signupCheck() {
 	// 비밀번호 sha256으로 암호화 작성
 	let pwTemp = sha256(userPw.value);
 
-
 	// 필드를 만드는거
 	let formData = {
 		"id": userId.value,
@@ -146,11 +160,9 @@ function signupCheck() {
 	};
 	// 필드로 만들어 놓은 객체를 JSON만든다.
 	let str = JSON.stringify(formData);
-
 	//객체들을 모아서 로 만들어서 json으로 변환
 	//Json변환한걸 전송 >> 
 	//받은걸 읽어서 User로 만들고 회원가입 DB에 insert
-
 
 	let url = "/signup";
 	//TODO 애니메이션 하나 만들기 > > 시작 

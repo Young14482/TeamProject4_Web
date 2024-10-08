@@ -46,5 +46,51 @@ public class UserServiceImple implements UserService {
 		return -1;
 		
 	}
+
+	// 유저의 비밀번호 찾기
+	@Override
+	public String UserPw(String UserName, String UserId) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+			
+			String UserPw = mapper.UserPw(UserId, UserName);
+			
+			if(UserPw != null) {
+				return UserPw;
+			}
+			
+		}
+		return null;
+	}
+	// 유저의 아이디 찾기
+	@Override
+	public String UserId(String UserName, String UserBrith) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+			
+			String UserId = mapper.UserId(UserName, UserBrith);
+			
+			if(UserId != null) {
+				
+				return UserId;
+			}
+			
+		}
+		return null;
+		
+	}
+	// 비밀번호 변경
+	@Override
+	public int userChangePw(String userName, String UserId, String Pw) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+			int userchanePw = mapper.userChangePw(userName, UserId, Pw);
+			if(userchanePw != 0) {
+				sqlSession.commit();
+				return userchanePw;
+			}
+		}
+		return 0;
+	}
 	
 }
