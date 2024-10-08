@@ -49,6 +49,11 @@ public class SearchServlet extends HttpServlet {
 					}
 				}
 			}
+			for (Image image : allImage) {
+				if (image.getImg_num() == 31) {
+					session.setAttribute("사계절", image.getImg_64());
+				} 
+			}
 		}
 		req.getRequestDispatcher("/WEB-INF/views/search.jsp").forward(req, resp);
 	}
