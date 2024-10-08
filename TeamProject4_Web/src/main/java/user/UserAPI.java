@@ -1,5 +1,6 @@
 package user;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
@@ -21,50 +22,50 @@ import lombok.extern.slf4j.Slf4j;
 public class UserAPI extends HttpServlet {
 	UserService service = new UserServiceImple();
 
-	
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/WEB-INF/views/Login.jsp")
-		.forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/Login.jsp").forward(req, resp);
 	}
-
-
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
 		resp.setHeader("Content-Type", "application/json; charset=utf-8");
+		req.setCharacterEncoding("utf-8");
 
-		String Id = req.getParameter("Id");
-		String Pw = req.getParameter("Pw");
+		JsonMapper mapper = new JsonMapper();
+		StringBuilder sb = new StringBuilder();
+		BufferedReader reader = req.getReader();
 
-		String UserPw = service.Pw(Id);
-		
-		if(UserPw != null) {
-			
-			if(UserPw.equals(Pw)) {
-				
+		String line;
+
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
+		}
+		String json = sb.toString();
+		System.out.println(json);
+		User user = mapper.readValue(json, User.class);
+		String id = user.getId();
+		System.out.println(id);
+		String pw = user.getPw();
+
+		String Pw = service.Pw(id);
+		if (Pw != null) {
+
+			if (Pw.equals(pw)) {
+
 				HttpSession session = req.getSession();
-				session.setAttribute("Id", Id);
-				req.getRequestDispatcher("/WEB-INF/views/index.jsp")
-					.forward(req, resp);
+				session.setAttribute("userId", id);
 				
-				System.out.println("로그인성공");
+				// 리다이렉트 서버에서 페이지 이동하라는 명령
+				// resp.sendRedirect("/main");
 			} else {
-				
-				req.getRequestDispatcher("/WEB-INF/views/Login.jsp")
-				.forward(req, resp);
-				
+				resp.setStatus(403);
 				System.out.println("비밀번호가 올바르지 않음");
 			}
 		} else {
-			
-			req.getRequestDispatcher("/WEB-INF/views/Login.jsp")
-			.forward(req, resp);
-			
+			resp.setStatus(405);
 			System.out.println("회원가입이 필요함");
 		}
-		
 	}
+
 }
