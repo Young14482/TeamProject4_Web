@@ -52,7 +52,7 @@ public class SoftSearchServlet extends HttpServlet {
 	
 		session.setAttribute("searchCloth", searchCloth);
 	
-		resp.sendRedirect("/TeamProject4_Web/softSearch");
+		resp.sendRedirect("/softSearch");
 	}
 
 }

@@ -44,7 +44,6 @@ public class AppContextListener implements ServletContextListener {
 		configuration.addMapper(Mapper.class);
 		configuration.addMapper(UserMapper.class);
 		configuration.addMapper(SoftSearchMapper.class);
-		
 		sessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 	}
 

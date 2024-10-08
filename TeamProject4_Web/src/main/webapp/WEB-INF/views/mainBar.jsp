@@ -56,7 +56,7 @@ header {
 				</c:if>
 				<a href="./search">내게 맞는 옷 찾기</a>
 				<a href="#">신상품</a>
-				<a href="/TeamProject4_Web/softSearch">검색</a>
+				<a href="/softSearch">검색</a>
 			</div>
 		</nav>
 	</header>

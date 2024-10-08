@@ -99,7 +99,7 @@ public class SearchServlet extends HttpServlet {
 
 				req.getRequestDispatcher("/WEB-INF/views/surveySearch.jsp").forward(req, resp);
 			} catch (Exception e) {
-				resp.sendRedirect("/TeamProject4_Web/main");
+				resp.sendRedirect("/main");
 			}
 		} else {
 			req.setCharacterEncoding("utf-8");
