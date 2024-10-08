@@ -8,7 +8,6 @@
 <link rel="stylesheet" type="text/css" href="./login/Login.css">
 </head>
 <body>
-
 	<div class="login-page">
 		<form id="loginForm" method="POST">
 			<div class="login">

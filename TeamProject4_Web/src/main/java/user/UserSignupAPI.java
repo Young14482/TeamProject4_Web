@@ -31,45 +31,6 @@ public class UserSignupAPI extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.getRequestDispatcher("/WEB-INF/views/Signup.jsp")
 		.forward(req, resp);
-//		req.getRequestDispatcher("/WEB-INF/views/kakao.jsp")
-//		.forward(req, resp);
-		
-//		String srant_type = "authorization_code";
-//		String client_id = "8f876a5cadf6154cf159eff29dd33777";
-//		String redirect_uri = "http://localhost:8080/signup";
-//		String code = req.getParameter("code"); // 인가 코드
-//		if(code == null) {
-//			code = "FF";
-//		}
-//		 OkHttpClient client = new OkHttpClient();
-//	        // Form 데이터 생성
-//	        RequestBody formBody = new FormBody.Builder()
-//	                .add("grant_type", srant_type)
-//	                .add("client_id", client_id)
-//	                .add("redirect_uri", redirect_uri)
-//	                .add("code", code)
-//	                .build();
-//	        // 요청 생성
-//	        Request request = new Request.Builder()
-//	                .url("https://kauth.kakao.com/oauth/token") // 실제 요청 URL로 변경하세요
-//	                .post(formBody)
-//	                .build();
-//	        // 요청 보내기 및 응답 처리
-//	        try (Response response = client.newCall(request).execute()) {
-//	            if (response.isSuccessful()) {
-//	            	String responseBody = response.body().string();
-//	                // JSON 파싱
-//	                JSONObject jsonObject = new JSONObject(responseBody);
-//	                String accessToken = jsonObject.getString("access_token");
-//	                System.out.println(accessToken);
-//	            } else {
-//	                System.out.println("Request failed: " + response.code());
-//	            }
-//	        } catch (Exception e) {
-//	            e.printStackTrace();
-//	        }
-		
-		
 		
 	}
 
@@ -105,7 +66,29 @@ public class UserSignupAPI extends HttpServlet{
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		super.doPut(req, resp);
+		resp.setHeader("Content-Type", "application/json; charset=utf-8");
+		req.setCharacterEncoding("utf-8");
+
+		JsonMapper mapper = new JsonMapper();
+		StringBuilder sb = new StringBuilder();
+		BufferedReader reader = req.getReader();
+
+		String line;
+
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
+		}
+		String json = sb.toString();
+		User user = mapper.readValue(json, User.class);
+		
+		int count = service.userIdCheck(user.getId());
+		
+		if(count > 0) {
+			resp.setStatus(200);
+		}else {
+			resp.setStatus(414);
+		}
+		
 	}
 	
 }

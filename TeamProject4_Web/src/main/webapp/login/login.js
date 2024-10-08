@@ -253,10 +253,6 @@ function passwordChang() {
 }
 
 
-
-
-
-
 function ChangDate(date) {
 	const year = parseInt(date.substring(0, 2));
 	const month = date.substring(2, 4);
@@ -268,15 +264,3 @@ function ChangDate(date) {
 	// 11자리 날짜 형식으로 반환
 	return `${fullYear}-${month}-${day}`;
 }
-
-
-
-
-
-
-
-
-
-
-
-
