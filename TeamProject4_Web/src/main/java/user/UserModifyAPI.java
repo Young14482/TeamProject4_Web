@@ -27,7 +27,6 @@ public class UserModifyAPI extends HttpServlet {
 		String userId = (String) session.getAttribute("userId");
 		// 여기서 동작그만
 		User user = service.userModify(userId);
-		System.out.println(user.toString());
 		if (user != null) {
 			String userName = user.getName();
 			String userPhone = user.getPhone();

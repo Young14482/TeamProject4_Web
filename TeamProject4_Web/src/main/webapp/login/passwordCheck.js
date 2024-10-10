@@ -137,17 +137,12 @@ function signupCheck() {
 		alert("성별은 선택해 주세요");
 		return;
 	}
-
 	// 유저 주소
 	let postcode = document.getElementById("postcode");
 	let address = document.getElementById("address");
 	let detailAddress = document.getElementById("detailAddress");
 	// 유저 풀주소
 	let fulllAddress = `${postcode.value} ${address.value} ${detailAddress.value}`;
-
-
-
-
 
 	// 유저 아이디
 	let userId = document.getElementById("userId");
@@ -217,11 +212,4 @@ cansel.addEventListener("click", CanselBtn)
 function CanselBtn() {
 	window.location = "http://localhost:8080/main"
 }
-
-
-
-
-
-
-
 

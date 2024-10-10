@@ -9,7 +9,6 @@
 <head>
 <meta charset="UTF-8">
 <title>옷 상세 페이지</title>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <style type="text/css">
 .image-container {
 	position: relative;
@@ -180,12 +179,10 @@ button:hover {
 				<p class="good-or-bad">${review.good_or_bad}</p>
 				<c:choose>
 					<c:when test="${review.good_or_bad == 'good'}">
-						<img src="data:image/png;base64,<%=session.getAttribute("good")%>"
-							alt="좋아요" width="24" height="24" style="margin-top: 15px;">
+						<img src="/static/image/엄지위로척.png" alt="좋아요" width="24" height="24" style="margin-top: 15px;">
 					</c:when>
 					<c:when test="${review.good_or_bad == 'bad'}">
-						<img src="data:image/png;base64,<%=session.getAttribute("bad")%>"
-							alt="싫어요" width="24" height="24" style="margin-top: 15px;">
+						<img src="/static/image/엄지아래로척.png" alt="싫어요" width="24" height="24" style="margin-top: 15px;">
 					</c:when>
 				</c:choose>
 			</div>
@@ -244,4 +241,3 @@ button:hover {
 </script>
 
 </html>
-

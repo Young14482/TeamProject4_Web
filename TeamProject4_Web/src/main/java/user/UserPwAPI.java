@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
@@ -28,6 +29,9 @@ public class UserPwAPI extends HttpServlet {
 		StringBuilder sb = new StringBuilder();
 		BufferedReader reader = req.getReader();
 
+		HttpSession session = req.getSession();
+		String userId = (String) session.getAttribute("userId");
+
 		String line;
 
 		while ((line = reader.readLine()) != null) {
@@ -46,14 +50,25 @@ public class UserPwAPI extends HttpServlet {
 			} else {
 				resp.setStatus(416);
 			}
-		} else {
-			
-			int pw = service.userChangePw(user.getName(), user.getId(), user.getPw());
-				System.out.println(pw);
+		} else if (userId != null) {
+			user.setId(userId);
+			int pw = service.userChangePw2(user.getId(), user.getPw());
+			System.out.println(pw);
 			if (pw > 0) {
 				resp.setCharacterEncoding("utf-8");
 				resp.setHeader("Content-Type", "text/plain; charset=utf-8");
 				resp.setStatus(200);
+				
+			} else {
+				resp.setStatus(414);
+			}
+		} else {
+			int pw = service.userChangePw(user.getName(), user.getId(), user.getPw());
+			if (pw > 0) {
+				resp.setCharacterEncoding("utf-8");
+				resp.setHeader("Content-Type", "text/plain; charset=utf-8");
+				resp.setStatus(200);
+				req.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
 			} else {
 				resp.setStatus(414);
 			}

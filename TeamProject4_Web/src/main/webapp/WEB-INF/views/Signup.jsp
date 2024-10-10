@@ -45,13 +45,15 @@
 			<div class="login">
 				<label for="userId">아이디</label> <input type="text" id="userId"
 					name="userId" required>
-				<button type="button" class="IdCheck">아이디 충복체크</button>
+				<button type="button" class="IdCheck">아이디 중복체크</button>
 			</div>
+			
 			<span class="IdCheckText"></span>
 			<div class="login">
 				<label for="password">비밀번호</label> <input type="password"
 					id="password" name="password" required>
 			</div>
+			
 			<div class="login">
 				<label for="passwordConfirm">비밀번호 확인</label> <input type="password"
 					id="passwordConfirm" name="passwordConfirm" required disabled>
@@ -70,5 +72,4 @@
 <script src="/login/passwordCheck.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
-
 </html>

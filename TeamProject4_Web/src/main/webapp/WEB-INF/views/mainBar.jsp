@@ -37,6 +37,11 @@ header {
 	top: 0;
 	z-index: 1000;
 	transition: top 0.5s;
+	height: 120px;
+}
+
+.link p {
+	margin-top: 0px;
 }
 </style>
 </head>
@@ -50,6 +55,7 @@ header {
 				<c:if test="${not empty sessionScope.userId}">
 					<p>환영합니다, ${ userId }님!</p>
 					<a href="./modify?userId=${ userId }">내 정보 보기</a>
+					<a href="./shoppingCart?userId=${ userId }">장바구니</a>
 				</c:if>
 				<c:if test="${empty sessionScope.userId}">
 					<a href="./user">로그인</a>

@@ -19,5 +19,9 @@ public interface UserService {
 	int userChangeModify(String userName, String userPhone, String userAddress, String userId);
 	// 아이디 중복 체크
 	int userIdCheck(String userId);
+	// 비밀번호 변경2
+	int userChangePw2(String UserId, String Pw);
+	// 회원탈퇴 구현
+	int userLeave(String userId);
 	
 }

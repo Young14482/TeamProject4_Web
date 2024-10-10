@@ -24,44 +24,43 @@ import okhttp3.Response;
 
 @WebServlet("/signup")
 @Slf4j
-public class UserSignupAPI extends HttpServlet{
+public class UserSignupAPI extends HttpServlet {
 	private UserService service = UserServiceImple.getInstance();
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/WEB-INF/views/Signup.jsp")
-		.forward(req, resp);
-		
+		req.getRequestDispatcher("/WEB-INF/views/Signup.jsp").forward(req, resp);
+
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
-		
+
 		JsonMapper mapper = new JsonMapper();
 		StringBuilder sb = new StringBuilder();
 		BufferedReader reader = req.getReader();
-	
+
 		String line;
-		
+
 		while ((line = reader.readLine()) != null) {
 			sb.append(line);
 		}
 		String json = sb.toString();
-		
-		
+
 		User user = mapper.readValue(json, User.class);
-		
-		int result = service.InsertUser(user);
-		resp.setCharacterEncoding("utf-8");
-		
-		resp.setHeader("Content-Type", "application/json; charset=utf-8");
-		PrintWriter pw = resp.getWriter();
-		if(result > 0) {
-			pw.print(json); // body
-			pw.flush(); // 버퍼 비우는거
+		if (user.getName() != null) {
+			int result = service.InsertUser(user);
+			resp.setCharacterEncoding("utf-8");
+
+			resp.setHeader("Content-Type", "application/json; charset=utf-8");
+			PrintWriter pw = resp.getWriter();
+			if (result > 0) {
+				pw.print(json); // body
+				pw.flush(); // 버퍼 비우는거
+			}
+
 		}
-		
 	}
 
 	@Override
@@ -80,15 +79,15 @@ public class UserSignupAPI extends HttpServlet{
 		}
 		String json = sb.toString();
 		User user = mapper.readValue(json, User.class);
-		
+
 		int count = service.userIdCheck(user.getId());
-		
-		if(count > 0) {
+
+		if (count > 0) {
 			resp.setStatus(200);
-		}else {
+		} else {
 			resp.setStatus(414);
 		}
-		
+
 	}
-	
+
 }

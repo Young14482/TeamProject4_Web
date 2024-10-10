@@ -10,6 +10,7 @@
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/mainBar.jsp"></jsp:include>
+    <div class="main">
     <div class="info">
         <h1>쇼핑 카트</h1>
     </div>
@@ -79,5 +80,7 @@
         </div>
         <button data-action="order">주문하기</button>
     </div>
+    </div>
+    
 </body>
 </html>
