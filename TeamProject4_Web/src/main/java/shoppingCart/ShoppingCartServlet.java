@@ -33,12 +33,6 @@ public class ShoppingCartServlet extends HttpServlet {
 			String userId = "nana1234";
 
 			List<ShoppingCartItem> shoppingCartList = serviceImpl.selectShoppingCart(userId);
-			if (shoppingCartList != null) {
-				System.out.println(shoppingCartList.size());
-				System.out.println(shoppingCartList.get(0).getCloth_num());
-			} else {
-				System.out.println("없다 게이야");
-			}
 
 			session.setAttribute("shoppingCartList", shoppingCartList);
 

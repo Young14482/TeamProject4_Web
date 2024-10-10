@@ -23,21 +23,6 @@ public class ServiceImpl implements Service {
 	}
 
 	@Override
-	public boolean insertImageToImg(String imageName, String base64Str) {
-
-		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
-			Mapper mapper = sqlSession.getMapper(Mapper.class);
-			int pk = mapper.insertImageToImg(imageName, base64Str);
-
-			if (pk == 1) {
-				sqlSession.commit();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public boolean insertImage(String imageName, String base64Str) {
 
 		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
@@ -108,6 +93,7 @@ public class ServiceImpl implements Service {
 		return false;
 	}
 
+
 	@Override
 	public List<Cloth> findSearchCloth(String gender, int parsedSeason, int parsedColor, int parsedUsage,
 			int parsedMinPrice, int parsedMaxPrice) {
@@ -146,5 +132,19 @@ public class ServiceImpl implements Service {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean insertImageToImg(String imageName, String base64Str) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			int result = mapper.insertImageToImg(imageName, base64Str);
+
+			if (result == 1) {
+				sqlSession.commit();
+				return true;
+			}
+		}
+		return false;
 	}
 }

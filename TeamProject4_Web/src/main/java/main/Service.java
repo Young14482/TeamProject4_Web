@@ -7,7 +7,6 @@ import material.Cloth;
 import shoppingCart.ShoppingCartItem;
 
 public interface Service {
-
 	boolean insertImageToImg(String imageName, String base64Str);
 
 	boolean insertImage(String imageName, String base64Str);

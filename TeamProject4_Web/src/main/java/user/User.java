@@ -29,4 +29,19 @@ public class User {
 		this.pw = pw;
 	}
 	
+	public static User UserId(String name, String birth) {
+		User user = new User();
+		user.setName(name);
+		user.setBirth(birth);
+		return user;
+	}
+	
+	public static User UserPw(String name, String id) {
+		User user = new User();
+		user.setName(name);
+		user.setId(id);
+		return user;
+	}
+	
+	
 }

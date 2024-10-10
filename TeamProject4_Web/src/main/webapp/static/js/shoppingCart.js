@@ -11,8 +11,25 @@ document.addEventListener("DOMContentLoaded", function() {
             totalPrice += itemTotal;
         });
         
-        document.querySelector('.total-price').textContent = `${totalPrice}원`;
-        document.querySelector('.final-total-price').textContent = `${totalPrice + 3500}원`;
+        const totalPriceElement = document.querySelector('.total-price');
+        const finalTotalPriceElement = document.querySelector('.final-total-price');
+        if (totalPriceElement) {
+            totalPriceElement.textContent = `${totalPrice}원`;
+        }
+        if (finalTotalPriceElement) {
+            finalTotalPriceElement.textContent = `${totalPrice + 3500}원`;
+        }
+
+        if (rows.length === 0) {
+            const tableElement = document.querySelector('table');
+            const emptyMessageElement = document.querySelector('.empty-message');
+            if (tableElement) {
+                tableElement.style.display = 'none';
+            }
+            if (emptyMessageElement) {
+                emptyMessageElement.style.display = 'block';
+            }
+        }
     }
 
     if (selectDeleteButton) {

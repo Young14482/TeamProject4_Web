@@ -53,3 +53,10 @@ button {
     font-size: 26px; /* 기존 크기에서 10pt 증가 */
     padding: 10px 20px; /* 버튼 크기 조절 */
 }
+/* 문구 스타일 */
+.empty-message {
+    text-align: center;
+    font-size: 30pt;
+    margin-top: 50px;
+    display: none; /* 기본적으로 숨김 */
+}

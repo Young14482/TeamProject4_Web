@@ -15,13 +15,12 @@ import shoppingCart.ShoppingCartItem;
 
 public interface Mapper {
 
+	@Insert("insert into img (img_name, img_64) values (#{ imageName }, #{ base64Str });")
+	int insertImageToImg(@Param("imageName") String imageName, @Param("base64Str") String base64Str);
 	
 	@Insert("insert into cloth_img (image_name, list_image) values (#{ imageName }, #{ base64Str });")
 	int insertImage(@Param("imageName") String imageName, @Param("base64Str") String base64Str);
 
-	@Insert("insert into img (img_name, img_64) values (#{ imageName }, #{ base64Str });")
-	int insertImageToImg(@Param("imageName") String imageName, @Param("base64Str") String base64Str);
-	
 	@Select("select * from img")
 	List<Image> findAllImage();
 
@@ -36,10 +35,9 @@ public interface Mapper {
 	//main_image1
 	//explanation_image1
 	@Update("UPDATE cloth_img\r\n"
-			+ "SET main_image2 = #{ base64Str }\r\n"
+			+ "SET explanation_image5 = #{ base64Str }\r\n"
 			+ "WHERE cloth_num = #{ cloth_num };")
 	int insertClothDetailImg(@Param("base64Str") String base64Str, @Param("cloth_num") int cloth_num);
-	
 	
 	@Select("SELECT * FROM lp.cloth as a \r\n"
 	        + "join categorys as b on a.cloth_categorys = b.categorys_num \r\n"
