@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const selectDeleteButton = document.querySelector('button[data-action="select-delete"]');
     const deleteAllButton = document.querySelector('button[data-action="delete-all"]');
     
-    function updateTotals() {
+  /*  function updateTotals() {
         let totalPrice = 0;
         const rows = document.querySelectorAll('tbody tr');
         
@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function() {
         
         const totalPriceElement = document.querySelector('.total-price');
         const finalTotalPriceElement = document.querySelector('.final-total-price');
+		
+		console.log(rows.length)
+		
         if (totalPriceElement) {
             totalPriceElement.textContent = `${totalPrice}원`;
         }
@@ -20,17 +23,26 @@ document.addEventListener("DOMContentLoaded", function() {
             finalTotalPriceElement.textContent = `${totalPrice + 3500}원`;
         }
 
-        if (rows.length === 0) {
-            const tableElement = document.querySelector('table');
-            const emptyMessageElement = document.querySelector('.empty-message');
+        const tableElement = document.querySelector('table');
+        const emptyMessageElement = document.querySelector('.empty-message');
+        if (rows.length === 0) { // 모든 항목이 삭제된 경우
             if (tableElement) {
-                tableElement.style.display = 'none';
+                tableElement.style.display = 'none'; // 테이블 숨기기
             }
             if (emptyMessageElement) {
+                emptyMessageElement.classList.remove('hidden'); // 문구 표시
                 emptyMessageElement.style.display = 'block';
             }
+        } else {
+            if (tableElement) {
+                tableElement.style.display = ''; // 테이블 표시
+            }
+            if (emptyMessageElement) {
+                emptyMessageElement.classList.add('hidden'); // 문구 숨기기
+                emptyMessageElement.style.display = 'none';
+            }
         }
-    }
+    }*/
 
     if (selectDeleteButton) {
         selectDeleteButton.addEventListener('click', function() {
@@ -52,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         checkedItems.forEach(item => {
                             item.closest('tr').remove();
                         });
-                        updateTotals();
+                        location.reload(); // 페이지 새로고침
                     }
                 });
             }
@@ -79,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         allItems.forEach(item => {
                             item.closest('tr').remove();
                         });
-                        updateTotals();
+                        location.reload(); // 페이지 새로고침
                     }
                 });
             }

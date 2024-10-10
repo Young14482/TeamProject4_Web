@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
-<html>
 <head>
 <meta charset="UTF-8">
 <title>가입 회원 관리 페이지</title>

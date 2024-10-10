@@ -28,7 +28,7 @@ public class SearchServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		clothList = null;
 		if (req.getAttribute("봄") == null) {
 			List<Image> allImage = serviceImpl.findAllImage();
 			HttpSession session = req.getSession();
@@ -76,7 +76,7 @@ public class SearchServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 확인용 출력중
 
-//		if (clothList == null) {
+		if (clothList == null) {
 			try {
 				String season = req.getParameter("season");
 				int parsedSeason = Integer.valueOf(season);
@@ -86,7 +86,7 @@ public class SearchServlet extends HttpServlet {
 
 				String usage = req.getParameter("usage");
 				int parsedUsage = Integer.valueOf(usage);
-				
+
 				String gender = req.getParameter("gender");
 				int parsedGender = Integer.valueOf(gender);
 				String sqlGender = null;
@@ -99,22 +99,23 @@ public class SearchServlet extends HttpServlet {
 				} else if (parsedGender == 4) {
 					sqlGender = "다줘";
 				}
-					
-				if (sqlGender == null ) {
+
+				if (sqlGender == null) {
 					req.getRequestDispatcher("/WEB-INF/views/search.jsp").forward(req, resp);
 				}
-				
+
 				String price = req.getParameter("price");
 				String arr[] = price.split("~");
 				String minPrice = arr[0];
 				int parsedMinPrice = Integer.valueOf(minPrice);
 				String maxPrice = arr[1];
 				int parsedMaxPrice = Integer.valueOf(maxPrice);
-			
+
 				allImage = serviceImpl.findAllImage();
-				List<Cloth> allCloth = serviceImpl.findSearchCloth(sqlGender, parsedSeason, parsedColor, parsedUsage, parsedMinPrice, parsedMaxPrice);
+				List<Cloth> allCloth = serviceImpl.findSearchCloth(sqlGender, parsedSeason, parsedColor, parsedUsage,
+						parsedMinPrice, parsedMaxPrice);
 				clothList = allCloth;
-								
+
 				HttpSession session = req.getSession();
 
 				session.setAttribute("searchCloth", clothList);
@@ -123,34 +124,39 @@ public class SearchServlet extends HttpServlet {
 			} catch (Exception e) {
 				resp.sendRedirect("/main");
 			}
-		/* } 
-			 * else { req.setCharacterEncoding("utf-8");
-			 * 
-			 * String userInput = req.getParameter("userInput"); String sortOption =
-			 * req.getParameter("sortOption");
-			 * 
-			 * if (userInput != null) { HttpSession session = req.getSession();
-			 * session.setAttribute("userInputDetail", userInput);
-			 * 
-			 * SoftSearchAlgorithm algorithm = new SoftSearchAlgorithm(); List<Cloth>
-			 * researchClothList = algorithm.searchCloth(userInput, clothList);
-			 * 
-			 * if (sortOption != null) { if (sortOption.equals("lowPrice")) {
-			 * ClothSorter.getInstance().sortLowPrice(researchClothList); } else if
-			 * (sortOption.equals("highPrice")) {
-			 * ClothSorter.getInstance().sortHighPrice(researchClothList); } else if
-			 * (sortOption.equals("name")) {
-			 * ClothSorter.getInstance().sortByName(researchClothList); }
-			 * session.setAttribute("sortOption", sortOption); } else {
-			 * session.removeAttribute("sortOption"); }
-			 * 
-			 * session.setAttribute("searchCloth", researchClothList);
-			 * 
-			 * } req.getRequestDispatcher("/WEB-INF/views/surveySearch.jsp").forward(req,
-			 * resp);
-			 * 
-			 * }
-			 */
+
+		} else {
+			req.setCharacterEncoding("utf-8");
+
+			String userInput = req.getParameter("userInput");
+			String sortOption = req.getParameter("sortOption");
+
+			if (userInput != null) {
+				HttpSession session = req.getSession();
+				session.setAttribute("userInputDetail", userInput);
+
+				SoftSearchAlgorithm algorithm = new SoftSearchAlgorithm();
+				List<Cloth> researchClothList = algorithm.searchCloth(userInput, clothList);
+
+				if (sortOption != null) {
+					if (sortOption.equals("lowPrice")) {
+						ClothSorter.getInstance().sortLowPrice(researchClothList);
+					} else if (sortOption.equals("highPrice")) {
+						ClothSorter.getInstance().sortHighPrice(researchClothList);
+					} else if (sortOption.equals("name")) {
+						ClothSorter.getInstance().sortByName(researchClothList);
+					}
+					session.setAttribute("sortOption", sortOption);
+				} else {
+					session.removeAttribute("sortOption");
+				}
+
+				session.setAttribute("searchCloth", researchClothList);
+
+			}
+			req.getRequestDispatcher("/WEB-INF/views/surveySearch.jsp").forward(req, resp);
+
+		}
 
 	}
 }

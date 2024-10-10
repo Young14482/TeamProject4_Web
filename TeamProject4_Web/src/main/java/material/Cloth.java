@@ -27,15 +27,6 @@ public class Cloth {
 	private int usage_category2;
 	private int usage_category3;
 
-	private String list_image;
-	private String main_image1;
-	private String main_image2;
-	private String main_image3;
-	private String explanation_image1;
-	private String explanation_image2;
-	private String explanation_image3;
-	private String explanation_image4;
-	private String explanation_image5;
 
 	private int cloth_good;
 	private int cloth_bad;

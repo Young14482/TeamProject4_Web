@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import image.ClothImage;
 import image.Image;
 import material.Cloth;
+import payment.PayCloth;
 import shoppingCart.ShoppingCartItem;
 
 public interface Mapper {
@@ -20,7 +21,7 @@ public interface Mapper {
 	
 	@Insert("insert into cloth_img (image_name, list_image) values (#{ imageName }, #{ base64Str });")
 	int insertImage(@Param("imageName") String imageName, @Param("base64Str") String base64Str);
-	
+
 	@Select("select * from img")
 	List<Image> findAllImage();
 
@@ -61,4 +62,46 @@ public interface Mapper {
 
 	@Delete("DELETE FROM lp.shoppingcart WHERE cloth_num = #{clothNum}")
     int deleteFromShoppingCart(@Param("clothNum") int clothNum);
+	
+	
+	// 장바구니 관련
+	
+	@Select("select shoppingcart_count from shoppingcart where user_ID = #{userId} and cloth_num = #{clothNum};")
+	Integer findUserShoppingCartDetail(@Param("userId") String userId, @Param("clothNum") int clothNum);
+	
+	@Update("update shoppingcart set shoppingcart_count = #{count} where user_ID = #{userId} and cloth_num = #{clothNum};")
+	int updateUserShoppingCartDetail(@Param("count") int count, @Param("userId") String userId, @Param("clothNum") int clothNum);
+	
+	@Insert("insert into shoppingcart(user_ID, cloth_num, shoppingcart_count) values (#{userId}, #{clothNum}, 1);")
+	Integer insertUserShoppingCartDetail(@Param("userId") String userId, @Param("clothNum") int clothNum);
+
+	
+	// 유저가 결제완료한 옷들 관련
+	
+	@Select("select * from payment AS a\r\n"
+			+ "join cloth AS b ON a.cloth_num = b.cloth_num\r\n"
+			+ "where user_ID = #{userId} ;")
+	List<PayCloth> findUserClothsToPay(@Param("userId") String userId);
+
+	
+	// 리뷰 관련
+	
+	@Insert("insert into review_collect(user_ID, cloth_num, reviewDetail, good_or_bad) values (#{userId}, #{cloth_num}, #{reviewDetail}, #{good_or_bad});")
+	Integer insertReview(@Param("userId") String user_ID, @Param("cloth_num") int cloth_num, @Param("reviewDetail") String reviewDetail, @Param("good_or_bad") String good_or_bad);
+
+	@Update("update payment set write_review = 1 where user_ID = #{userId} and cloth_num = #{cloth_num};")
+	Integer updateUserStatus(@Param("userId") String user_ID, @Param("cloth_num") int cloth_num);
+	
+	@Update("update cloth set cloth_good = cloth_good + 1 where cloth_num = #{cloth_num};")
+	Integer updateClothGood(@Param("cloth_num") int cloth_num);
+	
+	@Update("update cloth set cloth_bad = cloth_bad + 1 where cloth_num = #{cloth_num};")
+	Integer updateClothBad(@Param("cloth_num") int cloth_num);
+
+	
+
+	
+	
+	
+	
 }

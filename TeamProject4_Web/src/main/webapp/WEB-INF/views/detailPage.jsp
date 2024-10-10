@@ -71,12 +71,12 @@ button:hover {
 }
 
 .icon {
-	display: flex;
-	gap: 50px;
+    display: flex;
+    gap: 50px;
 }
 
 .clothDetail {
-	width: 700px;
+    width: 700px;
 }
 </style>
 <script type="text/javascript">
@@ -91,9 +91,10 @@ button:hover {
 
     function redirectToCart() {
         var userId = '<%= session.getAttribute("userId") %>';
+        var clothNum = document.getElementById("clothNum").value;
         if (userId) {
-        	 alert("상품을 장바구니에 담았습니다.");
-            window.location.href = '/user';
+            alert("상품을 장바구니에 담았습니다.");
+            window.location.href = '/add?userId=' + userId + '&cloth_num=' + clothNum;
         } else {
             window.location.href = '/user';
         }
@@ -104,29 +105,27 @@ button:hover {
     <jsp:include page="/WEB-INF/views/mainBar.jsp"></jsp:include>
 
     <div class="main">
-        <div class=clothDetail>
+        <div class="clothDetail">
             <jsp:include page="/WEB-INF/views/clothDetail.jsp"></jsp:include>
         </div>
 
         <div class="container">
             <div class="info">
                 <h1>제품 상세 정보</h1>
+                <input type="hidden" id="clothNum" value="${chooseCloth.cloth_num}" />
+                <p>옷 번호: ${chooseCloth.cloth_num}</p>
                 <p>이름: ${chooseCloth.cloth_name}</p>
                 <p>가격: ${chooseCloth.cloth_price}</p>
                 <p>설명: ${chooseCloth.cloth_explanation}</p>
                 <button onclick="redirectToPurchase()">바로구매</button>
                 <button onclick="redirectToCart()">장바구니</button>
                 <div class="icon">
-                
-                	<p><img src="/static/image/엄지위로척.png" alt="좋아요" width="24" height="24" style="vertical-align: bottom;">${chooseCloth.cloth_good}</p>
-                	<p><img src="/static/image/엄지아래로척.png" alt="좋아요" width="24" height="24" style="vertical-align: bottom;">${chooseCloth.cloth_bad}</p>
-                	
+                    <p><img src="/static/image/엄지위로척.png" alt="좋아요" width="24" height="24" style="vertical-align: bottom;">${chooseCloth.cloth_good}</p>
+                    <p><img src="/static/image/엄지아래로척.png" alt="좋아요" width="24" height="24" style="vertical-align: bottom;">${chooseCloth.cloth_bad}</p>
                 </div>
-                
             </div>
         </div>
     </div>
-
 </body>
 </html>
 

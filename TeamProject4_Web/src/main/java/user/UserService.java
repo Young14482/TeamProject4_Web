@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface UserService {
 	
-	String Pw(String userId);
+	String Pw(String Id);
 	
 	int InsertUser(User user);
 	// 비밀번호 찾기
