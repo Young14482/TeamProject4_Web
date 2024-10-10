@@ -125,8 +125,35 @@ public class UserServiceImple implements UserService {
 	public int userIdCheck(String userId) {
 		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
 			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-			int num = mapper.userIdCheck( userId);
+			int num = mapper.userIdCheck(userId);
 			if (num > 0) {
+				return num;
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public int userChangePw2(String UserId, String Pw) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+			int num = mapper.userChangePw2(UserId, Pw);
+			if (num > 0) {
+				sqlSession.commit();
+				return num;
+			}
+		}
+		return 0;
+	}
+
+	// 회원탈퇴 업데이트
+	@Override
+	public int userLeave(String userId) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+			int num = mapper.userLeave(userId);
+			if (num > 0) {
+				sqlSession.commit();
 				return num;
 			}
 		}

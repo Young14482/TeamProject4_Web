@@ -39,9 +39,15 @@ public interface UserMapper {
 	@Update("update user Set user_name = #{userName}, user_phone = #{userPhone}, user_address = #{userAddress} where user_Id = #{userId}")
 	int userChangeModify(@Param("userName") String userName, @Param("userPhone") String userPhone,
 			@Param("userAddress") String userAddress, @Param("userId") String userId);
-	
+
 	@Select("Select count(user_Id) from user where user_Id = #{userId}")
 	int userIdCheck(@Param("userId") String userId);
+
+	@Update("update user Set user_pw = #{userPw} where user_id = #{userId}")
+	int userChangePw2(@Param("userId") String userId, @Param("userPw") String userPw);
+
+	@Update("update user Set user_leave = 1 where user_id = #{userId}")
+	int userLeave(@Param("userId") String userId);
 	
-	
+
 }
