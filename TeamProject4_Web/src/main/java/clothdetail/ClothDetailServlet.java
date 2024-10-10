@@ -35,7 +35,7 @@ public class ClothDetailServlet extends HttpServlet {
 				}
 			}
 			if (chooseCloth == null) {
-				resp.sendRedirect("/TeamProject4_Web/main");
+				resp.sendRedirect("/main");
 			} else {
 				
 				List<Review> reviewList = ReviewService.getInstance().findReview(chooseCloth.getCloth_num());
