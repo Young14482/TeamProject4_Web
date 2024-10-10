@@ -29,14 +29,18 @@ public class ShoppingCartServlet extends HttpServlet {
 		app.contextInitialized(null);
 		try {
 			HttpSession session = req.getSession();
-//			String userId = (String) session.getAttribute("userId");
-			String userId = "nana1234";
+			String userId = (String) session.getAttribute("userId");
+			
+			if (userId != null) {
+				List<ShoppingCartItem> shoppingCartList = serviceImpl.selectShoppingCart(userId);
 
-			List<ShoppingCartItem> shoppingCartList = serviceImpl.selectShoppingCart(userId);
+				session.setAttribute("shoppingCartList", shoppingCartList);
 
-			session.setAttribute("shoppingCartList", shoppingCartList);
-
-			req.getRequestDispatcher("/WEB-INF/views/shoppingCart.jsp").forward(req, resp);
+				req.getRequestDispatcher("/WEB-INF/views/shoppingCart.jsp").forward(req, resp);
+			} else {
+				req.getRequestDispatcher("/WEB-INF/views/index.jsp");
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -62,6 +62,7 @@ header {
 	left: 0;
 	z-index: 1000;
 	transition: top 0.5s; /* 부드러운 전환 효과 */
+	height: 120px;
 }
 
 .logo {
@@ -107,6 +108,11 @@ header {
 .hyperLink {
 	color: white;
 	text-decoration-line: none;
+}
+
+.link p {
+	margin-top: 0px;
+	font-size: 30px;
 }
 </style>
 

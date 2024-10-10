@@ -92,6 +92,7 @@ button:hover {
     function redirectToCart() {
         var userId = '<%= session.getAttribute("userId") %>';
         if (userId) {
+        	 alert("상품을 장바구니에 담았습니다.");
             window.location.href = '/user';
         } else {
             window.location.href = '/user';
@@ -116,10 +117,10 @@ button:hover {
                 <button onclick="redirectToPurchase()">바로구매</button>
                 <button onclick="redirectToCart()">장바구니</button>
                 <div class="icon">
-                	<p><img src="data:image/png;base64,<%=session.getAttribute("good")%>"
-							alt="좋아요" width="24" height="24" style="vertical-align: bottom;"> ${chooseCloth.cloth_good}</p>
-              		<p><img src="data:image/png;base64,<%=session.getAttribute("bad")%>"
-							alt="좋아요" width="24" height="24" style="vertical-align: bottom;"> ${chooseCloth.cloth_bad}</p>
+                
+                	<p><img src="/static/image/엄지위로척.png" alt="좋아요" width="24" height="24" style="vertical-align: bottom;">${chooseCloth.cloth_good}</p>
+                	<p><img src="/static/image/엄지아래로척.png" alt="좋아요" width="24" height="24" style="vertical-align: bottom;">${chooseCloth.cloth_bad}</p>
+                	
                 </div>
                 
             </div>
