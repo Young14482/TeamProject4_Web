@@ -30,24 +30,16 @@ public class MainHtmlServlet extends HttpServlet {
 		try {
             
 			List<Image> allImage = serviceImpl.findAllImage();
-			
 			HttpSession session = req.getSession();
 			
-			List<Cloth> allCloth = serviceImpl.findAllCloth();
-			
-			DataManager.inputData("allCloth", allCloth);
-			
-			for (int i = 0; i < allImage.size(); i++) {
-				if (allImage.get(i).getImg_num() == 2) {
-					session.setAttribute("image1", allImage.get(i).getImg_64());
-				} else if (allImage.get(i).getImg_num() == 3) {
-					session.setAttribute("image2", allImage.get(i).getImg_64());
-				} else if (allImage.get(i).getImg_num() == 4) {
-					session.setAttribute("image3", allImage.get(i).getImg_64());
-				} else if (allImage.get(i).getImg_num() == 35) {
-					session.setAttribute("good", allImage.get(i).getImg_64());
-				} else if (allImage.get(i).getImg_num() == 36) {
-					session.setAttribute("bad", allImage.get(i).getImg_64());
+            
+            for (Image image : allImage) {
+				if (image.getImg_num() == 2) {
+					session.setAttribute("image1", image.getImg_64());
+				} else if (image.getImg_num() == 3) {
+					session.setAttribute("image2", image.getImg_64());
+				} else if (image.getImg_num() == 4) {
+					session.setAttribute("image3", image.getImg_64());
 				}
 			}
     		req.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);

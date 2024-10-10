@@ -31,34 +31,18 @@ public class InsertImage {
     	// imagePath에 자신이 넣고싶은 이미지의 경로를 작성합니다.
     	// 해당 클래스를 따로 실행시키면 db에 변환된 데이터가 저장됩니다.
 
-//    	int count = 1;
-//    	
-//    	while (count < 10) {
-//    		String imageName = "옷" + count;
-//            String imagePath = "C:\\Users\\GGG\\Desktop\\옷"+count+".PNG";
-//            String base64Image = encodeImageToBase64(imagePath);
-//            
-//            boolean result = ServiceImpl.getInstance().insertImage(imageName, base64Image);
-//            
-//            if (result) {
-//            	System.out.println(imageName + "insert 성공!");
-//            } else {
-//            	System.out.println("실패");
-//            }
-//            count++;
-//    	}
-
-		String imagePath = "C:\\Users\\GGG\\Desktop\\옷1내용\\설명5.PNG";
-		String base64Image = encodeImageToBase64(imagePath);
-
-		boolean result = ServiceImpl.getInstance().insertImageDetail(base64Image, 1);
-
-		if (result) {
-			System.out.println("insert 성공!");
-		} else {
-			System.out.println("실패");
-		}
-
-	}
+    	String imageName = "메인이미지1";
+        String imagePath = "C:\\Users\\GGG\\Desktop\\메인이미지3.PNG";
+        String base64Image = encodeImageToBase64(imagePath);
+        
+        boolean result = ServiceImpl.getInstance().insertImage(imageName, base64Image);
+        
+        if (result) {
+        	System.out.println(imageName + "insert 성공!");
+        } else {
+        	System.out.println("실패");
+        }
+        
+    }
 }
 
