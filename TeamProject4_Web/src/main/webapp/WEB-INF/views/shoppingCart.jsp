@@ -6,11 +6,13 @@
 <meta charset="UTF-8">
 <title>쇼핑 카트</title>
 <link rel="stylesheet" type="text/css" href="./static/css/shoppingCart.css">
+<script>
+	const userId = '<%= (String) session.getAttribute("userId") %>'; // 세션에서 userId를 가져옴
+</script>
 <script src="${pageContext.request.contextPath}/static/js/shoppingCart.js"></script>
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/mainBar.jsp"></jsp:include>
-    <div class="main">
     <div class="info">
         <h1>쇼핑 카트</h1>
     </div>
@@ -80,7 +82,5 @@
         </div>
         <button data-action="order">주문하기</button>
     </div>
-    </div>
-    
 </body>
 </html>

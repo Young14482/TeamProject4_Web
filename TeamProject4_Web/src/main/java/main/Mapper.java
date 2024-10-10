@@ -61,4 +61,7 @@ public interface Mapper {
 
 	@Delete("DELETE FROM lp.shoppingcart WHERE cloth_num = #{clothNum}")
     int deleteFromShoppingCart(@Param("clothNum") int clothNum);
+	
+	@Insert("INSERT INTO lp.payment (user_id, cloth_num, payment_count) VALUES (#{user_Id}, #{cloth_num}, #{shoppingcart_count});")
+	int insertPayment(ShoppingCartItem order);
 }

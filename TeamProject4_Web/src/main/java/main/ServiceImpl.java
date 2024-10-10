@@ -122,16 +122,18 @@ public class ServiceImpl implements Service {
 		return null;
 	}
 
-	public void deleteFromShoppingCart(int clothNum) {
+	public int deleteFromShoppingCart(int clothNum) {
 		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
 			Mapper mapper = sqlSession.getMapper(Mapper.class);
 			int result = mapper.deleteFromShoppingCart(clothNum);
 			if (result != 0) {
 				sqlSession.commit(); // 커밋
+				return result;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return 0;
 	}
 
 	@Override
@@ -146,5 +148,19 @@ public class ServiceImpl implements Service {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public int insertPayment(ShoppingCartItem order) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			int result = mapper.insertPayment(order);
+
+			if (result == 1) {
+				sqlSession.commit();
+				return result;
+			}
+		}
+		return 0;
 	}
 }
