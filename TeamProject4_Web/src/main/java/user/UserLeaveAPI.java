@@ -2,9 +2,6 @@ package user;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,15 +14,10 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
-@WebServlet("/user")
+@WebServlet("/userLeave")
 @Slf4j
-public class UserAPI extends HttpServlet {
+public class UserLeaveAPI extends HttpServlet {
 	UserService service = new UserServiceImple();
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/WEB-INF/views/Login.jsp").forward(req, resp);
-	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,34 +35,39 @@ public class UserAPI extends HttpServlet {
 		}
 		String json = sb.toString();
 		User user = mapper.readValue(json, User.class);
-		if (user.getId() != null) {
-			String id = user.getId();
-			String pw = user.getPw();
-			String Pw = service.Pw(id);
-			if (Pw != null) {
-				if (Pw.equals(pw)) {
-					HttpSession session = req.getSession();
-					session.setAttribute("userId", id);
-				} else {
-					resp.setStatus(403);
-					System.out.println("비밀번호가 올바르지 않음");
-				}
-			} else {
-				resp.setStatus(405);
-				System.out.println("회원가입이 필요함");
-			}
-			
-		} else if (user.getId() == null) {
-			HttpSession session = req.getSession();
-			String userId = (String) session.getAttribute("userId");
-			String pw = user.getPw();
-			String Pw = service.Pw(userId);
-			if( Pw.equals(pw)) {
+
+		HttpSession session = req.getSession();
+		String userId = (String) session.getAttribute("userId");
+
+		String pw = user.getPw();
+		String Pw = service.Pw(userId);
+		if (Pw != null) {
+			if (Pw.equals(pw)) {
 				resp.setStatus(200);
 			} else {
 				resp.setStatus(403);
 			}
+		} else {
+			resp.setStatus(414);
 		}
 	}
 
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		resp.setHeader("Content-Type", "application/json; charset=utf-8");
+		req.setCharacterEncoding("utf-8");
+		
+		
+		String userId = (String) session.getAttribute("userId");
+		
+		int num = service.userLeave(userId);
+		if(num > 0) {
+			session.removeAttribute("userId"); // 특정 속성 제거
+			resp.setStatus(200);
+		}else {
+			resp.setStatus(419);
+		}
+		
+	}
 }
