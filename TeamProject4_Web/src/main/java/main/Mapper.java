@@ -104,5 +104,13 @@ public interface Mapper {
 	int insertPayment(ShoppingCartItem order);
 
 	
+	// 제일 마지막에 추가된 옷의 num을 가져옴
+	@Select("SELECT cloth_num \r\n"
+			+ "FROM cloth \r\n"
+			+ "ORDER BY cloth_num DESC \r\n"
+			+ "LIMIT 1;")
+	int ClothLastNum();
+
+	
 	
 }

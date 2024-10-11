@@ -218,4 +218,13 @@ public class ServiceImpl implements Service {
 		}
 		return 0;
 	}
+
+	public int lastInsertClothNum() {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			int result = mapper.ClothLastNum();
+			return result;
+		}
+		
+	}
 }
