@@ -53,7 +53,7 @@ main {
 	padding: 20px;
 	border-radius: 10px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	width: 80%;
+	width: 90%;
 	margin-bottom: 20px; /* 패널 사이 간격 */
 }
 
@@ -102,6 +102,7 @@ th {
 			<table>
 				<thead>
 					<tr>
+						<th>no</th>
 						<th>아이디</th>
 						<th>이름</th>
 						<th>전화번호</th>
@@ -113,6 +114,7 @@ th {
 				<tbody>
 					<c:forEach var="purchase" items="${purchaseStatusList}">
 						<tr>
+							<td>${purchase.no}</td>
 							<td>${purchase.user_id}</td>
 							<td>${purchase.user_name}</td>
 							<td>${purchase.user_phone}</td>

@@ -112,9 +112,6 @@ main {
             <div class="menu-item">
                 <a href="/purchaseStatus">소비자 구매 현황</a>
             </div>
-            <div class="menu-item">
-                <a href="/productStatus">상품 입출고 현황</a>
-            </div>
             <div class="label">관리</div>
             <div class="menu-item">
                 <a href="/productManage">상품 관리</a>

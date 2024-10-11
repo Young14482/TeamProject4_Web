@@ -5,6 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>가입 회원 관리 페이지</title>
@@ -49,7 +50,7 @@ main {
 	padding: 20px;
 	border-radius: 10px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	width: 90%;
+	width: 95%;
 	margin-bottom: 20px; /* 패널 사이 간격 */
 }
 
@@ -60,43 +61,42 @@ main {
 }
 
 #searchPanel {
-    display: flex; /* Flexbox 활성화 */
-    justify-content: flex-start; /* 요소들을 왼쪽으로 정렬 */
-    align-items: center; /* 요소들을 수직 중앙 정렬 */
+	display: flex; /* Flexbox 활성화 */
+	justify-content: flex-start; /* 요소들을 왼쪽으로 정렬 */
+	align-items: center; /* 요소들을 수직 중앙 정렬 */
 }
 
 #searchPanel table {
-    border: none; /* 테두리 제거 */
-    margin: 0; /* 기본 마진 제거 */
-    padding: 0; 
+	border: none; /* 테두리 제거 */
+	margin: 0; /* 기본 마진 제거 */
+	padding: 0;
 }
 
 #searchPanel td {
-    border: none; /* 칸의 테두리 제거 */
-    padding: 2px; 
-    margin: 0; /* 칸 간의 여백 제거 */
+	border: none; /* 칸의 테두리 제거 */
+	padding: 2px;
+	margin: 0; /* 칸 간의 여백 제거 */
 }
 
-#searchPanel select,
-#searchPanel input[type="text"],
-#searchPanel input[type="submit"] {
-    border-radius: 5px; /* 둥글게 설정 */
-    border: 1px solid #ddd; /* 테두리 색상 설정 */
-    height: 30px; /* 높이 설정 */
-    padding: 0 8px; /* 좌우 패딩 */
-    margin: 0; /* 기본 마진 제거 */
-    box-sizing: border-box; /* 패딩과 테두리를 포함한 총 높이와 너비 계산 */
+#searchPanel select, #searchPanel input[type="text"], #searchPanel input[type="submit"]
+	{
+	border-radius: 5px; /* 둥글게 설정 */
+	border: 1px solid #ddd; /* 테두리 색상 설정 */
+	height: 30px; /* 높이 설정 */
+	padding: 0 8px; /* 좌우 패딩 */
+	margin: 0; /* 기본 마진 제거 */
+	box-sizing: border-box; /* 패딩과 테두리를 포함한 총 높이와 너비 계산 */
 }
 
 #searchPanel input[type="submit"] {
-    background-color: #f2f2f2; /* 버튼 배경 색상 */
-    color: #000; /* 버튼 텍스트 색상 */
-    cursor: pointer; /* 커서 모양 변경 */
+	background-color: #f2f2f2; /* 버튼 배경 색상 */
+	color: #000; /* 버튼 텍스트 색상 */
+	cursor: pointer; /* 커서 모양 변경 */
 }
 
 /* 버튼에 마우스 호버 시 효과 */
 #searchPanel input[type="submit"]:hover {
-    background-color: #e0e0e0; /* 호버 시 버튼 색상 변경 */
+	background-color: #e0e0e0; /* 호버 시 버튼 색상 변경 */
 }
 
 table {
@@ -139,31 +139,32 @@ button:hover {
 }
 
 .gradeSelect {
-    border-radius: 5px; /* 테두리 둥글게 설정 */
-    border: 1px solid #ddd; /* 테두리 색상 설정 */
-    height: 30px; /* 높이 설정 */
-    padding: 0 8px; /* 좌우 패딩 */
-    box-sizing: border-box; /* 패딩과 테두리를 포함한 총 높이와 너비 계산 */
+	border-radius: 5px; /* 테두리 둥글게 설정 */
+	border: 1px solid #ddd; /* 테두리 색상 설정 */
+	height: 30px; /* 높이 설정 */
+	padding: 0 8px; /* 좌우 패딩 */
+	box-sizing: border-box; /* 패딩과 테두리를 포함한 총 높이와 너비 계산 */
 }
 
 .btnChangeGrade {
-    border: 1px solid #ddd; /* 드롭박스와 동일한 테두리 색상 */
-    border-radius: 5px; /* 테두리를 둥글게 설정 */
-    height: 30px; /* 드롭박스와 맞추기 위한 높이 설정 */
-    padding: 5px 10px; /* 패딩 추가 */
-    background-color: #f2f2f2; /* 버튼 배경 색상 */
-    color: #000; /* 버튼 텍스트 색상 */
-    cursor: pointer; /* 커서 모양 변경 */
+	border: 1px solid #ddd; /* 드롭박스와 동일한 테두리 색상 */
+	border-radius: 5px; /* 테두리를 둥글게 설정 */
+	height: 30px; /* 드롭박스와 맞추기 위한 높이 설정 */
+	padding: 5px 10px; /* 패딩 추가 */
+	background-color: #f2f2f2; /* 버튼 배경 색상 */
+	color: #000; /* 버튼 텍스트 색상 */
+	cursor: pointer; /* 커서 모양 변경 */
 }
 
 /* 버튼에 마우스 호버 시 효과 */
 .btnChangeGrade:hover {
-    background-color: #e0e0e0; /* 호버 시 버튼 색상 변경 */
+	background-color: #e0e0e0; /* 호버 시 버튼 색상 변경 */
 }
-
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<!-- productManage.js 파일과 연결함 -->
+<script src="/management/userManage.js"></script>
 <link rel="stylesheet"
 	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
@@ -180,24 +181,27 @@ button:hover {
 		<div class="panel">
 			<h3>가입 회원 목록</h3>
 			<div class="panel2">
-				<div style="display: flex; justify-content: space-between; align-items: center;">
+				<div
+					style="display: flex; justify-content: space-between; align-items: center;">
 					<div id="userCount">
-						총 회원수 : <%=request.getAttribute("joinUserCount")%>명
+						총 회원수 :
+						<%=request.getAttribute("joinUserCount")%>명
 					</div>
 					<div id="searchPanel">
-						<form action="/searchUser" method="GET">
+						<form id="searchForm" method="GET" action="/searchUser">
 							<table>
 								<tr>
-									<td><select class="searchOption" name="searchField">
-											<option value="0">선택</option>
+									<td>
+										<select id="searchField" class="searchOption"
+												name="searchField">
 											<option value="userId">회원아이디</option>
 											<option value="userGrade">회원등급</option>
 											<option value="userGender">성별</option>
 										</select>
 									</td>
-									<td><input type="text" class="searchOption"
-										placeholder="검색어 입력" name="sertchText" maxlength="100">
-									</td>
+									<td><input type="text" id="searchText"
+										class="searchOption" placeholder="검색어 입력" name="searchText"
+										maxlength="100"></td>
 									<td><input type="submit" value="검색"></td>
 								</tr>
 							</table>
@@ -208,6 +212,7 @@ button:hover {
 			<table>
 				<thead>
 					<tr>
+						<th>no</th>
 						<th>아이디</th>
 						<th>이름</th>
 						<th>성별</th>
@@ -224,6 +229,7 @@ button:hover {
 					<!-- forEach로 userList 순회해서 표에 가입 회원을 다 나타낼수 있도록 함 -->
 					<c:forEach var="user" items="${userList}">
 						<tr>
+							<td>${user.no}</td>
 							<td>${user.user_id}</td>
 							<td>${user.user_name}</td>
 							<td>${user.user_gender}</td>
@@ -232,7 +238,8 @@ button:hover {
 							<td>${user.user_address}</td>
 							<td>
 								<div
-									style="float: left; width: calc(100% - 80px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+									style="float: left; width: calc(100% - 80px); overflow: hidden; 
+										text-overflow: ellipsis; white-space: nowrap;">
 									${user.deliveryaddress}</div>
 								<div style="float: right; width: 80px;">
 									<button onclick="showDetails('${user.user_id}')">상세보기</button>
@@ -240,16 +247,13 @@ button:hover {
 							</td>
 							<td>${user.user_grade}</td>
 							<td>
-								<!-- 등급 선택할 드롭박스 --> 
-								<select class="gradeSelect">
+								<!-- 등급 선택할 드롭박스 --> <select class="gradeSelect">
 									<option value="준회원"
 										${user.user_grade == '준회원' ? 'selected' : ''}>준회원</option>
-									<option value="일반" 
-										${user.user_grade == '일반' ? 'selected' : ''}>일반</option>
+									<option value="일반" ${user.user_grade == '일반' ? 'selected' : ''}>일반</option>
 									<option value="VIP"
 										${user.user_grade == 'VIP' ? 'selected' : ''}>VIP</option>
-								</select> 
-								<!-- 변경 버튼을 누를 때 changeGrade() 호출 -->
+							</select>
 								<button class="btnChangeGrade" data-user-id="${user.user_id}">변경</button>
 							</td>
 							<td>
@@ -264,6 +268,4 @@ button:hover {
 	<!-- 다이얼로그 -->
 	<div id="deliveryDialog" style="display: none;" title="배송지 목록"></div>
 </body>
-<!-- productManage.js 파일과 연결함 -->
-<script src="/management/userManage.js"></script>
 </html>

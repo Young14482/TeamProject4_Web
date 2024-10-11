@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		button.addEventListener("click", function() {
 			// 아이디 가져오기
 			const userId = button.getAttribute('data-user-id');
-			// 드롭다운에서 선택한 등급 가져오기
+			// 드롭박스에서 선택한 등급 가져오기
 			const newGrade = button.closest('td').querySelector('.gradeSelect').value;
 
 			// 요청 데이터 구성
@@ -75,8 +75,9 @@ document.addEventListener("DOMContentLoaded", function() {
 					if (response.ok) {
 						alert('등급이 변경되었습니다.');
 						// 변경된 등급을 테이블에 즉시 반영
-						// .querySelector('td:nth-child(8)') : 등급 칸
-						const gradeCell = button.closest('tr').querySelector('td:nth-child(8)');
+						// .querySelector('td:nth-child(9)') : 등급 칸
+						// 가입 회원 목록 표의 칸 수가 달라지면 자식요소 숫자도 꼭 바꿔주기
+						const gradeCell = button.closest('tr').querySelector('td:nth-child(9)');
 						// 변경된 등급으로 업데이트
 						gradeCell.textContent = newGrade;
 
@@ -127,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function() {
 						// 현재 총 회원 수 가져오기
 						let userCount = parseInt(userCountElement.innerText.replace(/\D/g, ''));
 						// 회원 수 업데이트
-						userCountElement.innerText = `총 회원수 : ${userCount - 1}명`; 
+						userCountElement.innerText = `총 회원수 : ${userCount - 1}명`;
 
 					} else {
 						alert('회원 차단에 실패했습니다.');

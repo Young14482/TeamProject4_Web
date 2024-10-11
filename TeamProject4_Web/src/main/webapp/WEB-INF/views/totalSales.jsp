@@ -52,7 +52,7 @@ main {
 	padding: 20px;
 	border-radius: 10px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	width: 80%;
+	width: 90%;
 	margin-bottom: 20px; /* 패널 사이 간격 */
 	text-align: center;
 }
@@ -62,7 +62,7 @@ main {
 	padding: 20px;
 	border-radius: 10px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	width: 80%;
+	width: 90%;
 	margin-bottom: 20px; /* 패널 사이 간격 */
 }
 
@@ -117,6 +117,7 @@ th {
 			<table>
 				<thead>
 					<tr>
+						<th>no</th>
 						<th>상품명</th>
 						<th>상품브랜드</th>
 						<th>판매수량</th>
@@ -137,6 +138,7 @@ th {
 					</c:if>
 					<c:forEach var="sales" items="${salesHistoryList}">
 						<tr>
+							<td>${sales.no}</td>
 							<td>${sales.cloth_name}</td>
 							<td>${sales.cloth_brand}</td>
 							<td>${sales.payment_count}</td>

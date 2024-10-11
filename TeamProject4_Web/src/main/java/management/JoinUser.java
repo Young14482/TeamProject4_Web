@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class JoinUser {
+	// 표의 행의 개수 나타내기 위한 필드 
+	// (sql문에서의 row_number() over() as no)
+	private int no; 
+	
 	private String user_id; // 회원 아이디
     private String user_name; // 회원 이름
     private String user_gender; // 회원 성별

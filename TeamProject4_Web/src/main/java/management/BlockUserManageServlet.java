@@ -34,6 +34,7 @@ public class BlockUserManageServlet extends HttpServlet {
 			// 차단 회원 수
 			int blockUserCount = manageMapper.getBlockUserCount();
 			req.setAttribute("blockUserCount", blockUserCount);
+			
 		}
 		
 		req.setAttribute("blackList", blackList);
