@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="material.Cloth"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -80,14 +82,33 @@ button:hover {
 }
 </style>
 <script type="text/javascript">
-    function redirectToPurchase() {
-        var userId = '<%= session.getAttribute("userId") %>';
-        if (userId) {
-            window.location.href = '/user';
-        } else {
-            window.location.href = '/user';
-        }
+function redirectToPurchase() {
+    var userId = '<%= session.getAttribute("userId") %>';
+    var chooseCloth = '<%= session.getAttribute("chooseCloth") %>';
+    var clothNum = '<%= ((Cloth) session.getAttribute("chooseCloth")).getCloth_num() %>'; // Cloth 객체의 num 값 가져오기
+    
+    if (userId !== 'null') {
+        fetch('/shoppingCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ user_Id: userId, cloth_num: clothNum, shoppingcart_count: 1 })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('구매 완료. 결제 목록 페이지로 이동합니다.');
+                window.location.href = '/userPayment';
+            } else {
+                alert('요청에 실패했습니다.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+        window.location.href = '/user';
     }
+}
+
 
     function redirectToCart() {
         var userId = '<%= session.getAttribute("userId") %>';
@@ -115,8 +136,14 @@ button:hover {
                 <input type="hidden" id="clothNum" value="${chooseCloth.cloth_num}" />
                 <p>옷 번호: ${chooseCloth.cloth_num}</p>
                 <p>이름: ${chooseCloth.cloth_name}</p>
-                <p>가격: ${chooseCloth.cloth_price}</p>
-                <p>설명: ${chooseCloth.cloth_explanation}</p>
+              	<p>가격: ${chooseCloth.cloth_price}</p>
+				<%
+				Cloth chooseCloth = (Cloth) session.getAttribute("chooseCloth");
+				String explanation = chooseCloth.getCloth_explanation();
+				String result = explanation.replaceAll("\\\\n", "").replaceAll("\\\\r", ""); // \\n과 \\r을 제거
+				%>
+				<p>설명: <%= result %></p>
+
                 <button onclick="redirectToPurchase()">바로구매</button>
                 <button onclick="redirectToCart()">장바구니</button>
                 <div class="icon">

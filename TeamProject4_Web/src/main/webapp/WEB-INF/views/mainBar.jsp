@@ -16,7 +16,7 @@
 	font-size: 30px;
 	display: flex;
 	justify-content: center; /* 중앙 배치 */
-	gap: 100px; /* 요소들 사이에 20px 간격 */
+	gap: 70px; /* 요소들 사이에 20px 간격 */
 }
 
 .link a {
@@ -55,6 +55,7 @@ header {
 				<c:if test="${not empty sessionScope.userId}">
 					<p>환영합니다, ${ userId }님!</p>
 					<a href="./modify?userId=${ userId }">내 정보 보기</a>
+					<a href="/logout">로그 아웃</a>
 					<a href="./shoppingCart?userId=${ userId }">장바구니</a>
 					<a href="./userPayment">결제 완료 목록</a>
 				</c:if>
@@ -62,7 +63,7 @@ header {
 					<a href="./user">로그인</a>
 					<a href="./signup">회원가입</a>
 				</c:if>
-				<a href="./search">내게 맞는 옷 찾기</a>
+				<a href="./search">☆내게 맞는 옷 찾기☆</a>
 				<a href="/softSearch">검색</a>
 			</div>
 		</nav>

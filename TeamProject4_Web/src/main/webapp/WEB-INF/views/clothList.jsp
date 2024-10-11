@@ -72,7 +72,7 @@
 		%>
 		<div class="card">
 			<a href="detailPage?clothNum=<%=cloth.getCloth_num()%>">
-				<img class="image" src="/static/image/cloth/옷<%=cloth.getCloth_num()%>.png" alt="">
+				<img class="image" src="/static/image/cloth/cloth<%=cloth.getCloth_num()%>/옷<%=cloth.getCloth_num()%>.png" alt="">
 			</a>
 			<label class="clothName">
 				<a href="detailPage?clothNum=<%=cloth.getCloth_num()%>" class="clothLink"><%=cloth.getCloth_name()%></a>

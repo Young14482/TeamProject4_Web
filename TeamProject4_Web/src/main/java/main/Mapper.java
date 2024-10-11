@@ -99,9 +99,10 @@ public interface Mapper {
 	Integer updateClothBad(@Param("cloth_num") int cloth_num);
 
 	
+	// 주문을 하면 payment에 값을 삽입
+	@Insert("INSERT INTO lp.payment (user_id, cloth_num, payment_count) VALUES (#{user_Id}, #{cloth_num}, #{shoppingcart_count});")
+	int insertPayment(ShoppingCartItem order);
 
-	
-	
 	
 	
 }

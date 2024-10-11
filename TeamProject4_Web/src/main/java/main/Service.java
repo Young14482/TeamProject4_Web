@@ -18,4 +18,8 @@ public interface Service {
 	List<Cloth> findSearchCloth(String gender, int parsedSeason, int parsedColor, int parsedUsage, int parsedMinPrice, int parsedMaxPrice);
 	
 	List<ShoppingCartItem> selectShoppingCart(String userId);
+	
+	int insertPayment(ShoppingCartItem order); // 결제db에 정보 넘기는 용
+	
+	int deleteFromShoppingCart(int clothNum); // 장바구니에서 지우기
 }

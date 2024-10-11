@@ -2,6 +2,7 @@ package shoppingCart;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import main.ServiceImpl;
 import material.AppContextListener;
@@ -29,18 +33,13 @@ public class ShoppingCartServlet extends HttpServlet {
 		app.contextInitialized(null);
 		try {
 			HttpSession session = req.getSession();
+
 			String userId = (String) session.getAttribute("userId");
-			
-			if (userId != null) {
-				List<ShoppingCartItem> shoppingCartList = serviceImpl.selectShoppingCart(userId);
+			List<ShoppingCartItem> shoppingCartList = serviceImpl.selectShoppingCart(userId);
 
-				session.setAttribute("shoppingCartList", shoppingCartList);
+			session.setAttribute("shoppingCartList", shoppingCartList);
 
-				req.getRequestDispatcher("/WEB-INF/views/shoppingCart.jsp").forward(req, resp);
-			} else {
-				req.getRequestDispatcher("/WEB-INF/views/index.jsp");
-			}
-			
+			req.getRequestDispatcher("/WEB-INF/views/shoppingCart.jsp").forward(req, resp);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -49,30 +48,89 @@ public class ShoppingCartServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8"); // 요청 인코딩 설정
+		resp.setCharacterEncoding("UTF-8"); // 응답 인코딩 설정
+
+		HttpSession session = req.getSession();
+		List<ShoppingCartItem> orderList = null;
+			// JSON 데이터를 읽어서 String으로 변환
+			BufferedReader reader = req.getReader();
+			StringBuilder sb = new StringBuilder();
+			
+			String line;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line);
+			}
+
+			String body = sb.toString();
+
+			// 시작과 끝에 중괄호가 있는지 검사
+			if (!body.startsWith("[")) {
+			    body = "[" + body;
+			}
+			if (!body.endsWith("]")) {
+			    body = body + "]";
+			}
+			// JSON 데이터를 ShoppingCartItem 리스트로 변환
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				orderList = mapper.readValue(body, new TypeReference<List<ShoppingCartItem>>() {
+				});
+				int result = 0;
+				// 주문 처리 로직 추가
+				session.setAttribute("orderList", orderList); // 장바구니
+				for (ShoppingCartItem order : orderList) {
+					result += serviceImpl.insertPayment(order);
+				}
+				if (result != 0) {
+					result = 0;
+					for (ShoppingCartItem order : orderList) {
+					result += serviceImpl.deleteFromShoppingCart(order.getCloth_num());
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			// 응답 설정
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resp.getWriter().write("{\"status\": \"success\"}");
+			
+//			int parsedCloth_num = Integer.parseInt(cloth_num);
+//			
+//			ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+//			shoppingCartItem.setCloth_num(parsedCloth_num);
+//			shoppingCartItem.setUser_Id((String) session.getAttribute("userId"));
+//			shoppingCartItem.setShoppingcart_count(1);
+//			
+//			serviceImpl.insertPayment(shoppingCartItem);
+//			
+//			resp.sendRedirect("/userPayment");
 		
 	}
 
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    BufferedReader reader = req.getReader();
-	    StringBuilder sb = new StringBuilder();
-	    String line;
-	    while ((line = reader.readLine()) != null) {
-	        sb.append(line);
-	    }
-	    
-	    String body = sb.toString();
-	    String[] selectedItems = body.split("=")[1].split(",");
-	    
-	    if (selectedItems != null && selectedItems.length > 0) {
-	        for (String clothNum : selectedItems) {
-	            serviceImpl.deleteFromShoppingCart(Integer.parseInt(clothNum));
-	        }
-	    }
-	    
-	    resp.setContentType("application/json");
-	    resp.setCharacterEncoding("UTF-8");
-	    resp.getWriter().write("{\"status\": \"success\"}");
+		BufferedReader reader = req.getReader();
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
+		}
+
+		String body = sb.toString();
+		String[] selectedItems = body.split("=")[1].split(",");
+
+		if (selectedItems != null && selectedItems.length > 0) {
+			for (String clothNum : selectedItems) {
+				serviceImpl.deleteFromShoppingCart(Integer.parseInt(clothNum));
+			}
+		}
+
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
+		resp.getWriter().write("{\"status\": \"success\"}");
 	}
 
 }

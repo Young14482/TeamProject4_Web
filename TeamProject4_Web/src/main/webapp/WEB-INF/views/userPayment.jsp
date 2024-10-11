@@ -7,8 +7,13 @@
 <meta charset="UTF-8">
 <title>결제된 목록 창</title>
 <style type="text/css">
+body {
+	margin-left: 0px;
+}
+
 .main {
     margin-top: 200px;
+    margin-bottom: 100px;
 }
 .table {
     width: 80%;
