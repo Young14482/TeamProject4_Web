@@ -2,13 +2,27 @@ package management;
 
 import java.util.List;
 
-public interface ManageService {
+import org.apache.ibatis.annotations.Param;
 
-	// 회원 등급 수정
+public interface ManageService {
+	
+// <회원 관리 페이지>-------------------------------------------------------------------------
+	// 작성자 : 이나겸
+	
+	// 회원 등급 수정하기
 	JoinUser updateUserGrade(JoinUser joinUser);
 
-	// 회원 차단
+	// 회원 차단하기
 	JoinUser updateUserBlock(JoinUser joinUser);
+	
+// <탈퇴 회원 관리 페이지>---------------------------------------------------------------------
+	// 작성자 : 이나겸
+	
+	// 탈퇴 회원 복구하기
+	JoinUser updateUserLeave(JoinUser joinUser);
+	
+// <상품 관리 페이지>-------------------------------------------------------------------------
+	// 작성자 : 이진석
 
 	// 컬러 카테고리 다들고 오기
 	List<Category_color> selectColor();
@@ -42,13 +56,14 @@ public interface ManageService {
 
 	// 카테고리 만들어 질때 옷 테이블의 카테고리 수정
 	int insertUpdateCloth(int clothPk, int categoryPk);
-
-	// 옷 수정
+	
+	// 옷 수정 
 	int updateInfoCloth(Cloth cloth);
-
+	
 	// 옷 갯수 수정
 	int updateInfoInventory(Cloth cloth);
-
+	
 	// 옷 논리적 삭제
 	int logicalClothDelete(int cloth_num);
+	
 }

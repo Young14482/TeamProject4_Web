@@ -26,6 +26,7 @@ public class JoinUser {
     private String user_grade; // 회원 등급
     private int user_useMoney; // 회원별 총 구매 금액 합산 
     private int user_block; // 회원 차단 여부
+    private int user_leave; // 회원 탈퇴 여부
     
     private String deliveryaddress; // 배송지(회원 주소와 다를 수 있음)
     

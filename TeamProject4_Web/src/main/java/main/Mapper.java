@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Update;
 import image.ClothImage;
 import image.Image;
 import material.Cloth;
+import payment.ClothSize;
 import payment.PayCloth;
 import payment.PaymentInfo;
 import shoppingCart.ShoppingCartItem;
@@ -103,8 +104,9 @@ public interface Mapper {
 
 	
 	// 주문을 하면 payment에 값을 삽입
-	@Insert("INSERT INTO lp.payment (user_id, cloth_num, payment_count) VALUES (#{user_Id}, #{cloth_num}, #{shoppingcart_count});")
-	int insertPayment(ShoppingCartItem order);
+	@Insert("INSERT INTO lp.payment (user_id, cloth_num, payment_count, cloth_size) VALUES (#{userId}, #{cloth_num}, #{payment_count}, #{cloth_size})")
+	int insertPayment(@Param("userId") String userId, @Param("cloth_num") int clothNum, @Param("payment_count") int paymentCount, @Param("cloth_size") int clothSize);
+
 
 	
 	// 제일 마지막에 추가된 옷의 num을 가져옴
@@ -172,6 +174,9 @@ public interface Mapper {
 	
 	
 	
+	// 옷 사이즈 
+	@Select("SELECT cloth_min_size, cloth_max_size FROM lp.cloth where cloth_num = #{clothNum};")
+	ClothSize findClothSize(@Param("clothNum") int clothNum);
 	
 	
 	

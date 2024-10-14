@@ -35,21 +35,21 @@ header {
 }
 
 nav .logoAndText {
-    display: flex;
-    flex-direction: column; /* 세로 정렬 */
-    align-items: center; /* 가운데 정렬 */
+	display: flex;
+	flex-direction: column; /* 세로 정렬 */
+	align-items: center; /* 가운데 정렬 */
 }
 
 .logoAndTitle {
-    display: flex;
-    align-items: center; /* 이미지와 h1을 수직 중앙 정렬 */
-    justify-content: center; /* 로고와 h1을 수평 중앙 정렬 */
+	display: flex;
+	align-items: center; /* 이미지와 h1을 수직 중앙 정렬 */
+	justify-content: center; /* 로고와 h1을 수평 중앙 정렬 */
 }
 
 .logo-img {
-    width: 50px;
-    height: auto;
-    margin-right: 10px;
+	width: 50px;
+	height: auto;
+	margin-right: 10px;
 }
 
 main {
@@ -73,6 +73,21 @@ main {
 
 h3 {
 	white-space: nowrap; /* 개행이 일어나지 않도록 */
+}
+
+.graphPanel {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 93%;
+    margin-bottom: 20px; /* 패널 사이 간격 */
+    height: 700px; 
+}
+
+#salesChart {
+    width: 100% !important; /* 캔버스의 너비를 패널에 맞게 설정 */
+    height: 450px !important; /* 캔버스의 높이를 줄임 */
 }
 
 .panel {
@@ -166,6 +181,8 @@ th {
 	box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 </style>
+<!-- Chart.js 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 	<header>
@@ -173,7 +190,8 @@ th {
 			<div class="logoAndText">
 				<div class="logoAndTitle">
 					<div class="logo">
-						<img src="/static/image/logo/logo.png" alt="로고 이미지" class="logo-img">
+						<img src="/static/image/logo/logo.png" alt="로고 이미지"
+							class="logo-img">
 					</div>
 					<h1>
 						<a href="/main"
@@ -195,35 +213,40 @@ th {
 				원
 			</h2>
 		</div>
+		<div class="graphPanel">
+			<h3>날짜별 매출 그래프</h3>
+			<!-- 그래프를 그릴 캔버스 추가 -->
+			<canvas id="salesChart"></canvas>
+		</div>
 		<div class="panel">
-				<h3>판매 내역</h3>
-				<div class="panel2">
-					<div class="panel3">
-						<div id="salesCount">
-							총 판매 건 수 :
-							<%=request.getAttribute("salesHistoryCount")%>건
-						</div>
-						<div id="searchPanel">
-							<form id="searchForm" method="GET" action="searchSales">
-								<table>
-									<tr>
-										<td><select id="searchField" class="searchOption"
-											name="searchSalesField">
-												<option value="salesDate">결제일시</option>
-												<option value="salesUserId">회원아이디</option>
-												<option value="salesClothName">상품명</option>
-												<option value="salesClothBrand">브랜드</option>
-										</select></td>
-										<td><input type="text" id="searchText"
-											class="searchOption" placeholder="검색어 입력"
-											name="searchSalesText" maxlength="100"></td>
-										<td><input type="submit" value="검색"></td>
-									</tr>
-								</table>
-							</form>
-						</div>
+			<h3>판매 내역</h3>
+			<div class="panel2">
+				<div class="panel3">
+					<div id="salesCount">
+						총 판매 건 수 :
+						<%=request.getAttribute("salesHistoryCount")%>건
+					</div>
+					<div id="searchPanel">
+						<form id="searchForm" method="GET" action="searchSales">
+							<table>
+								<tr>
+									<td><select id="searchField" class="searchOption"
+										name="searchSalesField">
+											<option value="salesDate">결제일시</option>
+											<option value="salesUserId">회원아이디</option>
+											<option value="salesClothName">상품명</option>
+											<option value="salesClothBrand">브랜드</option>
+									</select></td>
+									<td><input type="text" id="searchText"
+										class="searchOption" placeholder="검색어 입력"
+										name="searchSalesText" maxlength="100"></td>
+									<td><input type="submit" value="검색"></td>
+								</tr>
+							</table>
+						</form>
 					</div>
 				</div>
+			</div>
 			<table>
 				<thead>
 					<tr>
@@ -273,5 +296,33 @@ th {
 			</table>
 		</div>
 	</main>
+	<script>
+    // JSP에서 날짜별 매출 데이터를 배열로 준비
+    const labels = [<c:forEach var="entry" items="${salesGroupedByDate}">'${entry.key}',</c:forEach>];
+    const data = [<c:forEach var="entry" items="${salesGroupedByDate}">${entry.value},</c:forEach>];
+
+    // Chart.js를 이용해 그래프 생성
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    const salesChart = new Chart(ctx, {
+        type: 'line', // 라인 그래프
+        data: {
+            labels: labels, // 날짜 배열 (YYYY.MM.DD 형식)
+            datasets: [{
+                label: '날짜별 매출액',
+                data: data, // 날짜별 매출액 데이터
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true // y축을 0에서 시작
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>

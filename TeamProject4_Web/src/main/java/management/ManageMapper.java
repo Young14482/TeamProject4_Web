@@ -16,52 +16,77 @@ import lombok.experimental.PackagePrivate;
 // 작성자 : 이나겸
 
 public interface ManageMapper {
+	
+	// 모든 페이지의 검색 기능은 검색할 대상 문자열의 일부만 작성하거나 
+	// 알파벳의 대소문자 구별 없이 작성해도 정상적으로 검색되도록 함
 
 // <가입 회원 관리 페이지>------------------------------------------------------------------------------------------------
 
-	// 관리자와 차단된 회원 제외한 가입 회원 목록 조회
+	// 관리자와 탈퇴한 회원, 차단된 회원 제외한 가입 회원 목록 조회
 	// 한 회원이 여러개의 배송지를 갖고있다면 가입회원관리페이지 표에는 배송지 하나만 나타날수있도록
 	@Select("SELECT row_number() over() as no, a.user_id, a.user_name, a.user_gender, a.user_birth, a.user_phone, a.user_address, a.user_grade, \r\n"
 			+ "(SELECT b.deliveryaddress FROM deliveryaddress AS b WHERE b.user_id = a.user_id LIMIT 1) AS deliveryaddress \r\n"
-			+ "FROM user AS a " + "WHERE a.user_block != 1 AND a.user_id != 'admin'")
+			+ "FROM user AS a WHERE a.user_block != 1 and a.user_leave != 1 AND a.user_id != 'admin'")
 	List<JoinUser> getJoinUser();
 
 	// 여러개의 배송지를 갖고 있는 회원의 모든 배송지 조회
 	@Select("SELECT deliveryaddress FROM deliveryaddress WHERE user_id = #{user_id}")
 	List<String> getAllDeliveryAddress(@Param("user_id") String userId);
 
-	// 관리자와 차단된 회원 제외한 가입 회원 수 조회
-	@Select("select count(*) from lp.user where user_block != 1 and user_id != 'admin'")
+	// 관리자와 탈퇴한 회원, 차단된 회원 제외한 가입 회원 수 조회
+	@Select("select count(*) from lp.user "
+			+ "where user_block != 1 and user_leave != 1 and user_id != 'admin'")
 	int getJoinUserCount();
 
 	// 회원 아이디로 회원 조회 (무조건 한 사람만 나와야함)
 	@Select("SELECT row_number() over() as no, a.user_id, a.user_name, a.user_gender, a.user_birth, a.user_phone, a.user_address, a.user_grade, \r\n"
 			+ "(SELECT b.deliveryaddress FROM deliveryaddress AS b WHERE b.user_id = a.user_id LIMIT 1) AS deliveryaddress \r\n"
-			+ "FROM user AS a WHERE a.user_block != 1 AND a.user_id = #{user_id}")
+			+ "FROM user AS a WHERE a.user_block != 1 and a.user_leave != 1 and user_id != 'admin' \r\n"
+			+ "AND LOWER(user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
 	List<JoinUser> getSelectById(@Param("user_id") String userId);
 
 	// 회원 아이디 별 회원 수 (무조건 1이 나와야함)
-	@Select("select count(*) from user where user_block != 1 and user_id = #{user_id}")
+	@Select("select count(*) from user "
+			+ "where user_block != 1 and user_leave != 1 and user_id != 'admin'\r\n"
+			+ "and LOWER(user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
 	int getCountById(@Param("user_id") String userId);
+	
+	// 회원 이름 별 회원 조회
+	@Select("SELECT row_number() over() as no, a.user_id, a.user_name, a.user_gender, a.user_birth, a.user_phone, a.user_address, a.user_grade, \r\n"
+			+ "(SELECT b.deliveryaddress FROM deliveryaddress AS b WHERE b.user_id = a.user_id LIMIT 1) AS deliveryaddress \r\n"
+			+ "FROM user AS a WHERE a.user_block != 1 and a.user_leave != 1\r\n"
+			+ "AND LOWER(user_name) LIKE LOWER(CONCAT('%', #{user_name}, '%'))")
+	List<JoinUser> getSelectByName(@Param("user_name") String user_name);
+	
+	// 회원 이름 별 회원 수
+	@Select("select count(*) from user where user_block != 1 and user_leave != 1 \r\n"
+			+ "and LOWER(user_name) LIKE LOWER(CONCAT('%', #{user_name}, '%'))")
+	int getCountByName(@Param("user_name") String user_name);
 
 	// 등급 별 회원 목록 조회
 	@Select("SELECT row_number() over() as no, a.user_id, a.user_name, a.user_gender, a.user_birth, a.user_phone, a.user_address, a.user_grade, \r\n"
 			+ "(SELECT b.deliveryaddress FROM deliveryaddress AS b WHERE b.user_id = a.user_id LIMIT 1) AS deliveryaddress \r\n"
-			+ "FROM user AS a WHERE a.user_block != 1 AND a.user_grade = #{user_grade}")
+			+ "FROM user AS a WHERE a.user_block != 1 and a.user_leave != 1\r\n"
+			+ "AND LOWER(user_grade) LIKE LOWER(CONCAT('%', #{user_grade}, '%'))")
 	List<JoinUser> getSelectByGrade(@Param("user_grade") String user_grade);
 
 	// 등급 별 회원 수 조회
-	@Select("select count(*) from user where user_block != 1 and user_grade = #{user_grade}")
+	@Select("select count(*) from user where user_block != 1 and user_leave != 1\r\n"
+			+ "and LOWER(user_grade) LIKE LOWER(CONCAT('%', #{user_grade}, '%'))")
 	int getCountByGrade(@Param("user_grade") String user_grade);
 
 	// 성별 별 회원 목록 조회
 	@Select("SELECT row_number() over() as no, a.user_id, a.user_name, a.user_gender, a.user_birth, a.user_phone, a.user_address, a.user_grade, \r\n"
 			+ "(SELECT b.deliveryaddress FROM deliveryaddress AS b WHERE b.user_id = a.user_id LIMIT 1) AS deliveryaddress \r\n"
-			+ "FROM user AS a WHERE a.user_block != 1 AND a.user_id != 'admin' AND a.user_gender = #{user_gender}")
+			+ "FROM user AS a \r\n"
+			+ "WHERE a.user_block != 1 and a.user_leave != 1 AND a.user_id != 'admin' \r\n"
+			+ "AND LOWER(user_gender) LIKE LOWER(CONCAT('%', #{user_gender}, '%'))")
 	List<JoinUser> getSelectByGender(@Param("user_gender") String user_gender);
 
 	// 성별 별 회원 수 조회
-	@Select("select count(*) from user where user_block != 1 and user_id != 'admin' and user_gender = #{user_gender}")
+	@Select("select count(*) from user \r\n"
+			+ "where user_block != 1 and user_id != 'admin' and user_leave != 1\r\n"
+			+ "and LOWER(user_gender) LIKE LOWER(CONCAT('%', #{user_gender}, '%'))")
 	int getCountByGender(@Param("user_gender") String user_gender);
 
 	// 회원 등급 변경
@@ -71,8 +96,6 @@ public interface ManageMapper {
 	// 회원 차단
 	@Update("update user set user_block = 1 where user_id = #{user_id}")
 	int makeBlockUser(JoinUser joinUser);
-
-	// 탈퇴 회원 복원 => deleteuser 테이블에서 delete하고 user 테이블에 다시 insert
 
 // <차단 회원 관리 페이지>------------------------------------------------------------------------------------------------
 
@@ -86,98 +109,154 @@ public interface ManageMapper {
 	int getBlockUserCount();
 
 	// 회원 아이디로 차단 회원 조회 (무조건 한 사람만 나와야함)
-	@Select("SELECT row_number() over() as no, user_id, user_name, user_gender, user_birth, user_phone, user_address, user_grade\r\n"
-			+ "FROM user WHERE user_block = 1 AND user_id = #{user_id}")
+	@Select("SELECT row_number() OVER() AS no, user_id, user_name, user_gender, user_birth, user_phone, user_address, user_grade\r\n"
+			+ "FROM user WHERE user_block = 1\r\n"
+			+ "AND LOWER(user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
 	List<JoinUser> getSelectBlockById(@Param("user_id") String userId);
 
 	// 회원 아이디 별 차단 회원 수 (무조건 1이 나와야함)
-	@Select("select count(*) from user where user_block = 1 and user_id = #{user_id}")
+	@Select("select count(*) from user where user_block = 1 "
+			+ "and LOWER(user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
 	int getCountBlockById(@Param("user_id") String userId);
-
-	// 등급 별 차단 회원 목록 조회
+	
+	// 회원 이름으로 차단 회원 조회
 	@Select("SELECT row_number() over() as no, user_id, user_name, user_gender, user_birth, user_phone, user_address, user_grade\r\n"
-			+ "FROM user WHERE user_block = 1 AND user_grade = #{user_grade}")
-	List<JoinUser> getSelectBlockByGrade(@Param("user_grade") String user_grade);
-
-	// 등급 별 차단 회원 수 조회
-	@Select("select count(*) from user where user_block = 1 and user_grade = #{user_grade}")
-	int getCountBlockByGrade(@Param("user_grade") String user_grade);
-
-	// 성별 별 차단 회원 목록 조회
-	@Select("SELECT row_number() over() as no, user_id, user_name, user_gender, user_birth, user_phone, user_address, user_grade\r\n"
-			+ "FROM user WHERE user_block = 1 AND user_gender = #{user_gender}")
-	List<JoinUser> getSelectBlockByGender(@Param("user_gender") String user_gender);
-
-	// 성별 별 차단 회원 수 조회
-	@Select("select count(*) from user where user_block = 1 and user_gender = #{user_gender}")
-	int getCountBlockByGender(@Param("user_gender") String user_gender);
+			+ "FROM user WHERE user_block = 1 "
+			+ "AND LOWER(user_name) LIKE LOWER(CONCAT('%', #{user_name}, '%'))")
+	List<JoinUser> getSelectBlockByName(@Param("user_name") String user_name);
+	
+	// 회원 이름 별 차단 회원 수 조회
+	@Select("select count(*) from user where user_block = 1 "
+			+ "and LOWER(user_name) LIKE LOWER(CONCAT('%', #{user_name}, '%'))")
+	int getCountBlockByName(@Param("user_name") String user_name);
 
 // <탈퇴 회원 관리 페이지>------------------------------------------------------------------------------------------------
 
 	// 탈퇴 회원 목록 조회
-	@Select("select user_id, user_pw, user_phone from lp.deleteuser")
+	@Select("select row_number() over() as no, user_id, user_name, user_phone from user where user_leave = 1")
 	List<JoinUser> getLeaveUser();
 
 	// 탈퇴 회원 수 조회
-	@Select("select count(*) from lp.deleteuser")
+	@Select("select count(*) from user where user_leave = 1")
 	int getLeaveUserCount();
 
-	// 탈퇴 회원 복원 => deleteuser 테이블에서 delete하고 user 테이블에 다시 insert
+	// 아이디 별 탈퇴 회원 목록 조회 (무조건 한 사람만 나와야함)
+	@Select("select row_number() over() as no, user_id, user_name, user_phone \r\n"
+			+ "from user where user_leave = 1 \r\n"
+			+ "and LOWER(user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
+	List<JoinUser> getSelectLeaveById(@Param("user_id") String userId);
+
+	// 아이디 별 탈퇴 회원 수 조회 (무조건 1이 나와야함)
+	@Select("select count(*) from user where user_leave = 1 "
+			+ "and LOWER(user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
+	int getCountLeaveById(@Param("user_id") String userId);
+
+	// 이름 별 탈퇴 회원 목록 조회
+	@Select("select row_number() over() as no, user_id, user_name, user_phone \r\n"
+			+ "from user where user_leave = 1 \r\n"
+			+ "and LOWER(user_name) LIKE LOWER(CONCAT('%', #{user_name}, '%'))")
+	List<JoinUser> getSelectLeaveByName(@Param("user_name") String user_name);
+
+	// 이름 별 탈퇴 회원 수 조회
+	@Select("select count(*) from user where user_leave = 1 "
+			+ "and LOWER(user_name) LIKE LOWER(CONCAT('%', #{user_name}, '%'))")
+	int getCountLeaveByName(@Param("user_name") String user_name);
+
+	// 탈퇴 회원 복구
+	@Update("update user set user_leave = 0 where user_id = #{user_id}")
+	int changeUserLeave(JoinUser joinUser);
 
 // <총 매출 페이지>------------------------------------------------------------------------------------------------	
 
 	// 총 매출액 조회
 	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
-			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num")
+			+ "join user as b on a.user_id = b.user_id\r\n" 
+			+ "join cloth as c on a.cloth_num = c.cloth_num")
 	int getAllSales();
 
-	// 회원 구매 내역 조회
+	// 전체 판매 내역 조회
 	@Select("select row_number() over() as no, b.user_id, b.user_name, b.user_phone, b.user_address, b.user_grade,\r\n"
 			+ "a.payment_count, a.payment_date, c.cloth_name, c.cloth_brand, c.cloth_price,\r\n"
 			+ "(c.cloth_price * a.payment_count)\r\n" + "from payment as a\r\n"
 			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num")
 	List<JoinUser> getSalesHistory();
+	
+	// 전체 판매 건 수 조회
+	@Select("select count(*) from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num")
+	int getCountAllSales();
 
-	// 회원 아이디 별 구매한 상품 조회
+	// 회원 아이디 별 판매 내역 조회
 	@Select("select row_number() over() as no, b.user_id, b.user_name, b.user_phone, b.user_address, b.user_grade,\r\n"
 			+ "a.payment_count, a.payment_date, c.cloth_name, c.cloth_brand, c.cloth_price,\r\n"
-			+ "(c.cloth_price * a.payment_count)\r\n" + "from payment as a\r\n"
-			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
-			+ "where b.user_id = #{user_id}")
+			+ "(c.cloth_price * a.payment_count)\r\n"
+			+ "from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where LOWER(b.user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
 	List<JoinUser> getSelectSalesById(@Param("user_id") String userId);
+	
+	// 회원 아이디 별 판매 건 수 조회
+	@Select("select count(*) from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where LOWER(b.user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
+	int getCountSalesById(@Param("user_id") String userId);
 
 	// 회원 아이디 별 매출액 조회
 	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
-			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
-			+ "where b.user_id = #{user_id}")
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where LOWER(b.user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
 	Integer getTotalSalesById(@Param("user_id") String userId);
 
 	// 상품명 별 판매한 상품 조회
 	@Select("select row_number() over() as no, b.user_id, b.user_name, b.user_phone, b.user_address, b.user_grade,\r\n"
 			+ "a.payment_count, a.payment_date, c.cloth_name, c.cloth_brand, c.cloth_price,\r\n"
-			+ "(c.cloth_price * a.payment_count)\r\n" + "from payment as a\r\n"
-			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
-			+ "where c.cloth_name = #{cloth_name}")
+			+ "(c.cloth_price * a.payment_count)\r\n"
+			+ "from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where LOWER(c.cloth_name) LIKE LOWER(CONCAT('%', #{cloth_name}, '%'))")
 	List<JoinUser> getSelectSalesByClothName(@Param("cloth_name") String cloth_name);
+	
+	// 상품명 별 판매 건 수 조회
+	@Select("select count(*) from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where LOWER(c.cloth_name) LIKE LOWER(CONCAT('%', #{cloth_name}, '%'))")
+	int getCountSalesByClothName(@Param("cloth_name") String cloth_name);
 
 	// 상품명 별 매출액 조회
 	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
-			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
-			+ "where c.cloth_name = #{cloth_name}")
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where LOWER(c.cloth_name) LIKE LOWER(CONCAT('%', #{cloth_name}, '%'))")
 	Integer getTotalSalesByClothName(@Param("cloth_name") String cloth_name);
 
 	// 상품 브랜드 별 판매한 상품 조회
 	@Select("select row_number() over() as no, b.user_id, b.user_name, b.user_phone, b.user_address, b.user_grade,\r\n"
 			+ "a.payment_count, a.payment_date, c.cloth_name, c.cloth_brand, c.cloth_price,\r\n"
-			+ "(c.cloth_price * a.payment_count)\r\n" + "from payment as a\r\n"
-			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
-			+ "where c.cloth_brand = #{cloth_brand}")
+			+ "(c.cloth_price * a.payment_count)\r\n"
+			+ "from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where LOWER(c.cloth_brand) LIKE LOWER(CONCAT('%', #{cloth_brand}, '%'))")
 	List<JoinUser> getSelectSalesByBrand(@Param("cloth_brand") String cloth_brand);
+	
+	// 상품 브랜드 별 판매 건 수 조회
+	@Select("select count(*) from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where LOWER(c.cloth_brand) LIKE LOWER(CONCAT('%', #{cloth_brand}, '%'))")
+	int getCountSalesByBrand(@Param("cloth_brand") String cloth_brand);
 
 	// 상품 브랜드 별 매출액 조회
 	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
-			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
-			+ "where c.cloth_brand = #{cloth_brand}")
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where LOWER(c.cloth_brand) LIKE LOWER(CONCAT('%', #{cloth_brand}, '%'))")
 	Integer getTotalSalesByBrand(@Param("cloth_brand") String cloth_brand);
 
 	// 결제 일시 별 판매한 상품 조회 (시간 제외하고 날짜로만 검색하는데 숫자만 입력해도 검색할 수 있도록)
@@ -187,6 +266,13 @@ public interface ManageMapper {
 			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
 			+ "where DATE_FORMAT(a.payment_date, '%Y%m%d') LIKE CONCAT('%', #{payment_date}, '%')")
 	List<JoinUser> getSelectSalesByDate(@Param("payment_date") String payment_date);
+	
+	// 결제 일시 별 판매 건 수 조회
+	@Select("select count(*) from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n"
+			+ "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where DATE_FORMAT(a.payment_date, '%Y%m%d') LIKE CONCAT('%', #{payment_date}, '%')")
+	int getCountSalesByDate(@Param("payment_date") String payment_date);
 
 	// 결제 일시 별 매출액 조회
 	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
@@ -196,34 +282,100 @@ public interface ManageMapper {
 
 // <소비자 구매 현황 페이지>------------------------------------------------------------------------------------------------
 
-	// 전체 고객 별 구매 현황 목록 조회
-	// 관리자 제외함, 차단 회원은 제외하지 않음
-	// user_useMoney 업데이트 필요 (user_useMoney 전부 0인 상태)
-	@Select("select row_number() over() as no, user_id, user_name, user_phone, user_address, user_grade, user_useMoney "
-			+ "from lp.user where user_id != 'admin'")
+	// 전체 고객 별 구매 현황 목록 조회 (관리자 제외)
+	@Select("select row_number() over() as no, user_id, user_name, user_phone, user_address, user_grade, user_useMoney \r\n"
+			+ "from user where user_id != 'admin' and user_useMoney != 0")
 	List<JoinUser> getPurchaseStatus();
+	
+	// 구매 회원 수 조회
+	@Select("select count(*) from user where user_id != 'admin' and user_useMoney != 0")
+	int getCountPurchase();
 
 	// 회원 아이디 별 구매 현황 목록 조회
 	@Select("select row_number() over() as no, user_id, user_name, user_phone, user_address, user_grade, user_useMoney \r\n"
-			+ "from user where user_id != 'admin' and user_id = #{user_id}")
+			+ "from user where user_id != 'admin' and user_useMoney != 0 \r\n"
+			+ "and LOWER(user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
 	List<JoinUser> getSelectPurchaseById(@Param("user_id") String userId);
+	
+	// 회원 아이디 별 구매 회원 수 조회
+	@Select("select count(*) from user \r\n"
+			+ "where user_id != 'admin' and user_useMoney != 0 \r\n"
+			+ "and LOWER(user_id) LIKE LOWER(CONCAT('%', #{user_id}, '%'))")
+	int getCountPurchaseById(@Param("user_id") String userId);
 
 	// 회원 이름 별 구매 현황 목록 조회
 	@Select("select row_number() over() as no, user_id, user_name, user_phone, user_address, user_grade, user_useMoney \r\n"
-			+ "from user where user_id != 'admin' and user_name = #{user_name}")
+			+ "from user where user_id != 'admin' and user_useMoney != 0 \r\n"
+			+ "and LOWER(user_name) LIKE LOWER(CONCAT('%', #{user_name}, '%'))")
 	List<JoinUser> getSelectPurchaseByName(@Param("user_name") String user_name);
+	
+	// 회원 이름 별 구매 회원 수 조회
+	@Select("select count(*) from user \r\n"
+			+ "where user_id != 'admin' and user_useMoney != 0\r\n"
+			+ "and LOWER(user_name) LIKE LOWER(CONCAT('%', #{user_name}, '%'))")
+	int getCountPurchaseByName(@Param("user_name") String user_name);
+	
+	// 가격 범위로 구매 현황 목록 조회
+	@Select("SELECT row_number() over() as no, user_id, user_name, user_phone, user_address, user_grade, user_useMoney \r\n"
+			+ "FROM user WHERE user_id != 'admin' and user_useMoney != 0\r\n"
+			+ "AND user_useMoney BETWEEN #{minPurchasePrice} AND #{maxPurchasePrice}")
+	List<JoinUser> getSelectPurchaseByPriceRange(@Param("minPurchasePrice") int minPurchasePrice, 
+												@Param("maxPurchasePrice") int maxPurchasePrice);
+	
+	// 가격 범위 별 구매 회원 수 조회
+	@Select("select count(*) FROM user \r\n"
+			+ "WHERE user_id != 'admin' and user_useMoney != 0\r\n"
+			+ "AND user_useMoney BETWEEN #{minPurchasePrice} AND #{maxPurchasePrice}")
+	int getCountPurchaseByPriceRange(@Param("minPurchasePrice") int minPurchasePrice, 
+									@Param("maxPurchasePrice") int maxPurchasePrice);
 
 // <상품 관리 페이지>-----------------------------------------------------------------------------------------------------
 
 	// 상품 목록 조회
-	@Select("select row_number() over() as no, a.cloth_name, a.cloth_brand, a.cloth_price, a.cloth_gender, \r\n"
+	@Select("select row_number() over() as no, a.cloth_num, a.cloth_name, a.cloth_brand, a.cloth_price, a.cloth_gender, \r\n"
 			+ "b.cloth_size_s, b.cloth_size_m, b.cloth_size_l, b.cloth_size_xl, b.cloth_size_xxl \r\n"
-			+ "from cloth as a\r\n" + "join inventory as b on a.cloth_num = b.cloth_num")
+			+ "from cloth as a \r\n"
+			+ "join inventory as b on a.cloth_num = b.cloth_num\r\n"
+			+ "where a.cloth_delete != 1")
 	List<Cloth> getAllCloth();
 
-	// 전체 품목 수 조회
-	@Select("select count(*) from cloth")
+	// 전체 상품 수 조회
+	@Select("select count(*) from cloth as a \r\n"
+			+ "join inventory as b on a.cloth_num = b.cloth_num\r\n"
+			+ "where a.cloth_delete != 1")
 	int getAllClothCount();
+	
+	// 상품명 별 상품 목록 조회
+	@Select("select row_number() over() as no, a.cloth_num, a.cloth_name, a.cloth_brand, a.cloth_price, a.cloth_gender, \r\n"
+			+ "b.cloth_size_s, b.cloth_size_m, b.cloth_size_l, b.cloth_size_xl, b.cloth_size_xxl \r\n"
+			+ "from cloth as a \r\n"
+			+ "join inventory as b on a.cloth_num = b.cloth_num\r\n"
+			+ "where a.cloth_delete != 1 \r\n"
+			+ "and LOWER(a.cloth_name) LIKE LOWER(CONCAT('%', #{cloth_name}, '%'))")
+	List<Cloth> getClothByName(@Param("cloth_name") String cloth_name);
+	
+	// 상품명 별 상품 수 조회
+	@Select("select count(*) from cloth as a \r\n"
+			+ "join inventory as b on a.cloth_num = b.cloth_num\r\n"
+			+ "where a.cloth_delete != 1 \r\n"
+			+ "and LOWER(a.cloth_name) LIKE LOWER(CONCAT('%', #{cloth_name}, '%'))")
+	int getCountClothByName(@Param("cloth_name") String cloth_name);
+	
+	// 브랜드 별 상품 목록 조회
+	@Select("select row_number() over() as no, a.cloth_num, a.cloth_name, a.cloth_brand, a.cloth_price, a.cloth_gender, \r\n"
+			+ "b.cloth_size_s, b.cloth_size_m, b.cloth_size_l, b.cloth_size_xl, b.cloth_size_xxl \r\n"
+			+ "from cloth as a \r\n"
+			+ "join inventory as b on a.cloth_num = b.cloth_num\r\n"
+			+ "where a.cloth_delete != 1 \r\n"
+			+ "and LOWER(a.cloth_brand) LIKE LOWER(CONCAT('%', #{cloth_brand}, '%'))")
+	List<Cloth> getClothByBrand(@Param("cloth_brand") String cloth_brand);
+	
+	// 브랜드 별 상품 수 조회
+	@Select("select count(*) from cloth as a \r\n"
+			+ "join inventory as b on a.cloth_num = b.cloth_num\r\n"
+			+ "where a.cloth_delete != 1 \r\n"
+			+ "and LOWER(a.cloth_brand) LIKE LOWER(CONCAT('%', #{cloth_brand}, '%'))")
+	int getCountClothByBrand(@Param("cloth_brand") String cloth_brand);
 
 	// 작성자 : 이진석 라인
 	// s

@@ -161,9 +161,6 @@ button:hover {
 		}
 		%>
 		
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
-		<p>설명: ${chooseCloth.cloth_explanation}</p>
 		
 	</div>
 

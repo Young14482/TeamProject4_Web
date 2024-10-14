@@ -88,7 +88,15 @@ public class ShoppingCartServlet extends HttpServlet {
 			// 주문 처리 로직 추가
 			session.setAttribute("orderList", orderList); // 장바구니
 			for (ShoppingCartItem order : orderList) {
-				result += serviceImpl.insertPayment(order);
+				System.out.println(order.toString());
+				String selectedSize = (String) session.getAttribute("selectedSize");
+				
+				if (selectedSize == null) {
+					result += serviceImpl.insertPayment(order, 0);
+				} else {
+					result += serviceImpl.insertPayment(order, Integer.parseInt(selectedSize));
+				}
+				
 			}
 			if (result != 0) {
 				result = 0;
@@ -163,4 +171,6 @@ public class ShoppingCartServlet extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 		resp.getWriter().write(userJson);
 	}
+	
+	
 }

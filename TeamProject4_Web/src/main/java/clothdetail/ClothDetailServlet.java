@@ -1,7 +1,6 @@
 package clothdetail;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,11 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
-
 import main.ServiceImpl;
 import material.Cloth;
 import material.DataManager;
+import payment.ClothSize;
 
 @WebServlet("/detailPage")
 public class ClothDetailServlet extends HttpServlet {
@@ -27,7 +25,7 @@ public class ClothDetailServlet extends HttpServlet {
 			String clothNumStr = (String) req.getParameter("clothNum");
 			Integer clothNum = Integer.parseInt(clothNumStr);
 			List<Cloth> allCloth = (List<Cloth>) DataManager.getData("allCloth");
-
+			
 			Cloth chooseCloth = null;
 			for (Cloth cloth : allCloth) {
 				if (cloth.getCloth_num() == clothNum) {
@@ -37,12 +35,15 @@ public class ClothDetailServlet extends HttpServlet {
 			if (chooseCloth == null) {
 				resp.sendRedirect("/main");
 			} else {
+				ClothSize clothSize = ServiceImpl.getInstance().findClothSize(chooseCloth.getCloth_num());
 				
 				List<Review> reviewList = ReviewService.getInstance().findReview(chooseCloth.getCloth_num());
 				HttpSession session = req.getSession();
 				resp.setCharacterEncoding("UTF-8");
 				session.setAttribute("chooseCloth", chooseCloth);
 				session.setAttribute("reviewList", reviewList);
+				session.setAttribute("maxSize", clothSize.getCloth_max_size());
+				session.setAttribute("minSize", clothSize.getCloth_min_size());
 				req.getRequestDispatcher("/WEB-INF/views/detailPage.jsp").forward(req, resp);
 			}
 

@@ -294,7 +294,7 @@ function clothRegister() {
 			alert("성공적으로 등록되었습니다.");
 			sizedialogClose();
 			dialogClose();
-			window.location.href = "http://localhost:8080/uploadImage";
+			window.location.href = "/uploadImage";
 		} else if (resp.status === 420) {
 			alert("실패하였습니다.");
 		} else {

@@ -134,6 +134,7 @@ footer.info p {
 				<th>이미지</th>
 				<th>결제 날짜</th>
 				<th>상품 이름</th>
+				<th>사이즈</th>
 				<th>수량</th>
 				<th>가격</th>
 				<th>총 가격</th>
@@ -143,9 +144,19 @@ footer.info p {
 			<c:forEach var="payCloth" items="${sessionScope.payClothList}">
 				<tr>
 					<td><img class="image"
-						src="/static/image/cloth/cloth${payCloth.cloth_num}/옷${payCloth.cloth_num}.png" alt=""></td>
+						src="/static/image/cloth/cloth${payCloth.cloth_num}/옷${payCloth.cloth_num}.png"
+						alt=""></td>
 					<td>${payCloth.payment_date}</td>
 					<td>${payCloth.cloth_name}</td>
+					<td><c:choose>
+							<c:when test="${payCloth.cloth_size == 0}">normal</c:when>
+							<c:when test="${payCloth.cloth_size == 1}">S</c:when>
+							<c:when test="${payCloth.cloth_size == 2}">M</c:when>
+							<c:when test="${payCloth.cloth_size == 3}">L</c:when>
+							<c:when test="${payCloth.cloth_size == 4}">XL</c:when>
+							<c:when test="${payCloth.cloth_size == 5}">XXL</c:when>
+							<c:otherwise>Unknown</c:otherwise>
+						</c:choose></td>
 					<td>${payCloth.payment_count}</td>
 					<td>${payCloth.cloth_price}</td>
 					<td>${payCloth.cloth_price * payCloth.payment_count}</td>
@@ -165,11 +176,12 @@ footer.info p {
 						</c:otherwise>
 					</c:choose>
 
-					
+
 					<td><c:choose>
-							<c:when test="${payCloth.delivery_status == 0}">
-                                후기는 배송이 완료되면 작성 가능합니다.
-                            </c:when>
+							<c:when
+								test="${payCloth.delivery_status == 0 || payCloth.delivery_status == 1}">
+       							후기는 배송이 완료되면 작성 가능합니다.
+ 							</c:when>
 							<c:when test="${payCloth.write_review == 1}">
                                 후기 작성완료
                             </c:when>
