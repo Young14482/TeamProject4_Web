@@ -23,5 +23,6 @@ public interface UserService {
 	int userChangePw2(String UserId, String Pw);
 	// 회원탈퇴 구현
 	int userLeave(String userId);
-	
+	// 전화번호 있는지 검증
+	List<String> selectPhone();
 }

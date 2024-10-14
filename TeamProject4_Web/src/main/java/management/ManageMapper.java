@@ -1,5 +1,6 @@
 package management;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
@@ -127,18 +128,71 @@ public interface ManageMapper {
 
 	// 총 매출액 조회
 	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
-			+ "join user as b on a.user_id = b.user_id\r\n" 
-			+ "join cloth as c on a.cloth_num = c.cloth_num")
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num")
 	int getAllSales();
 
-	// 회원 별 판매 내역 조회
+	// 회원 구매 내역 조회
 	@Select("select row_number() over() as no, b.user_id, b.user_name, b.user_phone, b.user_address, b.user_grade,\r\n"
 			+ "a.payment_count, a.payment_date, c.cloth_name, c.cloth_brand, c.cloth_price,\r\n"
-			+ "(c.cloth_price * a.payment_count)\r\n" 
-			+ "from payment as a\r\n"
-			+ "join user as b on a.user_id = b.user_id\r\n" 
-			+ "join cloth as c on a.cloth_num = c.cloth_num")
+			+ "(c.cloth_price * a.payment_count)\r\n" + "from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num")
 	List<JoinUser> getSalesHistory();
+
+	// 회원 아이디 별 구매한 상품 조회
+	@Select("select row_number() over() as no, b.user_id, b.user_name, b.user_phone, b.user_address, b.user_grade,\r\n"
+			+ "a.payment_count, a.payment_date, c.cloth_name, c.cloth_brand, c.cloth_price,\r\n"
+			+ "(c.cloth_price * a.payment_count)\r\n" + "from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where b.user_id = #{user_id}")
+	List<JoinUser> getSelectSalesById(@Param("user_id") String userId);
+
+	// 회원 아이디 별 매출액 조회
+	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where b.user_id = #{user_id}")
+	Integer getTotalSalesById(@Param("user_id") String userId);
+
+	// 상품명 별 판매한 상품 조회
+	@Select("select row_number() over() as no, b.user_id, b.user_name, b.user_phone, b.user_address, b.user_grade,\r\n"
+			+ "a.payment_count, a.payment_date, c.cloth_name, c.cloth_brand, c.cloth_price,\r\n"
+			+ "(c.cloth_price * a.payment_count)\r\n" + "from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where c.cloth_name = #{cloth_name}")
+	List<JoinUser> getSelectSalesByClothName(@Param("cloth_name") String cloth_name);
+
+	// 상품명 별 매출액 조회
+	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where c.cloth_name = #{cloth_name}")
+	Integer getTotalSalesByClothName(@Param("cloth_name") String cloth_name);
+
+	// 상품 브랜드 별 판매한 상품 조회
+	@Select("select row_number() over() as no, b.user_id, b.user_name, b.user_phone, b.user_address, b.user_grade,\r\n"
+			+ "a.payment_count, a.payment_date, c.cloth_name, c.cloth_brand, c.cloth_price,\r\n"
+			+ "(c.cloth_price * a.payment_count)\r\n" + "from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where c.cloth_brand = #{cloth_brand}")
+	List<JoinUser> getSelectSalesByBrand(@Param("cloth_brand") String cloth_brand);
+
+	// 상품 브랜드 별 매출액 조회
+	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where c.cloth_brand = #{cloth_brand}")
+	Integer getTotalSalesByBrand(@Param("cloth_brand") String cloth_brand);
+
+	// 결제 일시 별 판매한 상품 조회 (시간 제외하고 날짜로만 검색하는데 숫자만 입력해도 검색할 수 있도록)
+	@Select("select row_number() over() as no, b.user_id, b.user_name, b.user_phone, b.user_address, b.user_grade,\r\n"
+			+ "a.payment_count, a.payment_date, c.cloth_name, c.cloth_brand, c.cloth_price,\r\n"
+			+ "(c.cloth_price * a.payment_count)\r\n" + "from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where DATE_FORMAT(a.payment_date, '%Y%m%d') LIKE CONCAT('%', #{payment_date}, '%')")
+	List<JoinUser> getSelectSalesByDate(@Param("payment_date") String payment_date);
+
+	// 결제 일시 별 매출액 조회
+	@Select("select sum(a.payment_count * c.cloth_price) from payment as a\r\n"
+			+ "join user as b on a.user_id = b.user_id\r\n" + "join cloth as c on a.cloth_num = c.cloth_num\r\n"
+			+ "where DATE_FORMAT(a.payment_date, '%Y%m%d') LIKE CONCAT('%', #{payment_date}, '%')")
+	Integer getTotalSalesByDate(@Param("payment_date") String payment_date);
 
 // <소비자 구매 현황 페이지>------------------------------------------------------------------------------------------------
 
@@ -148,11 +202,16 @@ public interface ManageMapper {
 	@Select("select row_number() over() as no, user_id, user_name, user_phone, user_address, user_grade, user_useMoney "
 			+ "from lp.user where user_id != 'admin'")
 	List<JoinUser> getPurchaseStatus();
-	
+
 	// 회원 아이디 별 구매 현황 목록 조회
 	@Select("select row_number() over() as no, user_id, user_name, user_phone, user_address, user_grade, user_useMoney \r\n"
 			+ "from user where user_id != 'admin' and user_id = #{user_id}")
-	List<JoinUser> getSearchPurchaseById(@Param("user_id") String userId);
+	List<JoinUser> getSelectPurchaseById(@Param("user_id") String userId);
+
+	// 회원 이름 별 구매 현황 목록 조회
+	@Select("select row_number() over() as no, user_id, user_name, user_phone, user_address, user_grade, user_useMoney \r\n"
+			+ "from user where user_id != 'admin' and user_name = #{user_name}")
+	List<JoinUser> getSelectPurchaseByName(@Param("user_name") String user_name);
 
 // <상품 관리 페이지>-----------------------------------------------------------------------------------------------------
 
@@ -166,76 +225,78 @@ public interface ManageMapper {
 	@Select("select count(*) from cloth")
 	int getAllClothCount();
 
-	 // 상품 추가
-//  @Insert()
+	// 작성자 : 이진석 라인
+	// s
+	@Select("Select category_num, category_name from s_category")
+	@Results(value = { @Result(column = "category_num", property = "category_num"),
+			@Result(column = "category_name", property = "category_name") })
+	List<Category_s> selectS();
 
-  // 상품 정보 수정
-//  @Update()
+	// usage
+	@Select("Select usage_num, usage_name from usage_category")
+	@Results(value = { @Result(column = "usage_num", property = "usage_num"),
+			@Result(column = "usage_name", property = "usage_name") })
+	List<Category_usage> selectUsage();
 
-  // 상품 삭제
-  @Delete("delete from cloth where cloth_num = #{cloth_num}")
-  int deleteCloth(@Param("cloth_num") int cloth_num);
+	// color
+	@Select("Select color_num, color_name from color_category")
+	@Results(value = { @Result(column = "color_num", property = "color_num"),
+			@Result(column = "color_name", property = "color_name") })
+	List<Category_color> selectColor();
 
-  // s
-  @Select("Select category_num, category_name from s_category")
-  @Results(value = { @Result(column = "category_num", property = "category_num"),
-        @Result(column = "category_name", property = "category_name") })
-  List<Category_s> selectS();
+	// season
+	@Select("Select season_num, season_name from season_category")
+	@Results(value = { @Result(column = "season_num", property = "season_num"),
+			@Result(column = "season_name", property = "season_name") })
+	List<Category_season> selectSeason();
 
-  // usage
-  @Select("Select usage_num, usage_name from usage_category")
-  @Results(value = { @Result(column = "usage_num", property = "usage_num"),
-        @Result(column = "usage_name", property = "usage_name") })
-  List<Category_usage> selectUsage();
+	// Cloth Insert
+	@Insert("INSERT INTO Cloth (cloth_name, cloth_brand, cloth_price, cloth_min_size, cloth_max_size, cloth_explanation, cloth_gender) "
+			+ "VALUES (#{cloth_name}, #{cloth_brand}, #{cloth_price}, #{cloth_min_size}, #{cloth_max_size}, #{cloth_explanation}, #{cloth_gender})")
+	int insertCloth(Cloth cloth);
 
-  // color
-  @Select("Select color_num, color_name from color_category")
-  @Results(value = { @Result(column = "color_num", property = "color_num"),
-        @Result(column = "color_name", property = "color_name") })
-  List<Category_color> selectColor();
+	// Inventory Insert
+	@Insert("Insert into inventory (cloth_num, cloth_size_s, cloth_size_m, cloth_size_l,cloth_size_xl, cloth_size_xxl) "
+			+ "values (#{cloth_num}, #{cloth_size_s},#{cloth_size_m},#{cloth_size_l},#{cloth_size_xl},#{cloth_size_xxl})")
+	int insertInventory(Cloth cloth);
 
-  // season
-  @Select("Select season_num, season_name from season_category")
-  @Results(value = { @Result(column = "season_num", property = "season_num"),
-        @Result(column = "season_name", property = "season_name") })
-  List<Category_season> selectSeason();
+	// 2,3번 입력
+	@Insert("Insert into categorys (cloth_num, season_category, color_category, s_category, usage_category1, usage_category2, usage_category3)"
+			+ "values (#{clothNum}, #{categorys.season_category},#{categorys.color_category},#{categorys.s_category},#{categorys.usage_category1},#{categorys.usage_category2},#{categorys.usage_category3} )")
+	int insertCategorys1(@Param("clothNum") int clothNum, @Param("categorys") Categorys categorys);
 
-  // Cloth Insert
-  @Insert("INSERT INTO Cloth (cloth_name, cloth_brand, cloth_price, cloth_min_size, cloth_max_size, cloth_explanation, cloth_gender) "
-        + "VALUES (#{cloth_name}, #{cloth_brand}, #{cloth_price}, #{cloth_min_size}, #{cloth_max_size}, #{cloth_explanation}, #{cloth_gender})")
-  int insertCloth(Cloth cloth);
+	// 3번 입력
+	@Insert("Insert into categorys (cloth_num, season_category, color_category, s_category, usage_category1, usage_category3)"
+			+ "values (#{clothNum}, #{categorys.season_category},#{categorys.color_category},#{categorys.s_category},#{categorys.usage_category1}, #{categorys.usage_category3} )")
+	int insertCategorys2(@Param("clothNum") int clothNum, @Param("categorys") Categorys categorys);
 
-  // Inventory Insert
-  @Insert("Insert into inventory (cloth_num, cloth_size_s, cloth_size_m, cloth_size_l,cloth_size_xl, cloth_size_xxl) "
-        + "values (#{cloth_num}, #{cloth_size_s},#{cloth_size_m},#{cloth_size_l},#{cloth_size_xl},#{cloth_size_xxl})")
-  int insertInventory(Cloth cloth);
+	// 2번 입력
+	@Insert("Insert into categorys (cloth_num, season_category, color_category, s_category, usage_category1, usage_category2)"
+			+ "values (#{clothNum}, #{categorys.season_category},#{categorys.color_category},#{categorys.s_category},#{categorys.usage_category1},#{categorys.usage_category2} )")
+	int insertCategorys3(@Param("clothNum") int clothNum, @Param("categorys") Categorys categorys);
 
-  // 2,3번 입력
-  @Insert("Insert into categorys (cloth_num, season_category, color_category, s_category, usage_category1, usage_category2, usage_category3)"
-        + "values (#{clothNum}, #{categorys.season_category},#{categorys.color_category},#{categorys.s_category},#{categorys.usage_category1},#{categorys.usage_category2},#{categorys.usage_category3} )")
-  int insertCategorys1(@Param("clothNum") int clothNum, @Param("categorys") Categorys categorys);
-  
-  // 3번 입력
-  @Insert("Insert into categorys (cloth_num, season_category, color_category, s_category, usage_category1, usage_category3)"
-        + "values (#{clothNum}, #{categorys.season_category},#{categorys.color_category},#{categorys.s_category},#{categorys.usage_category1}, #{categorys.usage_category3} )")
-  int insertCategorys2(@Param("clothNum") int clothNum, @Param("categorys") Categorys categorys);
-  
-  // 2번 입력
-  @Insert("Insert into categorys (cloth_num, season_category, color_category, s_category, usage_category1, usage_category2)"
-        + "values (#{clothNum}, #{categorys.season_category},#{categorys.color_category},#{categorys.s_category},#{categorys.usage_category1},#{categorys.usage_category2} )")
-  int insertCategorys3(@Param("clothNum") int clothNum, @Param("categorys") Categorys categorys);
-  
-  // 둘다 입력 안함
-  @Insert("Insert into categorys (cloth_num, season_category, color_category, s_category, usage_category1)"
-        + "values (#{clothNum}, #{categorys.season_category},#{categorys.color_category},#{categorys.s_category},#{categorys.usage_category1} )")
-  int insertCategorys4(@Param("clothNum") int clothNum, @Param("categorys") Categorys categorys);
-  
-  // 마지막 pk값
-  @Select("SELECT LAST_INSERT_ID()")
-  int SelectLastPk();
+	// 둘다 입력 안함
+	@Insert("Insert into categorys (cloth_num, season_category, color_category, s_category, usage_category1)"
+			+ "values (#{clothNum}, #{categorys.season_category},#{categorys.color_category},#{categorys.s_category},#{categorys.usage_category1} )")
+	int insertCategorys4(@Param("clothNum") int clothNum, @Param("categorys") Categorys categorys);
 
-  // 카테고리 완성될때 카테고리 값 cloth에 삽입
-  @Update("Update Cloth Set cloth_categorys = #{categoryPk} where cloth_num = #{clothPk}")
-  int updateCloth(@Param("clothPk") int clothPk, @Param("categoryPk") int categoryPk);
+	// 마지막 pk값
+	@Select("SELECT LAST_INSERT_ID()")
+	int SelectLastPk();
 
+	// 카테고리 완성될때 카테고리 값 cloth에 삽입
+	@Update("Update Cloth Set cloth_categorys = #{categoryPk} where cloth_num = #{clothPk}")
+	int updateCloth(@Param("clothPk") int clothPk, @Param("categoryPk") int categoryPk);
+
+	@Update("Update Cloth Set cloth_name = #{cloth.cloth_name}, cloth_price = #{cloth.cloth_price}, cloth_brand = #{cloth.cloth_brand},"
+			+ "cloth_gender= #{cloth.cloth_gender} where cloth_num = #{cloth.cloth_num}")
+	int updateInfoCloth(@Param("cloth") Cloth cloth);
+
+	@Update("Update inventory Set cloth_size_s = #{cloth.cloth_size_s} , cloth_size_m = #{cloth.cloth_size_m},  cloth_size_l= #{cloth.cloth_size_l},"
+			+ "cloth_size_xl= #{cloth.cloth_size_xl}, cloth_size_xxl= #{cloth.cloth_size_xxl} where cloth_num = #{cloth.cloth_num}")
+	int updateInfoInventory(@Param("cloth") Cloth cloth);
+
+	// 옷의 논리적 삭제
+	@Update("Update Cloth set cloth_delete = 1 where cloth_num = #{cloth_num}")
+	int logicalClothDelete(@Param("cloth_num") int cloth_num);
 }

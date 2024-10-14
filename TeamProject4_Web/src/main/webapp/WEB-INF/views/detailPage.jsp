@@ -7,7 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>제품 상세 페이지</title>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript"
+	src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"> </script>
 <style type="text/css">
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -82,7 +86,7 @@ button:hover {
 }
 </style>
 <script type="text/javascript">
-function redirectToPurchase() {
+<%-- function redirectToPurchase() {
     var userId = '<%= session.getAttribute("userId") %>';
     var chooseCloth = '<%= session.getAttribute("chooseCloth") %>';
     var clothNum = '<%= ((Cloth) session.getAttribute("chooseCloth")).getCloth_num() %>'; // Cloth 객체의 num 값 가져오기
@@ -107,7 +111,7 @@ function redirectToPurchase() {
     } else {
         window.location.href = '/user';
     }
-}
+} --%>
 
 
     function redirectToCart() {
@@ -144,8 +148,8 @@ function redirectToPurchase() {
 				%>
 				<p>설명: <%= result %></p>
 
-                <button onclick="redirectToPurchase()">바로구매</button>
-                <button onclick="redirectToCart()">장바구니</button>
+                <button id="pay" onclick="redirectToPurchase()">바로구매</button>
+                <button id="shoppingcart" onclick="redirectToCart()">장바구니</button>
                 <div class="icon">
                     <p><img src="/static/image/엄지위로척.png" alt="좋아요" width="24" height="24" style="vertical-align: bottom;">${chooseCloth.cloth_good}</p>
                     <p><img src="/static/image/엄지아래로척.png" alt="좋아요" width="24" height="24" style="vertical-align: bottom;">${chooseCloth.cloth_bad}</p>
@@ -153,6 +157,111 @@ function redirectToPurchase() {
             </div>
         </div>
     </div>
+    <dialog class="payment-dialog">
+	<h2>구매 창</h2>
+	<p>
+		<%
+			Cloth cloth = (Cloth) session.getAttribute("chooseCloth");
+			session.setAttribute("finalTotalPrice", (cloth.getCloth_price() + 3500));
+		%>
+		총 결제 금액: ${finalTotalPrice}
+		(${chooseCloth.cloth_price}원 + 배송비: 3500원)
+		
+	</p>
+	<button onclick="requestPay()">결제하기</button>
+	<button class="cancel-payment-button">취소</button>
+	</dialog>
 </body>
+
+<script type="text/javascript">
+
+const paymentDialog = document.querySelector('.payment-dialog');
+const payButton = document.querySelector('#pay');
+const shopping = document.querySelector('#shoppingcart');
+
+function allButtonDisable() {
+	payButton.disabled = true;
+	shopping.disabled = true;
+}
+function allButtonAble() {
+	payButton.disabled = false;
+	shopping.disabled = false;
+}
+
+function redirectToPurchase() {
+	showPaymentDialog();
+	allButtonDisable();
+}
+
+function showPaymentDialog() {
+	//const finalTotalPrice = document.querySelector('#ftp').value; // hidden input에서 가격 가져오기
+
+	// 다이얼로그 열기
+	paymentDialog.show();
+
+	// 취소 버튼 이벤트
+	paymentDialog.querySelector('.cancel-payment-button').addEventListener('click', function() {
+		paymentDialog.close();
+		allButtonAble();
+	});
+}
+
+var userId = '<%= session.getAttribute("userId") %>';
+var chooseClothPrice = parseInt('<%= ((Integer) session.getAttribute("finalTotalPrice")) %>');
+var clothNum = '<%= ((Cloth) session.getAttribute("chooseCloth")).getCloth_num() %>'; // Cloth 객체의 num 값 가져오기
+
+function requestPay() {
+    IMP.init('imp08323214');
+    fetch('/shoppingCart', {
+        method: 'PUT',
+    }).then(response => response.json())
+      .then(user => {
+        IMP.request_pay({
+            pg: "kakaopay",
+            pay_method: "card",
+            merchant_uid: 'merchant_' + new Date().getTime(),
+            name: '상품구매',
+            amount: chooseClothPrice,
+            buyer_tel: user.phone_num,
+            buyer_addr: user.address,
+        }, function(rsp) { // callback
+            if (rsp.success) { // 결제 성공 시 로직
+                paymentDialog.close();
+                
+                if (userId !== 'null') {
+                    fetch('/shoppingCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user_Id: userId,
+                            cloth_num: clothNum,
+                            shoppingcart_count: 1
+                        })
+                    })
+                    .then(response => response.json())
+					.then(data => {
+						if (data.status === 'success') {
+							alert('결제가 완료되었습니다!');
+							window.location.href = '/userPayment'
+						} else {
+							alert('결제 실패!');
+						}
+					});
+                } else {
+                    window.location.href = '/user';
+                }
+            } else { // 결제 실패 시 로직
+                alert('결제 실패!');
+                allButtonAble();
+                window.location.href = '/main';
+            }
+        });
+    });
+}
+
+
+</script>
 </html>
 

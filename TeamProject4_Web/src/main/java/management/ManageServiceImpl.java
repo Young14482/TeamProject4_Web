@@ -58,9 +58,7 @@ public class ManageServiceImpl implements ManageService {
 	public List<Category_color> selectColor() {
 		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
 			ManageMapper manageMapper = sqlSession.getMapper(ManageMapper.class);
-
 			List<Category_color> list = manageMapper.selectColor();
-
 			if (list != null) {
 				return list;
 			}
@@ -72,9 +70,7 @@ public class ManageServiceImpl implements ManageService {
 	public List<Category_s> selectS() {
 		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
 			ManageMapper manageMapper = sqlSession.getMapper(ManageMapper.class);
-
 			List<Category_s> list = manageMapper.selectS();
-
 			if (list != null) {
 				return list;
 			}
@@ -165,7 +161,7 @@ public class ManageServiceImpl implements ManageService {
 	}
 
 	@Override
-	public int updateCloth(int clothPk, int categoryPk) {
+	public int insertUpdateCloth(int clothPk, int categoryPk) {
 		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
 			ManageMapper manageMapper = sqlSession.getMapper(ManageMapper.class);
 
@@ -216,4 +212,44 @@ public class ManageServiceImpl implements ManageService {
 			return num;
 		}
 	}
+
+	@Override
+	public int updateInfoCloth(Cloth cloth) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			ManageMapper manageMapper = sqlSession.getMapper(ManageMapper.class);
+			int num = manageMapper.updateInfoCloth(cloth);
+			if (num > 0) {
+				sqlSession.commit();
+				return num;
+			}
+			return num;
+		}
+	}
+
+	@Override
+	public int updateInfoInventory(Cloth cloth) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			ManageMapper manageMapper = sqlSession.getMapper(ManageMapper.class);
+			int num = manageMapper.updateInfoInventory(cloth);
+			if (num > 0) {
+				sqlSession.commit();
+				return num;
+			}
+			return num;
+		}
+	}
+
+	@Override
+	public int logicalClothDelete(int cloth_num) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			ManageMapper manageMapper = sqlSession.getMapper(ManageMapper.class);
+			int num = manageMapper.logicalClothDelete(cloth_num);
+			if (num > 0) {
+				sqlSession.commit();
+				return num;
+			}
+			return num;
+		}
+	}
+
 }

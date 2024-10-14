@@ -25,7 +25,7 @@ function IdCheckBtnEvent() {
 			userIdChecking.innerText = "불가능";
 		} else if (resp.status === 414) {
 			console.log("Asdf");
-			userIdChecking.innerText= "가능";
+			userIdChecking.innerText = "가능";
 		}
 	});
 }
@@ -185,40 +185,26 @@ function signupCheck() {
 	//받은걸 읽어서 User로 만들고 회원가입 DB에 insert
 
 	let url = "/signup";
-	//TODO 애니메이션 하나 만들기 > > 시작 
-
-
 	return fetch(url, {
 		method: "post",
 		body: str
 	}).then((resp) => {
-		//TODO  애니메이션 종료
-		return resp.json();
-	}).then((obj) => {
-		alert("회원가입 완료되었습니다.");
-		window.location = "http://localhost:8080/main";
-	}).catch((e) => {
-		alert("회원가입에 실패...");
+		if (resp.status === 499) {
+			alert("기존에 존재하는 전화번호 입니다.");
+			phone.value = '';
+		} else if (resp.status === 408) {
+			alert("회원가입 실패");
+		} else if (resp.status === 200) {
+			alert("회원가입 성공");
+			window.location.href = "/main";
+		}
 	});
 }
-
-
-
 
 // 뒤로가기 버튼
 let cansel = document.querySelector(".cansel")
 cansel.addEventListener("click", CanselBtn)
 // 뒤로가기
 function CanselBtn() {
-	window.location = "http://localhost:8080/main"
+	window.location.href = "/main";
 }
-
-
-
-
-
-
-
-
-
-

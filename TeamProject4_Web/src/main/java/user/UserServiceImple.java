@@ -160,4 +160,16 @@ public class UserServiceImple implements UserService {
 		return 0;
 	}
 
+	@Override
+	public List<String> selectPhone() {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+			List<String> list = mapper.selectPhone();
+			if (list != null) {
+				return list;
+			}
+			return null;
+		}
+	}
+
 }

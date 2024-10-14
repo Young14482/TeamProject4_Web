@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLConnection;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,17 +51,32 @@ public class UserSignupAPI extends HttpServlet {
 		String json = sb.toString();
 
 		User user = mapper.readValue(json, User.class);
-		if (user.getName() != null) {
-			int result = service.InsertUser(user);
-			resp.setCharacterEncoding("utf-8");
 
-			resp.setHeader("Content-Type", "application/json; charset=utf-8");
-			PrintWriter pw = resp.getWriter();
-			if (result > 0) {
-				pw.print(json); // body
-				pw.flush(); // 버퍼 비우는거
+		List<String> list = service.selectPhone();
+
+		int count = 0;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).equals(user.getPhone())) {
+				count++;
 			}
+		}
+		if (count <= 0) {
+			if (user.getName() != null) {
+				int result = service.InsertUser(user);
+				resp.setCharacterEncoding("utf-8");
 
+				resp.setHeader("Content-Type", "application/json; charset=utf-8");
+				PrintWriter pw = resp.getWriter();
+				if (result > 0) {
+					pw.print(json); // body
+					pw.flush(); // 버퍼 비우는거
+				}
+				resp.setStatus(200);
+			} else {
+				resp.setStatus(408);
+			}
+		} else {
+			resp.setStatus(499);
 		}
 	}
 
@@ -91,4 +108,3 @@ public class UserSignupAPI extends HttpServlet {
 	}
 
 }
-

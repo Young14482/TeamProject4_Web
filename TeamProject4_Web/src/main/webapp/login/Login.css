@@ -46,3 +46,12 @@ body {
 	height: 50px;
 	font-size: 15px;
 }
+
+.genderSelect {
+	display: flex;
+	align-items: center;
+}
+
+.genderSelect label, .genderSelect input[type="radio"] {
+	margin-right: 10px; /* 요소 간 간격 설정 */
+}

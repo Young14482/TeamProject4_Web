@@ -23,7 +23,7 @@
 		</form>
 
 		<div class="login-modify">
-			<button>회원가입</button>
+			<button onclick="SignupPage()">회원가입</button>
 			<button id="search">아이디/비밀번호찾기</button>
 			<button class="cansel" type="button">취소</button>
 		</div>

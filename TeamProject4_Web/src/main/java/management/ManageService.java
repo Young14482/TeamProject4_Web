@@ -4,8 +4,10 @@ import java.util.List;
 
 public interface ManageService {
 
+	// 회원 등급 수정
 	JoinUser updateUserGrade(JoinUser joinUser);
 
+	// 회원 차단
 	JoinUser updateUserBlock(JoinUser joinUser);
 
 	// 컬러 카테고리 다들고 오기
@@ -39,5 +41,14 @@ public interface ManageService {
 	int SelectLastPk();
 
 	// 카테고리 만들어 질때 옷 테이블의 카테고리 수정
-	int updateCloth(int clothPk, int categoryPk);
+	int insertUpdateCloth(int clothPk, int categoryPk);
+
+	// 옷 수정
+	int updateInfoCloth(Cloth cloth);
+
+	// 옷 갯수 수정
+	int updateInfoInventory(Cloth cloth);
+
+	// 옷 논리적 삭제
+	int logicalClothDelete(int cloth_num);
 }

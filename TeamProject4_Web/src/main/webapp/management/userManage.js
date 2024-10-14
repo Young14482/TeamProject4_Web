@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			})
 				.then(response => {
 					if (response.ok) {
-						alert('등급이 변경되었습니다.');
+						alert('등급이 성공적으로 변경되었습니다.');
 						// 변경된 등급을 테이블에 즉시 반영
 						// .querySelector('td:nth-child(9)') : 등급 칸
 						// 가입 회원 목록 표의 칸 수가 달라지면 자식요소 숫자도 꼭 바꿔주기
@@ -116,9 +116,9 @@ document.addEventListener("DOMContentLoaded", function() {
 			})
 				.then(response => {
 					if (response.ok) {
-						alert('회원이 차단되었습니다.');
+						alert('회원이 성공적으로 차단되었습니다.');
 
-						// 차단된 회원을 테이블에서 삭제
+						// 차단된 회원을 <table>에서 삭제
 						const userRow = button.closest('tr');
 						userRow.remove();
 

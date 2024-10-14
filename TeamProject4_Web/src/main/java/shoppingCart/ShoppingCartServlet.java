@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.ServiceImpl;
 import material.AppContextListener;
 import material.Cloth;
-//TODO : 현재 userId 직접 호출중임 >> 세션으로 받아와야함, jsp 버튼들 구현해야함
+import user.User;
 
 @WebServlet("/shoppingCart")
 public class ShoppingCartServlet extends HttpServlet {
@@ -33,7 +33,6 @@ public class ShoppingCartServlet extends HttpServlet {
 		app.contextInitialized(null);
 		try {
 			HttpSession session = req.getSession();
-
 			String userId = (String) session.getAttribute("userId");
 			List<ShoppingCartItem> shoppingCartList = serviceImpl.selectShoppingCart(userId);
 
@@ -52,62 +51,78 @@ public class ShoppingCartServlet extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8"); // 응답 인코딩 설정
 
 		HttpSession session = req.getSession();
-		List<ShoppingCartItem> orderList = null;
-			// JSON 데이터를 읽어서 String으로 변환
-			BufferedReader reader = req.getReader();
-			StringBuilder sb = new StringBuilder();
-			
-			String line;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line);
-			}
-
-			String body = sb.toString();
-
-			// 시작과 끝에 중괄호가 있는지 검사
-			if (!body.startsWith("[")) {
-			    body = "[" + body;
-			}
-			if (!body.endsWith("]")) {
-			    body = body + "]";
-			}
-			// JSON 데이터를 ShoppingCartItem 리스트로 변환
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				orderList = mapper.readValue(body, new TypeReference<List<ShoppingCartItem>>() {
-				});
-				int result = 0;
-				// 주문 처리 로직 추가
-				session.setAttribute("orderList", orderList); // 장바구니
-				for (ShoppingCartItem order : orderList) {
-					result += serviceImpl.insertPayment(order);
-				}
-				if (result != 0) {
-					result = 0;
-					for (ShoppingCartItem order : orderList) {
-					result += serviceImpl.deleteFromShoppingCart(order.getCloth_num());
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			// 응답 설정
-			resp.setContentType("application/json");
-			resp.setCharacterEncoding("UTF-8");
-			resp.getWriter().write("{\"status\": \"success\"}");
-			
-//			int parsedCloth_num = Integer.parseInt(cloth_num);
-//			
-//			ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-//			shoppingCartItem.setCloth_num(parsedCloth_num);
-//			shoppingCartItem.setUser_Id((String) session.getAttribute("userId"));
-//			shoppingCartItem.setShoppingcart_count(1);
-//			
-//			serviceImpl.insertPayment(shoppingCartItem);
-//			
-//			resp.sendRedirect("/userPayment");
+		String userId = (String) session.getAttribute("userId");
+		Integer finalTotalPrice = null;
+		try {
+			Long longValue  = (Long) session.getAttribute("finalTotalPrice");
+			finalTotalPrice = longValue.intValue();
+		} catch (Exception e) {
+			finalTotalPrice = (Integer) session.getAttribute("finalTotalPrice");
+		}
 		
+		List<ShoppingCartItem> orderList = null;
+		// JSON 데이터를 읽어서 String으로 변환
+		BufferedReader reader = req.getReader();
+		StringBuilder sb = new StringBuilder();
+
+		String line;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
+		}
+
+		String body = sb.toString();
+
+		// 시작과 끝에 중괄호가 있는지 검사
+		if (!body.startsWith("[")) {
+			body = "[" + body;
+		}
+		if (!body.endsWith("]")) {
+			body = body + "]";
+		}
+		// JSON 데이터를 ShoppingCartItem 리스트로 변환
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			orderList = mapper.readValue(body, new TypeReference<List<ShoppingCartItem>>() {
+			});
+			int result = 0;
+			// 주문 처리 로직 추가
+			session.setAttribute("orderList", orderList); // 장바구니
+			for (ShoppingCartItem order : orderList) {
+				result += serviceImpl.insertPayment(order);
+			}
+			if (result != 0) {
+				result = 0;
+				for (ShoppingCartItem order : orderList) {
+					result += serviceImpl.deleteFromShoppingCart(order.getCloth_num());
+					int clothNum = order.getCloth_num();
+					int clothSold = serviceImpl.getClothSold(clothNum);
+					int count = (order.getShoppingcart_count() + clothSold);
+					serviceImpl.updateClothSold(clothNum, count);
+				}
+				int useMoney = serviceImpl.userUseMoney(userId);
+				int totalPrice = useMoney + finalTotalPrice - 3500;
+				serviceImpl.updateUseMoney(userId, totalPrice);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// 응답 설정
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
+		resp.getWriter().write("{\"status\": \"success\"}");
+
+//         int parsedCloth_num = Integer.parseInt(cloth_num);
+//         
+//         ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+//         shoppingCartItem.setCloth_num(parsedCloth_num);
+//         shoppingCartItem.setUser_Id((String) session.getAttribute("userId"));
+//         shoppingCartItem.setShoppingcart_count(1);
+//         
+//         serviceImpl.insertPayment(shoppingCartItem);
+//         
+//         resp.sendRedirect("/userPayment");
+
 	}
 
 	@Override
@@ -133,4 +148,19 @@ public class ShoppingCartServlet extends HttpServlet {
 		resp.getWriter().write("{\"status\": \"success\"}");
 	}
 
+	// 결제창에서 손놈 정보 json받아오는 용도의 doPut
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		String userId = (String) session.getAttribute("userId");
+		User user = serviceImpl.getUserInfo(userId);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String userJson = mapper.writeValueAsString(user);
+
+		// JSON 응답 설정
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
+		resp.getWriter().write(userJson);
+	}
 }

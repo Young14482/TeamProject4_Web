@@ -10,7 +10,9 @@ import image.Image;
 import material.AppContextListener;
 import material.Cloth;
 import payment.PayCloth;
+import payment.PaymentInfo;
 import shoppingCart.ShoppingCartItem;
+import user.User;
 
 public class ServiceImpl implements Service {
 
@@ -227,4 +229,81 @@ public class ServiceImpl implements Service {
 		}
 		
 	}
+
+	public boolean cancelOrder(int cloth_num, String userId) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			PaymentInfo paymentInfo = mapper.findUserPayPrice(userId, cloth_num);
+			mapper.cancelOrder(userId, cloth_num);
+			mapper.changeUserUseMoneyToDown(userId, paymentInfo.getTotalPayPrice());
+			mapper.changeClothSoldToDown(paymentInfo.getPaymentCount(), cloth_num);
+			
+			sqlSession.commit();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public User getUserInfo(String userId) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			
+			User user = mapper.getUser(userId);
+			return user;
+		}
+	}
+	// 사용금액 확인
+	@Override
+	public int userUseMoney(String userId) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			
+			int useMoney = mapper.getUseMoney(userId);
+			return useMoney;
+		}
+	}
+	// 사용금액 업데이트
+	@Override
+	public void updateUseMoney(String userId, int useMoney) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			mapper.updateUseMoney(userId, useMoney);
+			sqlSession.commit();
+		}
+	}
+
+	@Override
+	public int getClothSold(int clothNum) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			
+			int clothSold = mapper.getClothSold(clothNum);
+			return clothSold;
+		}
+	}
+
+	@Override
+	public void updateClothSold(int clothNum, int count) {
+		try (SqlSession sqlSession = AppContextListener.getSqlSession()) {
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			mapper.updateClothSold(clothNum,count);
+			sqlSession.commit();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

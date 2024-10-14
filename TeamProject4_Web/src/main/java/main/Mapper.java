@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -12,7 +14,9 @@ import image.ClothImage;
 import image.Image;
 import material.Cloth;
 import payment.PayCloth;
+import payment.PaymentInfo;
 import shoppingCart.ShoppingCartItem;
+import user.User;
 
 public interface Mapper {
 
@@ -26,8 +30,7 @@ public interface Mapper {
 	List<Image> findAllImage();
 
 	@Select("SELECT * FROM lp.cloth as a \r\n"
-			+ "join categorys as b on a.cloth_categorys = b.categorys_num\r\n"
-			+ "join cloth_img as c on a.cloth_num = c.cloth_num;")
+			+ "join categorys as b on a.cloth_categorys = b.categorys_num;")
 	List<Cloth> findAllCloth();
 
 	@Select("SELECT cloth_num, image_name, list_image, main_image1, main_image2, main_image3 FROM lp.cloth_img;")
@@ -55,9 +58,9 @@ public interface Mapper {
 						, @Param("parsedMinPrice") int parsedMinPrice
 						, @Param("parsedMaxPrice") int parsedMaxPrice);
 	
-	@Select("SELECT a.user_ID, b.cloth_num, b.cloth_price, a.shoppingcart_count, b.cloth_name, c.list_image FROM lp.shoppingcart AS a \r\n"
+	@Select("SELECT a.user_ID, b.cloth_num, b.cloth_price, a.shoppingcart_count, b.cloth_name FROM lp.shoppingcart AS a \r\n"
 			+ "JOIN cloth AS b ON a.cloth_num = b.cloth_num\r\n"
-			+ "JOIN cloth_img AS c ON c.cloth_num = b.cloth_num WHERE a.user_ID = #{userId};")
+			+ "WHERE a.user_ID = #{userId};")
     List<ShoppingCartItem> selectShoppingCart(@Param("userId") String userId);
 
 	@Delete("DELETE FROM lp.shoppingcart WHERE cloth_num = #{clothNum}")
@@ -111,6 +114,72 @@ public interface Mapper {
 			+ "LIMIT 1;")
 	int ClothLastNum();
 
+	
+	
+	
+	// 결제 취소
+	// 취소할 옷의 결제금액 조회
+	@Select("SELECT payment_count * cloth_price AS totalPayPrice, payment_count \r\n"
+	        + "FROM payment AS a\r\n"
+	        + "JOIN cloth AS b ON a.cloth_num = b.cloth_num\r\n"
+	        + "WHERE a.user_ID = #{userId} AND a.cloth_num = #{cloth_num} AND a.delivery_status = 0 \r\n"
+	        + "LIMIT 1")
+	@Results({
+	    @Result(property = "totalPayPrice", column = "totalPayPrice"),
+	    @Result(property = "paymentCount", column = "payment_count")
+	})
+	PaymentInfo findUserPayPrice(@Param("userId") String user_Id, @Param("cloth_num") int cloth_num);
+
+
+	
+	// payment 테이블에서 해당 행을 삭제
+	@Delete("DELETE FROM payment\r\n"
+	        + "WHERE cloth_num = #{cloth_num}\r\n"
+	        + "AND user_ID = #{userId}\r\n"
+	        + "AND delivery_status = 0 \r\n"
+	        + "LIMIT 1")
+	int cancelOrder(@Param("userId") String user_Id, @Param("cloth_num") int cloth_num);
+
+	
+	// 유저 사용금액을 취소한 만큼 줄임
+	@Update("update user set user_useMoney = user_useMoney - #{downMoney} where user_ID = #{userId};")
+	int changeUserUseMoneyToDown(@Param("userId") String user_Id, @Param("downMoney") int downMoney);
+	
+	// 취소한 개수만큼 옷의 sold 값을 내림
+	@Update("update cloth set cloth_sold = cloth_sold - #{downSold} where cloth_num = #{cloth_num};")
+	int changeClothSoldToDown(@Param("downSold") int downSold, @Param("cloth_num") int cloth_num);
+	
+
+	@Select("SELECT user_id, user_phone, user_address FROM lp.user where user_Id = #{userId};")
+	@Results({
+		 @Result(property = "id", column = "user_id"),
+		 @Result(property = "phone", column = "user_phone"),
+		 @Result(property = "address", column = "user_address"),
+	})
+	User getUser(@Param("userId") String userId);
+
+	@Select("SELECT user_useMoney FROM lp.user where user_Id = #{userId};")
+	int getUseMoney(@Param("userId") String userId);
+
+	@Update("UPDATE user SET user_useMoney = #{usedMoney} WHERE user_Id = #{userId};")
+	int updateUseMoney(@Param("userId") String userId, @Param("usedMoney") int usedMoney);
+	
+	@Select("SELECT cloth_sold FROM lp.cloth where cloth_num = #{clothNum};")
+	int getClothSold(@Param("clothNum") int clothNum);
+
+	@Update("UPDATE cloth SET cloth_sold = #{count} WHERE cloth_num = #{clothNum};")
+	void updateClothSold(@Param("clothNum") int clothNum, @Param("count") int count);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

@@ -29,7 +29,7 @@ function submitForm(e) {
       } else if (resp.status === 403) {
          alert("비밀번호가 올바르지 않습니다.");
       } else {
-         window.location = "http://localhost:8080/main";
+		window.location.href = "/main";
       }
    });
 }
@@ -38,7 +38,7 @@ let cansel = document.querySelector(".cansel")
 cansel.addEventListener("click", CanselBtn);
 // 뒤로가기
 function CanselBtn() {
-   window.location = "http://localhost:8080/main";
+	window.location.href = "/main";
 }
 // 아이디/비밀번호 액션
 let searchbtn = document.getElementById("search");
@@ -244,7 +244,7 @@ function passwordChang() {
          throw new Error("가입되어있는 회원이 아닙니다");
       } else if (resp.status === 200) {
          alert("비밀번호 변경 완료");
-         window.location = "http://localhost:8080/main";
+		 window.location.href = "/main";
       }
    }).catch((e) => {
       alert("비밀번호 변경 실패");
@@ -263,4 +263,9 @@ function ChangDate(date) {
 
    // 11자리 날짜 형식으로 반환
    return `${fullYear}-${month}-${day}`;
+}
+
+
+function SignupPage(){
+   window.location.href = "/signup";
 }

@@ -18,4 +18,5 @@ public class PayCloth {
 	private String payment_date;
 	private int write_review;
 	private int cloth_price;
+	private int delivery_status;
 }

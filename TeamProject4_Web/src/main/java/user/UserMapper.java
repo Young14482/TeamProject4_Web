@@ -49,5 +49,6 @@ public interface UserMapper {
 	@Update("update user Set user_leave = 1 where user_id = #{userId}")
 	int userLeave(@Param("userId") String userId);
 	
-
+	@Select("Select user_phone from user")
+	List<String>selectPhone();
 }

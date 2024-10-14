@@ -89,7 +89,7 @@ function saveChanges() {
 }
 
 function closePage() {
-	window.location = "http://localhost:8080/main";
+	window.location.href = "/main";
 }
 
 
@@ -285,7 +285,7 @@ function deleteUser() {
 	}).then((resp) => {
 		if (resp.status === 200) {
 			alert("정상적으로 탈퇴되었습니다.");
-			window.location = "http://localhost:8080/main";
+			window.location.href = "/main";
 		} else if (resp.status === 419) {
 			alert("탈퇴되지 않았습니다.");
 		}

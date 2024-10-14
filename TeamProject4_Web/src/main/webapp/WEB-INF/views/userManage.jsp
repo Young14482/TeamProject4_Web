@@ -25,15 +25,29 @@ header {
 	color: #fff;
 	padding: 10px 0;
 	width: 100%;
-	height: 125px;
+	height: 155px;
 	position: fixed; /* header를 고정 */
 	top: 0;
 	left: 0;
 	z-index: 1000; /* 다른 내용 위에 고정되도록 z-index 추가 */
 }
 
-nav .logo {
-	text-align: center;
+nav .logoAndText {
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가운데 정렬 */
+}
+
+.logoAndTitle {
+    display: flex;
+    align-items: center; /* 이미지와 h1을 수직 중앙 정렬 */
+    justify-content: center; /* 로고와 h1을 수평 중앙 정렬 */
+}
+
+.logo-img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
 }
 
 main {
@@ -41,7 +55,7 @@ main {
 	flex-direction: column;
 	align-items: center; /* 수평 중앙 정렬 */
 	width: 100%;
-	padding-top: 170px; /* header 높이와 여유 공간을 줌 */
+	padding-top: 200px; /* header 높이와 여유 공간을 줌 */
 	overflow-y: auto; /* 내용이 많아지면 스크롤이 생기도록 설정 */
 }
 
@@ -52,6 +66,12 @@ main {
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	width: 95%;
 	margin-bottom: 20px; /* 패널 사이 간격 */
+}
+
+.panel3 {
+	display: flex; 
+	justify-content: space-between; 
+	align-items: center;
 }
 
 .panel h3 {
@@ -171,9 +191,18 @@ button:hover {
 <body>
 	<header>
 		<nav>
-			<div class="logo">
-				<h1>Web Project 홈페이지</h1>
-				<h2>회원 관리</h2>
+			<div class="logoAndText">
+				<div class="logoAndTitle">
+					<div class="logo">
+						<img src="/static/image/logo/logo.png" alt="로고 이미지" class="logo-img">
+					</div>
+					<h1>
+						<a href="/main"
+							style="color: #fff; text-decoration: none; font-size: 1.5em;">
+							NO MORE SHINSA</a>
+					</h1>
+				</div>
+				<h2>가입 회원 관리</h2>
 			</div>
 		</nav>
 	</header>
@@ -181,24 +210,22 @@ button:hover {
 		<div class="panel">
 			<h3>가입 회원 목록</h3>
 			<div class="panel2">
-				<div
-					style="display: flex; justify-content: space-between; align-items: center;">
+				<div class="panel3">
 					<div id="userCount">
-						총 회원수 :
+						가입 회원수 :
 						<%=request.getAttribute("joinUserCount")%>명
 					</div>
 					<div id="searchPanel">
 						<form id="searchForm" method="GET" action="/searchUser">
 							<table>
 								<tr>
-									<td>
-										<select id="searchField" class="searchOption"
-												name="searchField">
+									<td><select id="searchField" class="searchOption"
+										name="searchField">
 											<option value="userId">회원아이디</option>
+											<option value="userName">회원명</option>
 											<option value="userGrade">회원등급</option>
 											<option value="userGender">성별</option>
-										</select>
-									</td>
+									</select></td>
 									<td><input type="text" id="searchText"
 										class="searchOption" placeholder="검색어 입력" name="searchText"
 										maxlength="100"></td>
@@ -219,13 +246,19 @@ button:hover {
 						<th>생년월일</th>
 						<th>전화번호</th>
 						<th>주소</th>
-						<th>배송지(일단은 대표배송지x,여러배송지 중 랜덤 한개)</th>
+						<th>배송지</th>
 						<th>회원등급</th>
 						<th>등급변경</th>
 						<th>회원차단</th>
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty userList}">
+						<!-- 리스트가 비어있을 경우 : 판매 내역이 없을 경우 -->
+						<tr>
+							<td colspan="11">가입한 회원이 없습니다.</td>
+						</tr>
+					</c:if>
 					<!-- forEach로 userList 순회해서 표에 가입 회원을 다 나타낼수 있도록 함 -->
 					<c:forEach var="user" items="${userList}">
 						<tr>
@@ -238,8 +271,7 @@ button:hover {
 							<td>${user.user_address}</td>
 							<td>
 								<div
-									style="float: left; width: calc(100% - 80px); overflow: hidden; 
-										text-overflow: ellipsis; white-space: nowrap;">
+									style="float: left; width: calc(100% - 80px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
 									${user.deliveryaddress}</div>
 								<div style="float: right; width: 80px;">
 									<button onclick="showDetails('${user.user_id}')">상세보기</button>

@@ -1,0 +1,91 @@
+@charset "UTF-8";
+
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f0f8ff;
+	text-align: center;
+	font-size: 20px;
+}
+
+.season-container, .color-container, .usage-container, .gender-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 50px;
+}
+
+.season, .color, .usage, .gender {
+	margin: 0 20px;
+	text-align: center;
+}
+
+.season img, .color img, .usage img, .gender img {
+	width: 150px;
+	height: 150px;
+	cursor: pointer;
+	border: 3px solid transparent;
+}
+
+.selected {
+	border: 3px solid red;
+}
+#submitBtn {
+    width: 150px;
+    font-size: 2em; /* <h1> 태그의 기본 폰트 크기와 동일하게 설정 */
+    font-weight: bold; /* 글꼴을 진하게 설정 */
+    padding: 10px; /* 세로 크기를 폰트 크기에 따라 유동적으로 설정 */
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50; /* 버튼 배경색 설정 */
+    color: white; /* 버튼 텍스트 색상 설정 */
+    border-radius: 5px; /* 버튼 모서리를 둥글게 설정  */
+}
+#submitBtn:active {
+    background-color: #45a049; /* 버튼을 눌렀을 때 배경색 변경 */
+}
+/* 기존 CSS 코드 */
+
+.price-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.price-range, .custom-price, .all-price  {
+    margin: 10px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+.price-options {
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+}
+
+.price-range {
+    display: block;
+}
+
+.custom-price-inputs {
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    align-items: center; /* 가운데 정렬 */
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.custom-price-label {
+    display: flex;
+    align-items: center; /* 변경된 부분 */
+    justify-content: center;
+}
+
+#minPrice, #maxPrice {
+	height: 30px;
+	font-size: 20px;
+}
+
