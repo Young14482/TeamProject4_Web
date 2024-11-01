@@ -9,7 +9,9 @@
 <script src="./static/js/search.js"></script>
 </head>
 <body>
-	<h1>어느 성별의 옷을 찾으시나요?</h1>
+	<jsp:include page="/WEB-INF/views/mainBar.jsp"></jsp:include>
+	
+	<h1 class="firstQ">어느 성별의 옷을 찾으시나요?</h1>
 	<div class="gender-container">
 		<div id="gender1" class="gender" onclick="selectGender('1')">
 			<img src="data:image/png;base64,<%=session.getAttribute("남자")%>"
