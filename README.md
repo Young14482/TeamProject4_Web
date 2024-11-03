@@ -225,7 +225,7 @@ C:.
 <br><br>
 ## Download
 
-[Download NOSHINSA_DB_TABLE.sql](https://github.com/Young14482/Web_Clothing_Store_Project/raw/master/NOSHINSA_DB_TABLE.sql)
+[Download NOSHINSA_DB_TABLE.sql](https://github.com/Young14482/Web_Clothing_Store_Project/releases/tag/v1.0)
 
 ## Authors
 
