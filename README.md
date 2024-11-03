@@ -225,7 +225,7 @@ C:.
 <br><br>
 ## Download
 
-* 깃허브에 파일올리고 링크시키면됨
+[Download NOSHINSA_DB_TABLE.sql](https://github.com/Young14482/Web_Clothing_Store_Project/raw/master/NOSHINSA_DB_TABLE.sql)
 
 ## Authors
 
